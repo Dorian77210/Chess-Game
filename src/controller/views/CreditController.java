@@ -4,7 +4,7 @@ import ui.Window;
 
 import controller.views.Controller;
 
-import enums.WindowState;;
+import enums.WindowState;
 
 import javax.swing.JButton;
 
