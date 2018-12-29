@@ -13,7 +13,7 @@ public class Assert {
       * Verify if a variable is null
       * @return True if it is, else false 
     **/
-    public <T> boolean isNull(T t) {
+    public static final <T> boolean isNull(T t) {
         return (t == null);
     }
 
@@ -21,7 +21,7 @@ public class Assert {
       * Verify if a variable is set
       * @return True if it is, else false 
     **/
-    public <T> boolean isSet(T t) {
+    public static final <T> boolean isSet(T t) {
         return !isNull(t);
     }
 }

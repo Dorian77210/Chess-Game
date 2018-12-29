@@ -1,6 +1,6 @@
 package ui.board;
 
-import model.game.pieces.*;
+import models.game.pieces.*;
 
 import helper.Assert;
 import helper.Position;
@@ -21,7 +21,7 @@ public class Cell extends JButton {
     /**
       * The potential piece in this cell
     **/
-    private Piece model;
+    private Piece piece;
 
     /**
       * The initial color of the cell 
@@ -36,15 +36,15 @@ public class Cell extends JButton {
     public Cell(Color color, Position position) {
         this.initialColor = color;
         this.position = position;
-        this.model = null; //initial value
+        this.piece = null; //initial value
 
         this.setBackground(this.initialColor);
     }
 
-    public Cell(Color color, Position position, Piece model) {
+    public Cell(Color color, Position position, Piece piece) {
         this.initialColor = color;
         this.position = position;
-        this.model = model;
+        this.piece = piece;
 
         this.setBackground(this.initialColor);
     }
@@ -54,7 +54,7 @@ public class Cell extends JButton {
     **/
     public void refreshAppearance() {
         this.setBackground(this.initialColor);
-        ImageIcon icon = (Assert.isSet(this.model)) ? new ImageIcon(this.model.getRepresentation()) : null;
+        ImageIcon icon = (Assert.isSet(this.piece)) ? new ImageIcon(this.piece.getRepresentation()) : null;
         this.setIcon(icon);
     }
 
@@ -64,10 +64,11 @@ public class Cell extends JButton {
 
     /**
       * Set the model of the cell
-      * @param model The new model for the cell
+      * @param piece The new model for the cell
     **/
-    public void setModel(Piece model) {
-        this.model = model;
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+        this.refreshAppearance();
     }
 
     /**
@@ -85,8 +86,8 @@ public class Cell extends JButton {
       * Get the model of the cell
       * @return Null if it is null, else the model 
     **/
-    public Piece getModel() {
-        return this.model;
+    public Piece getPiece() {
+        return this.piece;
     }
 
 }

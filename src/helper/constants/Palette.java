@@ -11,6 +11,8 @@ import java.awt.Color;
 public class Palette {
 
     public static final Color WHITE_CELL_COLOR = new Color(0xFBFBFB);
+    public static final Color COPPER_CELL_COLOR = new Color(0xA76E37);
+    public static final Color CHEROKEE_CELL_COLOR = new Color(0xfadd90);
     public static final Color BLACK_CELL_COLOR = new Color(0x000000);
     public static final Color SELECTED_CELL_COLOR = new Color(0xF70000);
 }

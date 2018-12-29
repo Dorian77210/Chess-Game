@@ -78,7 +78,7 @@ public class BoardModel {
       * @return The top right cell associated to the position
     **/
     public Cell getBottomRightCell(Position position) {
-        return ((position.y < (BoardView.HEIGHT - 1)) && (position.x < BoardView.WIDTH)) ? this.getCell(new Position(position.x + 1 position.y + 1)) : null;
+        return ((position.y < (BoardView.HEIGHT - 1)) && (position.x < BoardView.WIDTH)) ? this.getCell(new Position(position.x + 1, position.y + 1)) : null;
     }
 
     /** 

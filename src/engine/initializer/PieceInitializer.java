@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class PieceInitializer {
     
-    private static final String BOARD_INITIALIZER_FILE = "./rsc/files.board.dat";
+    private static final String BOARD_INITIALIZER_FILE = "./rsc/files/board.dat";
 
     /**
       * Recover all of the pieces in the file

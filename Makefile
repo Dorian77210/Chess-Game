@@ -3,16 +3,10 @@ BIN_DIR := bin/
 
 #packages
 
-#######UI PART#######
-UI_DIR := $(SRC_DIR)ui/
-UI_BOARD_DIR := $(UI_DIR)board/
-UI_VIEWS_DIR := $(UI_DIR)views/
-
-######MODEL PART########
-MODEL_DIR := $(SRC_DIR)models/
-MODEL_GAME_DIR := $(MODEL_DIR)game/
-MODEL_GAME_PIECES_DIR := $(MODEL_GAME_DIR)/pieces
-MODEL_VIEWS_DIR := $(MODEL_DIR)views/
+#######ENGINE#######
+ENGINE_DIR := $(SRC_DIR)engine/
+ENGINE_GAME_DIR = $(ENGINE_DIR)game/
+ENGINE_INITIALIZER_DIR = $(ENGINE_DIR)initializer/
 
 ######ENUMS PART########
 ENUMS_DIR := $(SRC_DIR)enums/
@@ -21,10 +15,23 @@ ENUMS_DIR := $(SRC_DIR)enums/
 ######CONTROLLER########
 CONTROLLER_DIR := $(SRC_DIR)controller/
 CONTROLLER_VIEWS_DIR := $(CONTROLLER_DIR)views/
+CONTROLLER_WINDOW_DIR := $(CONTROLLER_DIR)window/
 
 #######HELPER#######
 HELPER_DIR := $(SRC_DIR)helper/
 HELPER_CONSTANTS_DIR := $(HELPER_DIR)constants/
+
+######MODEL PART########
+MODEL_DIR := $(SRC_DIR)models/
+MODEL_GAME_DIR := $(MODEL_DIR)game/
+MODEL_GAME_PIECES_DIR := $(MODEL_GAME_DIR)pieces/
+MODEL_PLAYERS_DIR := $(MODEL_GAME_DIR)players/
+MODEL_VIEWS_DIR := $(MODEL_DIR)views/
+
+#######UI PART#######
+UI_DIR := $(SRC_DIR)ui/
+UI_BOARD_DIR := $(UI_DIR)board/
+UI_VIEWS_DIR := $(UI_DIR)views/
 
 
 FLAGS := -d $(BIN_DIR) -sourcepath $(SRC_DIR) -classpath $(BIN_DIR)
@@ -43,6 +50,8 @@ $(BIN_DIR)Application.class: $(SRC_DIR)Application.java $(BIN_DIR)Window.class $
 
 
 #controllers
+
+#controller.views
 $(BIN_DIR)CreditController.class: $(CONTROLLER_VIEWS_DIR)CreditController.java $(BIN_DIR)Window.class $(BIN_DIR)WindowState.class
 	$(JC) $(FLAGS) $(CONTROLLER_VIEWS_DIR)CreditController.java
 
@@ -52,6 +61,32 @@ $(BIN_DIR)Controller.class: $(CONTROLLER_VIEWS_DIR)Controller.java $(BIN_DIR)Win
 $(BIN_DIR)HomeController: $(CONTROLLER_VIEWS_DIR)HomeController.java $(BIN_DIR)Window.class $(BIN_DIR)GameMode.class \
 						  $(BIN_DIR)WindowState.class
 	$(JC) $(FLAGS) $(CONTROLLER_VIEWS_DIR)HomeController.java
+
+#controller.window
+$(BIN_DIR)WindowSizeController.class: $(CONTROLLER_WINDOW_DIR)WindowSizeController.java $(BIN_DIR)Window.class
+	$(JC) $(FLAGS) $(CONTROLLER_WINDOW_DIR)WindowSizeController.java
+
+#engine
+$(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DIR)Cell.class \
+						$(BIN_DIR)BoardModel.class $(BIN_DIR)PieceInitializer.class $(BIN_DIR)BoardInitializer.class \
+						$(BIN_DIR)GameMode.class $(BIN_DIR)PlayerType.class $(BIN_DIR)PieceType.class \
+						$(BIN_DIR)GamePieces.class $(BIN_DIR)Piece.class $(BIN_DIR)BoardView.class
+	$(JC) $(FLAGS) $(ENGINE_DIR)Engine.java
+
+#engine.game
+$(BIN_DIR)GamePieces.class: $(ENGINE_GAME_DIR)GamePieces.java $(BIN_DIR)Piece.class $(BIN_DIR)PieceType.class 
+	$(JC) $(FLAGS) $(ENGINE_GAME_DIR)GamePieces.java
+
+#engine.initializer
+$(BIN_DIR)BoardInitializer.class: $(ENGINE_INITIALIZER_DIR)BoardInitializer.java $(BIN_DIR)Piece.class $(BIN_DIR)Palette.class \
+								  $(BIN_DIR)Cell.class $(BIN_DIR)Position.class
+	$(JC) $(FLAGS) $(ENGINE_INITIALIZER_DIR)BoardInitializer.java
+
+$(BIN_DIR)PieceInitializer.class: $(ENGINE_INITIALIZER_DIR)PieceInitializer.java $(BIN_DIR)PieceType.class $(BIN_DIR)Piece.class \
+								  $(BIN_DIR)Bishop.class $(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Rook.class \
+								  $(BIN_DIR)Queen.class $(BIN_DIR)Pawn.class $(BIN_DIR)GamePieces.class $(BIN_DIR)BoardView.class \
+								  $(BIN_DIR)Console.class $(BIN_DIR)Position.class $(BIN_DIR)PieceConstants.class
+	$(JC) $(FLAGS) $(ENGINE_INITIALIZER_DIR)PieceInitializer.java
 
 #enums
 $(BIN_DIR)GameMode.class: $(ENUMS_DIR)GameMode.java
@@ -70,12 +105,15 @@ $(BIN_DIR)WindowState.class: $(ENUMS_DIR)WindowState.java
 $(BIN_DIR)Assert.class: $(HELPER_DIR)Assert.java 
 	$(JC) $(FLAGS) $(HELPER_DIR)Assert.java
 
+$(BIN_DIR)Console.class: $(HELPER_DIR)Console.java
+	$(JC) $(FLAGS) $(HELPER_DIR)Console.java
+
 $(BIN_DIR)Position.class: $(HELPER_DIR)Position.java
 	$(JC) $(FLAGS) $(HELPER_DIR)Position.java
 
 #helper.constants
-$(BIN_DIR)Palette.class: $(HELPER_DIR)Palette.java
-	$(JC) $(FLAGS) $(HELPER_DIR)Palette.class
+$(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java
+	$(JC) $(FLAGS) $(HELPER_CONSTANTS_DIR)Palette.java
 
 $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 	$(JC) $(FLAGS) $(HELPER_CONSTANTS_DIR)PieceConstants.java
@@ -83,11 +121,11 @@ $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 #models
 
 #models.game.pieces
-$(BIN_DIR)Bishop.class: $(MODEL_GAME_PIECES_DIR)Bishop.java $(BIN_DIR)Piece.class $(BIN_DIR)Position.class \
-						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
-	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)Bishop.java
-
 $(BIN_DIR)Bishop.class: $(MODEL_GAME_PIECES_DIR)King.java $(BIN_DIR)Piece.class $(BIN_DIR)Position.class \
+						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
+	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)King.java
+
+$(BIN_DIR)King.class: $(MODEL_GAME_PIECES_DIR)King.java $(BIN_DIR)Piece.class $(BIN_DIR)Position.class \
 						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
 	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)King.java
 
@@ -99,8 +137,7 @@ $(BIN_DIR)Pawn.class: $(MODEL_GAME_PIECES_DIR)Pawn.java $(BIN_DIR)Piece.class $(
 						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
 	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)Pawn.java
 
-$(BIN_DIR)Piece.class: $(MODEL_GAME_PIECES_DIR)Piece.java $(BIN_DIR)Position.class \
-						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
+$(BIN_DIR)Piece.class: $(MODEL_GAME_PIECES_DIR)Piece.java $(BIN_DIR)Position.class $(BIN_DIR)PieceType.class 
 	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)Piece.java
 
 $(BIN_DIR)Queen.class: $(MODEL_GAME_PIECES_DIR)Queen.java $(BIN_DIR)Piece.class $(BIN_DIR)Position.class \
@@ -111,18 +148,22 @@ $(BIN_DIR)Rook.class: $(MODEL_GAME_PIECES_DIR)Rook.java $(BIN_DIR)Piece.class $(
 						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
 	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)Rook.java
 
+#model.piece
+$(BIN_DIR)Player.class: $(MODEL_PLAYERS_DIR)Player.java $(BIN_DIR)Piece.class $(BIN_DIR)PlayerType.class
+	$(JC) $(FLAGS) $(MODEL_PLAYERS_DIR)Player.java
+
 #model.views
 $(BIN_DIR)BoardModel.class: $(MODEL_VIEWS_DIR)BoardModel.java $(BIN_DIR)Cell.class
-	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)BoardModel.java
+	$(JC) $(FLAGS) $(MODEL_VIEWS_DIR)BoardModel.java
 
 #ui 
 
 #ui.board
 $(BIN_DIR)BoardView.class: $(UI_BOARD_DIR)BoardView.java $(BIN_DIR)Cell.class $(BIN_DIR)Engine.class \
-						   $(BIN_DIR)BoardController.class 
+						$(BIN_DIR)View.class
 	$(JC) $(FLAGS) $(UI_BOARD_DIR)BoardView.java
 
-$(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.class $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
+$(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
 					  $(BIN_DIR)Piece.class
 	$(JC) $(FLAGS) $(UI_BOARD_DIR)Cell.java
 
@@ -138,7 +179,8 @@ $(BIN_DIR)HomeView.class: $(UI_VIEWS_DIR)HomeView.java $(BIN_DIR)View.class $(BI
 $(BIN_DIR)View.class: $(UI_VIEWS_DIR)View.java $(BIN_DIR)Window.class $(BIN_DIR)Controller.class
 	$(JC) $(FLAGS) $(UI_VIEWS_DIR)View.java
 
-$(BIN_DIR)Window.class: $(UI_DIR)Window.java $(BIN_DIR)View.class $(BIN_DIR)WindowState.class 
+$(BIN_DIR)Window.class: $(UI_DIR)Window.java $(BIN_DIR)View.class $(BIN_DIR)WindowState.class \
+						$(BIN_DIR)BoardView.class
 	$(JC) $(FLAGS) $(UI_DIR)Window.java
 
 

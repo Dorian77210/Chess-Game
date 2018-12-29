@@ -4,8 +4,12 @@ import ui.views.View;
 import ui.views.CreditView;
 import ui.views.HomeView;
 
+import ui.board.BoardView;
+
 import enums.WindowState;
 import enums.GameMode;
+
+import controller.window.WindowSizeController;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,12 +26,12 @@ public class Window extends JFrame {
     /**
       * Constant used to set the width to the window 
     **/
-    private static final int WINDOW_WIDTH = 500;
+    public static final int WINDOW_WIDTH = 600;
 
     /**
       * Constant used to set the height to the window 
     **/
-    private static final int WINDOW_HEIGHT = 500;
+    public static final int WINDOW_HEIGHT = 600;
 
     /**
       * The current view displayed on the window 
@@ -39,6 +43,11 @@ public class Window extends JFrame {
     **/
     private WindowState state;
 
+	/**
+	  * Controls the resize of the window 
+	**/
+	private WindowSizeController sizeController;
+
     public Window() {
         super("Chess Game");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -48,6 +57,9 @@ public class Window extends JFrame {
         //initial value
         this.currentView = new View(this);
         this.add(this.currentView, BorderLayout.CENTER);
+
+		this.sizeController = new WindowSizeController();
+		this.addComponentListener(this.sizeController);
 
         this.changeView(WindowState.HOME_VIEW_STATE);
     }
@@ -80,7 +92,7 @@ public class Window extends JFrame {
         this.state = state;
         this.remove(this.currentView);
 
-        //this.currentView = new BoardView(mode);
+        this.currentView = new BoardView(mode);
 
         this.add(this.currentView, BorderLayout.CENTER);
         this.revalidate();

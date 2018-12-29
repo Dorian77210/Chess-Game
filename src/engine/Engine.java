@@ -1,6 +1,7 @@
 package engine;
 
 import engine.initializer.PieceInitializer;
+import engine.initializer.BoardInitializer;
 
 import enums.GameMode;
 import enums.PlayerType;
@@ -13,6 +14,8 @@ import models.game.players.Player;
 import models.game.pieces.Piece;
 
 import models.views.BoardModel;
+
+import ui.board.Cell;
 
 import java.util.ArrayList;
 
@@ -29,8 +32,17 @@ public class Engine {
     **/
     private static Engine engine;
 
-    public static final PieceInitializer pieceInitializer = new PieceInitializer();
-    /**
+	/**
+	  * The initializer of piece 
+	**/
+    private static final PieceInitializer pieceInitializer = new PieceInitializer();
+
+	/**
+	  * Initializer of the board 
+	**/
+	private static final BoardInitializer boardInitializer = new BoardInitializer();
+
+	/**
       * The mode of the game 
     **/
     private GameMode mode;
@@ -43,7 +55,7 @@ public class Engine {
     /**
       * The white player 
     **/
-    private Player whitePayer;
+    private Player whitePlayer;
     
     /**
       * The model of the board 
@@ -55,7 +67,7 @@ public class Engine {
     ) {
         this.mode = mode;
 
-        this.whitePayer = new Player(PlayerType.WHITE_PLAYER, whitePieces);
+        this.whitePlayer = new Player(PlayerType.WHITE_PLAYER, whitePieces);
         this.blackPlayer = (this.mode.equals(GameMode.PVE_MODE)) ? null /*temp*/ : new Player(PlayerType.BLACK_PLAYER, blackPieces);
         
         this.boardModel = boardModel;
@@ -69,7 +81,7 @@ public class Engine {
       * Get the unique instance of the Engine
       * @return The unique instance of the Engine
     **/
-    public Engine instance() {
+    public static final Engine instance() {
         return Engine.engine;
     }
 
@@ -82,9 +94,20 @@ public class Engine {
       * @param mode The mode of the game
       * @param boardModel The model of the board 
     **/
-    public void initialize(GameMode mode, BoardModel boardModel) {
-        GamePieces gamePiece = Engine.pieceInitializer.recoverPieces();
+    public static final void initialize(GameMode mode, BoardModel boardModel) {
+        GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
 
         Engine.engine = new engine.Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
-    }
+	}
+	
+	/**
+	  * Initialize the cells of the board
+	  * @param cells The cells of the board
+	**/
+	public void initializeBoard(Cell[][] cells) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>(this.blackPlayer.getPieces());
+		pieces.addAll(this.whitePlayer.getPieces());
+
+		Engine.boardInitializer.initializeCells(cells, pieces);
+	}
 }
