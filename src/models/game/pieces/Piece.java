@@ -4,6 +4,8 @@ import helper.Position;
 
 import ui.board.Cell;
 
+import engine.Engine;
+
 import enums.PieceType;
 
 /**
@@ -77,6 +79,22 @@ public class Piece {
     **/
     public Position getPosition() {
         return this.position;
+    }
+
+    /**
+      * Check if this piece can move
+      * @return True this piece can move, else false
+    **/
+    public boolean canMove() {
+        return (this.isBlackPiece == Engine.instance().informations.isBlackPlayerPlaying());
+    }
+
+    /**
+      * Check if this piece and an other are in the same team
+      * @return True if it is, else fale 
+    **/
+    public boolean isSameTeamAs(Piece piece) {
+        return (this.type.equals(piece.type));
     }
 
     /***************************** 

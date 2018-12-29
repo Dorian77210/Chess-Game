@@ -107,4 +107,16 @@ public class BoardModel {
     public Cell getTopLeftCell(Position position) {
         return ((position.x > 0) && (position.y > 0)) ? this.getCell(new Position(position.x - 1, position.y - 1)) : null;
     }
+
+    /***************************** 
+    *************SETTER*********** 
+    *****************************/
+
+    /**
+      * Update the selected cell
+      * @param selectedCell The new selected cell 
+    **/
+    public void setSelectedCell(Cell selectedCell) {
+        this.selectedCell = selectedCell;
+    }
 }

@@ -90,4 +90,12 @@ public class Cell extends JButton {
         return this.piece;
     }
 
+    /**
+      * Get the empty state of the cell
+      * @return True if the cell hasn't piece model, else false 
+    **/
+    public boolean isEmpty() {
+        return (this.piece == null);
+    }
+
 }

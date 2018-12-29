@@ -19,7 +19,12 @@ public class Knight extends Piece {
     /**
 	  * Constant used to represent the image of the rook 
 	**/
-    private static final String KNIGHT_REPRESENTATION = "rook.png";
+    private static final String KNIGHT_REPRESENTATION = "knight.png";
+
+    /**
+      * Constant used to represent the distance of movement for a knight 
+    **/
+    public static final double KNIGHT_MOVEMENT_DISTANCE = Math.sqrt(5);
 
     public Knight(Position position, PieceType type) {
         super(position, type);

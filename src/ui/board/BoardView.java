@@ -2,7 +2,7 @@ package ui.board;
 
 import ui.board.Cell;
 
-//import controller.views.BoardController;
+import controller.board.BoardController;
 
 import engine.Engine;
 
@@ -14,9 +14,13 @@ import ui.views.View;
 
 import enums.GameMode;
 
+import helper.constants.Palette;
+
 import javax.swing.JPanel;
 
 import java.awt.GridLayout;
+
+import java.util.ArrayList;
 /**
   * The class <code>BoardView</code> represents the game
   * @version 1.0
@@ -45,19 +49,32 @@ public class BoardView extends View {
     **/
     private BoardModel model;
 
+    /**
+      * The controller of the board 
+    **/
+    private BoardController controller;
+
     public BoardView(GameMode mode) {
         super(new GridLayout(WIDTH, HEIGHT));
         this.cells = new Cell[HEIGHT][WIDTH];
 
         this.model = new BoardModel(this.cells);
 
+        this.controller = new BoardController(this, this.model);
+
         //generate the board (cells)
         Engine.initialize(mode, this.model);
         Engine.instance().initializeBoard(this.cells);
 
 		//add the cells to the board
-		this.displayCells();
+        this.displayCells();
+        
+        this.addActionListenerToCells();
     }
+
+    /***************************** 
+    ******APPEARANCE METHODS****** 
+    *****************************/
 
 	/**
 	  * Add the cells to the board 
@@ -68,5 +85,45 @@ public class BoardView extends View {
 				this.add(this.cells[y][x]);
 			}
 		}
+    }
+
+    /**
+      * Refresh the board 
+    **/
+    public void refreshBoard() {
+        Cell cell;
+        for(int y = 0; y < HEIGHT; y++) {
+            for(int x = 0; x < WIDTH; x++) {
+                cell = this.cells[y][x];
+                cell.refreshAppearance();
+            }
+        }
+    }
+
+    /**
+      * Show the movement area of a piece
+      * @param range The movement range
+    **/
+    public void showMovementRange(ArrayList<Cell> range) {
+        for(Cell cell : range) {
+            cell.setBackground(Palette.RANGE_CELL_COLOR);
+        }
+    }
+
+    /***************************** 
+    ****ACTIION LISTENER METHOD*** 
+    *****************************/
+
+    /**
+      * Ask to the controller to add action listener to cells 
+    **/
+    private void addActionListenerToCells() {
+        Cell cell;
+        for(int y = 0; y < HEIGHT; y++) {
+            for(int x = 0; x < WIDTH; x++) {
+                cell = this.cells[y][x];
+                this.controller.addActionListenerTo(cell);
+            }
+        }
     }
 }

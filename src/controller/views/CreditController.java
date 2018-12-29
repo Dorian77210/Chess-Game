@@ -30,6 +30,10 @@ public class CreditController extends Controller {
         backButton.addActionListener(this);
     }
 
+    /**
+      * React to an button's event
+      * @param event The actual event
+    **/
     @Override 
     public void actionPerformed(ActionEvent event) {
         String actionCommand = event.getActionCommand();

@@ -9,6 +9,10 @@ import enums.PieceType;
 
 import engine.game.GamePieces;
 
+import engine.informations.GameInformations;
+
+import engine.ranges.Ranges;
+
 import models.game.players.Player;
 
 import models.game.pieces.Piece;
@@ -42,9 +46,12 @@ public class Engine {
 	**/
 	private static final BoardInitializer boardInitializer = new BoardInitializer();
 
+
+    public static final Ranges ranges = new Ranges();
 	/**
       * The mode of the game 
     **/
+    
     private GameMode mode;
 
     /**
@@ -62,6 +69,11 @@ public class Engine {
     **/
     private BoardModel boardModel;
 
+    /**
+      * The infomations about the game 
+    **/
+    public GameInformations informations;
+
     private Engine(GameMode mode, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces,
                    BoardModel boardModel
     ) {
@@ -71,6 +83,8 @@ public class Engine {
         this.blackPlayer = (this.mode.equals(GameMode.PVE_MODE)) ? null /*temp*/ : new Player(PlayerType.BLACK_PLAYER, blackPieces);
         
         this.boardModel = boardModel;
+
+        this.informations = new GameInformations();
     }
 
     /***************************** 
