@@ -54,7 +54,7 @@ public class Cell extends JButton {
     **/
     public void refreshAppearance() {
         this.setBackground(this.initialColor);
-        ImageIcon icon = (Assert.isSet(this.piece)) ? new ImageIcon(this.piece.getRepresentation()) : null;
+        ImageIcon icon = (Assert.isNull(this.piece)) ? null : new ImageIcon(this.piece.getRepresentation());
         this.setIcon(icon);
     }
 
@@ -68,14 +68,19 @@ public class Cell extends JButton {
     **/
     public void setPiece(Piece piece) {
         this.piece = piece;
+        if(Assert.isSet(this.piece)) { 
+            this.piece.move(this.position);
+        }
+
         this.refreshAppearance();
     }
 
     /**
       * Delete the current model of the cell 
     **/
-    public void deleteModel() {
-        this.model = null;
+    public void deletePiece() {
+        this.piece = null;
+        this.refreshAppearance();
     }
 
     /***************************** 
@@ -88,6 +93,14 @@ public class Cell extends JButton {
     **/
     public Piece getPiece() {
         return this.piece;
+    }
+
+    /**
+      * Get the position of the cell in the board
+      * @return The position of the cell in the board 
+    **/
+    public Position getPosition() {
+        return this.position;
     }
 
     /**

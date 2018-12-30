@@ -2,11 +2,18 @@ package models.views;
 
 import ui.board.Cell;
 
+import engine.Engine;
+
+import helper.Assert;
 import helper.Position;
 
 import enums.GameMode;
 
+import models.game.pieces.Piece;
+
 import ui.board.BoardView;
+
+import java.util.ArrayList;
 
 /**
   * The class <code>BoardModel</code> represents the model of the board
@@ -60,7 +67,7 @@ public class BoardModel {
       * @return The top right cell associated to the position
     **/
     public Cell getTopRightCell(Position position) {
-        return ((position.y > 0) && (position.x < BoardView.WIDTH)) ? this.getCell(new Position(position.x + 1, position.y - 1)) : null;
+        return ((position.y > 0) && (position.x < (BoardView.WIDTH - 1))) ? this.getCell(new Position(position.x + 1, position.y - 1)) : null;
     }
 
     /** 
@@ -69,7 +76,7 @@ public class BoardModel {
       * @return The top right cell associated to the position
     **/
     public Cell getRightCell(Position position) {
-        return (position.x < BoardView.WIDTH) ? this.getCell(new Position(position.x + 1, position.y)) : null;
+        return (position.x < (BoardView.WIDTH - 1)) ? this.getCell(new Position(position.x + 1, position.y)) : null;
     }
 
     /** 
@@ -78,7 +85,7 @@ public class BoardModel {
       * @return The top right cell associated to the position
     **/
     public Cell getBottomRightCell(Position position) {
-        return ((position.y < (BoardView.HEIGHT - 1)) && (position.x < BoardView.WIDTH)) ? this.getCell(new Position(position.x + 1, position.y + 1)) : null;
+        return ((position.y < (BoardView.HEIGHT - 1)) && (position.x < (BoardView.WIDTH - 1))) ? this.getCell(new Position(position.x + 1, position.y + 1)) : null;
     }
 
     /** 
@@ -116,7 +123,16 @@ public class BoardModel {
       * Update the selected cell
       * @param selectedCell The new selected cell 
     **/
-    public void setSelectedCell(Cell selectedCell) {
-        this.selectedCell = selectedCell;
+    public void setSelectedCell(Cell targetCell) {
+        if(Assert.isNull(this.selectedCell)) {
+            this.selectedCell = targetCell;
+        }   
+
+        Piece piece = this.selectedCell.getPiece();
+        if(Assert.isSet(piece)) {
+            Engine.actions.move(piece, targetCell, this);
+        }
+
+        this.selectedCell = targetCell;
     }
 }

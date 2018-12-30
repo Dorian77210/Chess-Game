@@ -34,6 +34,11 @@ public class Piece {
     protected boolean isBlackPiece; 
 
     /**
+      * Boolean to represent if this pawn if moving for the first time 
+    **/
+    protected boolean isFirstTimeMoving;
+
+    /**
       * The path of the image 
     **/
     protected String representation;
@@ -43,6 +48,9 @@ public class Piece {
         this.type = type;
 
         this.isBlackPiece = type.equals(PieceType.BLACK_PIECE);
+
+        //default value
+        this.isFirstTimeMoving = true;
     }
 
     /***************************** 
@@ -63,6 +71,14 @@ public class Piece {
     **/
     public boolean isWhitePiece() {
         return !this.isBlackPiece;
+    }
+
+    /**
+      * Check if this pawn if moving for the first time
+      * return True if it is, else false 
+    **/
+    public boolean isFirstTimeMoving() {
+        return this.isFirstTimeMoving;
     }
 
     /**
@@ -107,7 +123,16 @@ public class Piece {
     **/
     public void move(Position position) {
         this.position = position;
+    }   
+
+    /***************************** 
+    ************TOGGLE************ 
+    *****************************/
+
+    /**
+      * Toggle the isFirstTimeMoving state 
+    **/
+    public void toggleIsFirstTimeMoving() {
+        this.isFirstTimeMoving = !this.isFirstTimeMoving;
     }
-
-
 }

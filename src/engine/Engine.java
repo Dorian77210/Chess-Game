@@ -9,6 +9,8 @@ import enums.PieceType;
 
 import engine.game.GamePieces;
 
+import engine.actions.Actions;
+
 import engine.informations.GameInformations;
 
 import engine.ranges.Ranges;
@@ -48,10 +50,15 @@ public class Engine {
 
 
     public static final Ranges ranges = new Ranges();
-	/**
+
+    /**
+      * The differents actions for the game 
+    **/
+    public static final Actions actions = new Actions();
+
+    /**
       * The mode of the game 
     **/
-    
     private GameMode mode;
 
     /**
@@ -123,5 +130,7 @@ public class Engine {
 		pieces.addAll(this.whitePlayer.getPieces());
 
 		Engine.boardInitializer.initializeCells(cells, pieces);
-	}
+    }
+    
+    
 }

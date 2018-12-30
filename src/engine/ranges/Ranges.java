@@ -10,6 +10,9 @@ import helper.Assert;
 import helper.Distance;
 import helper.Position;
 
+import engine.ranges.states.BishopMovementStates;
+import engine.ranges.BishopRange;
+
 import java.util.ArrayList;
 
 /**
@@ -20,8 +23,13 @@ import java.util.ArrayList;
 
 public class Ranges {
 
-    public Ranges() {
+    /**
+      * List used for the ranges 
+    **/
+    private ArrayList<Cell> range;
 
+    public Ranges() {
+        this.range = new ArrayList<Cell>();
     }
 
     /**
@@ -53,8 +61,18 @@ public class Ranges {
       * @return The available range for the bishop 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Bishop bishop) {
+        this.range.clear();
 
-        return null;
+        Position position = bishop.getPosition();
+
+        BishopMovementStates states = new BishopMovementStates();
+
+        BishopRange.addTopLeftCell(model, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addTopRightCell(model, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addBottomRightCell(model, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addBottomLeftCell(model, bishop, states, this.range, bishop.getPosition());
+
+        return this.range;
     }
 
     /**
@@ -66,22 +84,22 @@ public class Ranges {
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Knight knight) {
         Position position = knight.getPosition();
         Position currentPosition = null;
-        ArrayList<Cell> cells = new ArrayList<Cell>();
+        this.range.clear();
         Cell cell;
 
         for(int y = 0; y < BoardView.HEIGHT; y++) {
-            for(int x = 0;x < BoardView.WIDTH; x++) {
+            for(int x = 0; x < BoardView.WIDTH; x++) {
                 currentPosition = new Position(x, y);
                 if(Distance.getDistance(position, currentPosition) == Knight.KNIGHT_MOVEMENT_DISTANCE) {
                     cell = model.getCell(currentPosition);
                     if(cell.isEmpty() || (!cell.isEmpty() && (!cell.getPiece().isSameTeamAs(knight)))) { 
-                        cells.add(model.getCell(currentPosition));
+                        this.range.add(model.getCell(currentPosition));
                     }
                 }
             }
         }
 
-        return cells;
+        return this.range;
     }
 
     /**
@@ -113,8 +131,38 @@ public class Ranges {
       * @return The available range for the pawn 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Pawn pawn) {
+        this.range.clear();
+        Position position = pawn.getPosition();
+        Cell currentCell = null;
+        int direction = (pawn.isBlackPiece()) ?  1 : -1;
 
-        return null;
+        //add the cells
+
+        //cell in front of the pawn
+        currentCell = model.getCell(new Position(position.x, position.y + direction));
+        if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
+            this.range.add(currentCell);
+        }   
+
+        //cellin front of the pawn + 1
+        if(pawn.isFirstTimeMoving()) {
+            currentCell = model.getCell(new Position(position.x, position.y + (2 * direction)));
+            if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
+                this.range.add(currentCell);
+            }
+        }
+
+        currentCell = model.getCell(new Position(position.x - 1, position.y + direction));
+        if(Assert.isSet(currentCell) && !currentCell.isEmpty() && !currentCell.getPiece().isSameTeamAs(pawn)) {
+            this.range.add(currentCell);
+        }
+
+        currentCell = model.getCell(new Position(position.x + 1, position.y + direction));
+        if(Assert.isSet(currentCell) && !currentCell.isEmpty() && !currentCell.getPiece().isSameTeamAs(pawn)) {
+            this.range.add(currentCell);
+        }
+
+        return this.range;
     }
 
     /**

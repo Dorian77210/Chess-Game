@@ -5,10 +5,12 @@ BIN_DIR := bin/
 
 #######ENGINE#######
 ENGINE_DIR := $(SRC_DIR)engine/
+ENGINE_ACTIONS_DIR := $(ENGINE_DIR)actions/
 ENGINE_GAME_DIR = $(ENGINE_DIR)game/
 ENGINE_INFORMATIONS_DIR := $(ENGINE_DIR)informations/
 ENGINE_INITIALIZER_DIR = $(ENGINE_DIR)initializer/
 ENGINE_RANGES_DIR := $(ENGINE_DIR)ranges/
+ENGINE_RANGES_STATES_DIR := $(ENGINE_RANGES_DIR)states/
 
 ######ENUMS PART########
 ENUMS_DIR := $(SRC_DIR)enums/
@@ -80,8 +82,14 @@ $(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DI
 						$(BIN_DIR)BoardModel.class $(BIN_DIR)PieceInitializer.class $(BIN_DIR)BoardInitializer.class \
 						$(BIN_DIR)GameMode.class $(BIN_DIR)PlayerType.class $(BIN_DIR)PieceType.class \
 						$(BIN_DIR)GamePieces.class $(BIN_DIR)Piece.class $(BIN_DIR)BoardView.class \
-						$(BIN_DIR)GameInformations.class $(BIN_DIR)Ranges.class
+						$(BIN_DIR)GameInformations.class $(BIN_DIR)Ranges.class $(BIN_DIR)BishopRange.class \
+						$(BIN_DIR)BishopMovementStates.class
 	$(JC) $(FLAGS) $(ENGINE_DIR)Engine.java
+
+#engine.actions
+$(BIN_DIR)Actions.class: $(ENGINE_ACTIONS_DIR)Actions.java $(BIN_DIR)Position.class $(BIN_DIR)Cell.class \
+						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class
+	$(JC) $(FLAGS) $(ENGINE_ACTIONS_DIR)Actions.java
 
 #engine.game
 $(BIN_DIR)GamePieces.class: $(ENGINE_GAME_DIR)GamePieces.java $(BIN_DIR)Piece.class $(BIN_DIR)PieceType.class 
@@ -103,12 +111,23 @@ $(BIN_DIR)PieceInitializer.class: $(ENGINE_INITIALIZER_DIR)PieceInitializer.java
 	$(JC) $(FLAGS) $(ENGINE_INITIALIZER_DIR)PieceInitializer.java
 
 #engine.ranges
+$(BIN_DIR)BishopRange.class: $(ENGINE_RANGES_DIR)BishopRange.java $(BIN_DIR)Bishop.class $(BIN_DIR)Cell.class \
+							 $(BIN_DIR)BoardModel.class $(BIN_DIR)Assert.class $(BIN_DIR)Position.class \
+							 $(BIN_DIR)BishopMovementStates.class
+	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)BishopRange.java
+
 $(BIN_DIR)Ranges.class: $(ENGINE_RANGES_DIR)Ranges.java $(BIN_DIR)Piece.class $(BIN_DIR)Bishop.class \
 	   					$(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Queen.class \
 						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)Ranges.java
 
+#engine.ranges.states
+$(BIN_DIR)BishopMovementStates.class: $(ENGINE_RANGES_STATES_DIR)BishopMovementStates.java
+	$(JC) $(FLAGS) $(ENGINE_RANGES_STATES_DIR)BishopMovementStates.java
 
+$(BIN_DIR)RookMovementStates.class: $(ENGINE_RANGES_STATES_DIR)RookMovementStates.java
+	$(JC) $(FLAGS) $(ENGINE_RANGES_STATES_DIR)RookMovementStates.java
+	
 #enums
 $(BIN_DIR)GameMode.class: $(ENUMS_DIR)GameMode.java
 	$(JC) $(FLAGS) $(ENUMS_DIR)GameMode.java
@@ -178,7 +197,9 @@ $(BIN_DIR)Player.class: $(MODEL_PLAYERS_DIR)Player.java $(BIN_DIR)Piece.class $(
 	$(JC) $(FLAGS) $(MODEL_PLAYERS_DIR)Player.java
 
 #model.views
-$(BIN_DIR)BoardModel.class: $(MODEL_VIEWS_DIR)BoardModel.java $(BIN_DIR)Cell.class
+$(BIN_DIR)BoardModel.class: $(MODEL_VIEWS_DIR)BoardModel.java $(BIN_DIR)Cell.class $(BIN_DIR)Piece.class \
+							$(BIN_DIR)Position.class $(BIN_DIR)GameMode.class $(BIN_DIR)BoardView.class \
+							$(BIN_DIR)Assert.class $(BIN_DIR)Engine.class
 	$(JC) $(FLAGS) $(MODEL_VIEWS_DIR)BoardModel.java
 
 #ui 
