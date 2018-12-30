@@ -49,7 +49,9 @@ public class BoardModel {
       * @return The cell associated to the position 
     **/
     public Cell getCell(Position position) {
-        return this.cells[position.y][position.x];
+        return ((position.x >= 0 && position.x <= (BoardView.WIDTH - 1)) && (position.y >= 0 && position.y <=  (BoardView.HEIGHT - 1))) 
+        ? this.cells[position.y][position.x] 
+        : null;
     }
 
     /**
@@ -104,6 +106,15 @@ public class BoardModel {
     **/
     public Cell getBottomLeftCell(Position position) {
         return ((position.x > 0) && (position.y < (BoardView.HEIGHT - 1))) ? this.getCell(new Position(position.x - 1, position.y + 1)) : null;
+    }
+
+    /** 
+      * Get the left cell according to a position
+      * @param position The current position
+      * @return The top right cell associated to the position
+    **/
+    public Cell getLeftCell(Position position) {
+        return (position.x > 0) ? this.getCell(new Position(position.x - 1, position.y)) : null;
     }
 
     /** 

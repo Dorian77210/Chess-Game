@@ -13,6 +13,9 @@ import helper.Position;
 import engine.ranges.states.BishopMovementStates;
 import engine.ranges.BishopRange;
 
+import engine.ranges.states.RookMovementStates;
+import engine.ranges.RookRange;
+
 import java.util.ArrayList;
 
 /**
@@ -172,8 +175,18 @@ public class Ranges {
       * @return The available range for the rook 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Rook rook) {
+        this.range.clear();
 
-        return null;
+        Position position = rook.getPosition();
+
+        RookMovementStates states = new RookMovementStates();
+
+        RookRange.addBottomCell(model, rook, states, this.range, rook.getPosition());
+        RookRange.addTopCell(model, rook, states, this.range, rook.getPosition());
+        RookRange.addRightCell(model, rook, states, this.range, rook.getPosition());
+        RookRange.addLeftCell(model, rook, states, this.range, rook.getPosition());
+
+        return this.range;
     }
 
 }

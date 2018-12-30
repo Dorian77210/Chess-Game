@@ -118,16 +118,27 @@ $(BIN_DIR)BishopRange.class: $(ENGINE_RANGES_DIR)BishopRange.java $(BIN_DIR)Bish
 
 $(BIN_DIR)Ranges.class: $(ENGINE_RANGES_DIR)Ranges.java $(BIN_DIR)Piece.class $(BIN_DIR)Bishop.class \
 	   					$(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Queen.class \
-						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class
+						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class \
+						$(BIN_DIR)BishopRange.class $(BIN_DIR)BishopMovementStates.class $(BIN_DIR)RookMovementStates.class \
+						$(BIN_DIR)RookRange.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)Ranges.java
+
+$(BIN_DIR)RookRange.class: $(ENGINE_RANGES_DIR)RookRange.java $(BIN_DIR)Rook.class $(BIN_DIR)Cell.class \
+						   $(BIN_DIR)BoardModel.class $(BIN_DIR)Assert.class $(BIN_DIR)Position.class \
+						   $(BIN_DIR)RookMovementStates.class
+	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)BishopRange.java
+
 
 #engine.ranges.states
 $(BIN_DIR)BishopMovementStates.class: $(ENGINE_RANGES_STATES_DIR)BishopMovementStates.java
 	$(JC) $(FLAGS) $(ENGINE_RANGES_STATES_DIR)BishopMovementStates.java
 
+$(BIN_DIR)QueenMovementStates.class: $(ENGINE_RANGES_STATES_DIR)QueenMovementStates.java
+	$(JC) $(FLAGS) $(ENGINE_RANGES_STATES_DIR)QueenMovementStates.java
+
 $(BIN_DIR)RookMovementStates.class: $(ENGINE_RANGES_STATES_DIR)RookMovementStates.java
 	$(JC) $(FLAGS) $(ENGINE_RANGES_STATES_DIR)RookMovementStates.java
-	
+
 #enums
 $(BIN_DIR)GameMode.class: $(ENUMS_DIR)GameMode.java
 	$(JC) $(FLAGS) $(ENUMS_DIR)GameMode.java
