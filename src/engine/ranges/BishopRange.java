@@ -23,7 +23,7 @@ public class BishopRange {
 
     /**
       * Add a top left cell for the range
-      * @param model The modle for the board
+      * @param model The model for the board
       * @param bishop The concerned bishop
       * @param states The bishop's movement states
       * @param range The current range
@@ -51,7 +51,7 @@ public class BishopRange {
 
     /**
       * Add a top right cell for the range
-      * @param model The modle for the board
+      * @param model The model for the board
       * @param bishop The concerned bishop
       * @param states The bishop's movement states
       * @param range The current range
@@ -79,7 +79,7 @@ public class BishopRange {
 
     /**
       * Add a bottom left cell for the range
-      * @param model The modle for the board
+      * @param model The model for the board
       * @param bishop The concerned bishop
       * @param states The bishop's movement states
       * @param range The current range
@@ -107,7 +107,7 @@ public class BishopRange {
 
     /**
       * Add a bottom right cell for the range
-      * @param model The modle for the board
+      * @param model The model for the board
       * @param bishop The concerned bishop
       * @param states The bishop's movement states
       * @param range The current range

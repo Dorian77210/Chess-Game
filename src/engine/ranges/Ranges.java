@@ -16,6 +16,9 @@ import engine.ranges.BishopRange;
 import engine.ranges.states.RookMovementStates;
 import engine.ranges.RookRange;
 
+import engine.ranges.states.QueenMovementStates;
+import engine.ranges.QueenRange;
+
 import java.util.ArrayList;
 
 /**
@@ -112,7 +115,7 @@ public class Ranges {
       * @return The available range for the king 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, King king) {
-
+        
         return null;
     }
 
@@ -123,8 +126,21 @@ public class Ranges {
       * @return The available range for the queen 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Queen queen) {
+        this.range.clear();
 
-        return null;
+        QueenMovementStates states = new QueenMovementStates();
+
+        QueenRange.addBottomLeftCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopLeftCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopRightCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addBottomRightCell(model, queen, states, this.range, queen.getPosition());
+        
+        QueenRange.addLeftCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addBottomCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addRightCell(model, queen, states, this.range, queen.getPosition());
+        
+        return this.range;
     }
 
     /**
