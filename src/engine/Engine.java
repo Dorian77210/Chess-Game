@@ -1,5 +1,7 @@
 package engine;
 
+import engine.counter.PieceCounter;
+
 import engine.initializer.PieceInitializer;
 import engine.initializer.BoardInitializer;
 
@@ -55,6 +57,11 @@ public class Engine {
       * The differents actions for the game 
     **/
     public static final Actions actions = new Actions();
+
+    /**
+      * The counter of piece for the game 
+    **/
+    public static final PieceCounter pieceCounter = new PieceCounter();
 
     /**
       * The mode of the game 
@@ -132,5 +139,17 @@ public class Engine {
 		Engine.boardInitializer.initializeCells(cells, pieces);
     }
     
+    /***************************** 
+    ***********GETTER************* 
+    ******************************/
+
+    /**
+      * Get the player according to his type
+      * @param type The type of the player 
+    **/
+    public Player getPlayer(PlayerType type) {
+        return (type.equals(PlayerType.BLACK_PLAYER)) ? this.blackPlayer : this.whitePlayer;
+    }
+
     
 }

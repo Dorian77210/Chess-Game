@@ -6,6 +6,7 @@ BIN_DIR := bin/
 #######ENGINE#######
 ENGINE_DIR := $(SRC_DIR)engine/
 ENGINE_ACTIONS_DIR := $(ENGINE_DIR)actions/
+ENGINE_COUNTER_DIR = $(ENGINE_DIR)counter/
 ENGINE_GAME_DIR = $(ENGINE_DIR)game/
 ENGINE_INFORMATIONS_DIR := $(ENGINE_DIR)informations/
 ENGINE_INITIALIZER_DIR = $(ENGINE_DIR)initializer/
@@ -32,10 +33,12 @@ MODEL_GAME_DIR := $(MODEL_DIR)game/
 MODEL_GAME_PIECES_DIR := $(MODEL_GAME_DIR)pieces/
 MODEL_PLAYERS_DIR := $(MODEL_GAME_DIR)players/
 MODEL_VIEWS_DIR := $(MODEL_DIR)views/
+MODEL_VIEWS_SIDE_DIR := $(MODEL_VIEWS_DIR)side/
 
 #######UI PART#######
 UI_DIR := $(SRC_DIR)ui/
 UI_BOARD_DIR := $(UI_DIR)board/
+UI_SIDE_DIR := $(UI_DIR)side/
 UI_VIEWS_DIR := $(UI_DIR)views/
 
 
@@ -45,6 +48,7 @@ JEXE := java -classpath $(BIN_DIR)
 JDOC := javadoc
 RM := rm -rf 
 MKDIR := mkdir
+
 
 
 all: $(BIN_DIR) $(JAVADOC_DIR) $(BIN_DIR)Application.class doc
@@ -91,6 +95,12 @@ $(BIN_DIR)Actions.class: $(ENGINE_ACTIONS_DIR)Actions.java $(BIN_DIR)Position.cl
 						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class
 	$(JC) $(FLAGS) $(ENGINE_ACTIONS_DIR)Actions.java
 
+#engine.counter
+$(BIN_DIR)PieceCounter.class: $(ENGINE_COUNTER_DIR)PieceCounter.java $(BIN_DIR)Engine.class $(BIN_DIR)Player.class \
+							  $(BIN_DIR)Piece.class $(BIN_DIR)Bishop.class $(BIN_DIR)Knight.class \
+							  $(BIN_DIR)King.class $(BIN_DIR)Queen.class $(BIN_DIR)Pawn.class \
+							  $(BIN_DIR)Rook.class $(BIN_DIR)KindOfPiece.class $(BIN_DIR)PlayerType.class
+	$(JC) $(FLAGS) $(ENGINE_COUNTER_DIR)PieceCounter.java
 #engine.game
 $(BIN_DIR)GamePieces.class: $(ENGINE_GAME_DIR)GamePieces.java $(BIN_DIR)Piece.class $(BIN_DIR)PieceType.class 
 	$(JC) $(FLAGS) $(ENGINE_GAME_DIR)GamePieces.java
@@ -142,6 +152,10 @@ $(BIN_DIR)RookMovementStates.class: $(ENGINE_RANGES_STATES_DIR)RookMovementState
 #enums
 $(BIN_DIR)GameMode.class: $(ENUMS_DIR)GameMode.java
 	$(JC) $(FLAGS) $(ENUMS_DIR)GameMode.java
+
+
+$(BIN_DIR)KindOfPiece.class: $(ENUMS_DIR)KindOfPiece.java
+	$(JC) $(FLAGS) $(ENUMS_DIR)KindOfPiece.java
 
 $(BIN_DIR)PieceType.class: $(ENUMS_DIR)PieceType.java
 	$(JC) $(FLAGS) $(ENUMS_DIR)PieceType.java
@@ -213,6 +227,10 @@ $(BIN_DIR)BoardModel.class: $(MODEL_VIEWS_DIR)BoardModel.java $(BIN_DIR)Cell.cla
 							$(BIN_DIR)Assert.class $(BIN_DIR)Engine.class
 	$(JC) $(FLAGS) $(MODEL_VIEWS_DIR)BoardModel.java
 
+#model.views.side
+$(BIN_DIR)PieceRepresentation.class: $(MODEL_VIEWS_SIDE_DIR)PieceRepresentation.java $(BIN_DIR)PlayerType.class $(BIN_DIR)KindOfPiece.class
+	$(JC) $(FLAGS) $(MODEL_VIEWS_SIDE_DIR)PieceRepresentation.java
+
 #ui 
 
 #ui.board
@@ -223,6 +241,13 @@ $(BIN_DIR)BoardView.class: $(UI_BOARD_DIR)BoardView.java $(BIN_DIR)Cell.class $(
 $(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
 					  $(BIN_DIR)Piece.class
 	$(JC) $(FLAGS) $(UI_BOARD_DIR)Cell.java
+
+#ui.side
+$(BIN_DIR)ItemView.class: $(UI_SIDE_DIR)ItemView.java $(BIN_DIR)PlayerType.class $(BIN_DIR)KindOfPiece.class \
+						  $(BIN_DIR)PieceRepresentation.class $(BIN_DIR)Engine.class*
+	$(JC) $(FLAGS) $(UI_SIDE_DIR)ItemView.java
+
+$(BIN_DIR)
 
 #ui.views
 $(BIN_DIR)CreditView.class: $(UI_VIEWS_DIR)CreditView.java $(BIN_DIR)View.class $(BIN_DIR)Window.class \

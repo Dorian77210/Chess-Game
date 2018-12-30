@@ -16,7 +16,7 @@ import enums.PieceType;
 
 public class Piece {
 
-    protected static final String BASE_PATH = "./rsc/images/"; 
+    public static final String BASE_PATH = "./rsc/images/"; 
 
     /**
       * The position of the piece in the board 

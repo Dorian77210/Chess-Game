@@ -2,6 +2,8 @@ package ui.board;
 
 import ui.board.Cell;
 
+import ui.side.PieceCountView;
+
 import controller.board.BoardController;
 
 import engine.Engine;
@@ -21,6 +23,7 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 
 import java.util.ArrayList;
+
 /**
   * The class <code>BoardView</code> represents the game
   * @version 1.0
@@ -50,6 +53,11 @@ public class BoardView extends View {
     private BoardModel model;
 
     /**
+      * The side where is displayed the count of pieces 
+    **/
+    private PieceCountView pieceCountView;
+
+    /**
       * The controller of the board 
     **/
     private BoardController controller;
@@ -70,6 +78,8 @@ public class BoardView extends View {
         this.displayCells();
         
         this.addActionListenerToCells();
+
+        this.pieceCountView = new PieceCountView();
     }
 
     /***************************** 
@@ -98,6 +108,9 @@ public class BoardView extends View {
                 cell.refreshAppearance();
             }
         }
+
+        //refresh counts
+        this.pieceCountView.refreshCounts();
     }
 
     /**
