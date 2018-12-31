@@ -21,6 +21,7 @@ import helper.constants.Palette;
 import javax.swing.JPanel;
 
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class BoardView extends View {
     private BoardController controller;
 
     public BoardView(GameMode mode) {
-        super(new GridLayout(WIDTH, HEIGHT));
+        super(new java.awt.BorderLayout());
         this.cells = new Cell[HEIGHT][WIDTH];
 
         this.model = new BoardModel(this.cells);
@@ -80,6 +81,9 @@ public class BoardView extends View {
         this.addActionListenerToCells();
 
         this.pieceCountView = new PieceCountView();
+
+        this.add(this.pieceCountView, BorderLayout.WEST);
+
     }
 
     /***************************** 
@@ -90,11 +94,14 @@ public class BoardView extends View {
 	  * Add the cells to the board 
 	**/
     private void displayCells() {
+        JPanel panel = new JPanel(new GridLayout(WIDTH, HEIGHT));
 		for(int y = 0; y < HEIGHT; y++) {
 			for(int x = 0; x < WIDTH; x++) {
-				this.add(this.cells[y][x]);
+				panel.add(this.cells[y][x]);
 			}
-		}
+        }
+        
+        this.add(panel, BorderLayout.CENTER);
     }
 
     /**
@@ -108,9 +115,6 @@ public class BoardView extends View {
                 cell.refreshAppearance();
             }
         }
-
-        //refresh counts
-        this.pieceCountView.refreshCounts();
     }
 
     /**
@@ -121,6 +125,14 @@ public class BoardView extends View {
         for(Cell cell : range) {
             cell.setBackground(Palette.RANGE_CELL_COLOR);
         }
+    }
+
+    /**
+      * Refresh the count of piece 
+    **/
+    public void refreshCounts() {
+        //refresh counts
+        this.pieceCountView.refreshCounts();
     }
 
     /***************************** 

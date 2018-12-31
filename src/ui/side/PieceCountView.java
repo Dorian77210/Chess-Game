@@ -48,7 +48,10 @@ public class PieceCountView extends JPanel {
 
     public PieceCountView() {
         super(new GridLayout(6, 2));
-        this.setPreferredSize(new Dimension(250, Window.HEIGHT));
+
+        this.items = new ArrayList<ItemView>();
+
+        this.setPreferredSize(new Dimension(200, Window.HEIGHT));
 
         String blackBasePath = Piece.BASE_PATH + "black-side/";
         String whiteBasePath = Piece.BASE_PATH + "white-side/";

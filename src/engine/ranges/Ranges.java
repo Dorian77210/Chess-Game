@@ -154,6 +154,7 @@ public class Ranges {
         Position position = pawn.getPosition();
         Cell currentCell = null;
         int direction = (pawn.isBlackPiece()) ?  1 : -1;
+        boolean isBlocked = false;
 
         //add the cells
 
@@ -161,10 +162,12 @@ public class Ranges {
         currentCell = model.getCell(new Position(position.x, position.y + direction));
         if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
             this.range.add(currentCell);
-        }   
+        }  else  {
+            isBlocked = true;
+        }
 
         //cellin front of the pawn + 1
-        if(pawn.isFirstTimeMoving()) {
+        if(pawn.isFirstTimeMoving() && !isBlocked) {
             currentCell = model.getCell(new Position(position.x, position.y + (2 * direction)));
             if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
                 this.range.add(currentCell);

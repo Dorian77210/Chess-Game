@@ -92,7 +92,8 @@ $(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DI
 
 #engine.actions
 $(BIN_DIR)Actions.class: $(ENGINE_ACTIONS_DIR)Actions.java $(BIN_DIR)Position.class $(BIN_DIR)Cell.class \
-						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class
+						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class \
+						 $(BIN_DIR)PlayerType.class $(BIN_DIR)Player.class $(BIN_DIR)Assert.class
 	$(JC) $(FLAGS) $(ENGINE_ACTIONS_DIR)Actions.java
 
 #engine.counter
@@ -247,7 +248,9 @@ $(BIN_DIR)ItemView.class: $(UI_SIDE_DIR)ItemView.java $(BIN_DIR)PlayerType.class
 						  $(BIN_DIR)PieceRepresentation.class $(BIN_DIR)Engine.class*
 	$(JC) $(FLAGS) $(UI_SIDE_DIR)ItemView.java
 
-$(BIN_DIR)
+$(BIN_DIR)PieceCountView.class: $(UI_SIDE_DIR)PieceCountView.java $(BIN_DIR)ItemView.class $(BIN_DIR)Engine.class \
+								$(BIN_DIR)KindOfPiece.class $(BIN_DIR)PlayerType.class $(BIN_DIR)Piece.class 
+	$(JC) $(FLAGS) $(UI_SIDE_DIR)PieceCountView.java
 
 #ui.views
 $(BIN_DIR)CreditView.class: $(UI_VIEWS_DIR)CreditView.java $(BIN_DIR)View.class $(BIN_DIR)Window.class \

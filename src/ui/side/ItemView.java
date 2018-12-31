@@ -46,12 +46,14 @@ public class ItemView extends JPanel {
         //add the label
         this.add(this.image);
         this.add(this.count);
+
+        this.refreshCount();
     }
 
     /**
       * Refresh the count  
     **/
     public void refreshCount() {
-        this.count.setText("" + Engine.pieceCounter.getCountOf(this.pieceRepresentation.getKindOfPiece(), this.pieceRepresentation.getPlayerType()));
+        this.count.setText("  X" + Engine.pieceCounter.getCountOf(this.pieceRepresentation.getKindOfPiece(), this.pieceRepresentation.getPlayerType()));
     }
 }

@@ -140,7 +140,7 @@ public class BoardModel {
         }   
 
         Piece piece = this.selectedCell.getPiece();
-        if(Assert.isSet(piece)) {
+        if(Assert.isSet(piece) && piece.canMove()) {
             Engine.actions.move(piece, targetCell, this);
         }
 

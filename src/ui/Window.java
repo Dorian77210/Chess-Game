@@ -26,7 +26,7 @@ public class Window extends JFrame {
     /**
       * Constant used to set the width to the window 
     **/
-    public static final int WINDOW_WIDTH = 600;
+    public static final int WINDOW_WIDTH = 900;
 
     /**
       * Constant used to set the height to the window 
