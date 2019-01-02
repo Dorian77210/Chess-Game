@@ -7,6 +7,7 @@ import models.views.side.PieceRepresentation;
 
 import engine.Engine;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -40,12 +41,14 @@ public class ItemView extends JPanel {
         super(new GridLayout(1, 2));
         this.pieceRepresentation = new PieceRepresentation(kind, type);
 
-        this.image = new JLabel(new ImageIcon(image));
+        this.image = new JLabel(new ImageIcon(image), JLabel.CENTER);
         this.count = new JLabel();
 
         //add the label
         this.add(this.image);
         this.add(this.count);
+
+        this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
         this.refreshCount();
     }

@@ -115,8 +115,20 @@ public class Ranges {
       * @return The available range for the king 
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, King king) {
-        
-        return null;
+        this.range.clear();
+        Position position = king.getPosition();
+        Piece piece = null;
+        Cell cell = null;
+
+        cell = model.getTopCell(position);
+        if(Assert.isSet(cell)) {
+            piece = cell.getPiece();
+            if(Assert.isSet(piece) && !king.isSameTeamAs(piece)) {
+                this.range.add(cell);
+            }
+        }
+
+        return this.range;
     }
 
     /**
