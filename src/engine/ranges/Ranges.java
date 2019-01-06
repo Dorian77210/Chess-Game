@@ -19,6 +19,8 @@ import engine.ranges.RookRange;
 import engine.ranges.states.QueenMovementStates;
 import engine.ranges.QueenRange;
 
+import engine.ranges.KingRange;
+
 import java.util.ArrayList;
 
 /**
@@ -116,18 +118,7 @@ public class Ranges {
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, King king) {
         this.range.clear();
-        Position position = king.getPosition();
-        Piece piece = null;
-        Cell cell = null;
-
-        cell = model.getTopCell(position);
-        if(Assert.isSet(cell)) {
-            piece = cell.getPiece();
-            if(Assert.isSet(piece) && !king.isSameTeamAs(piece)) {
-                this.range.add(cell);
-            }
-        }
-
+        this.range = KingRange.getKingRange(model, king);        
         return this.range;
     }
 

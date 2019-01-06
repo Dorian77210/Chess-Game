@@ -25,7 +25,9 @@ CONTROLLER_WINDOW_DIR := $(CONTROLLER_DIR)window/
 
 #######HELPER#######
 HELPER_DIR := $(SRC_DIR)helper/
+HELPER_COLLIDE_DIR := $(HELPER_DIR)collide/
 HELPER_CONSTANTS_DIR := $(HELPER_DIR)constants/
+HELPER_FILTERS_DIR := $(HELPER_DIR)filters/
 
 ######MODEL PART########
 MODEL_DIR := $(SRC_DIR)models/
@@ -127,11 +129,18 @@ $(BIN_DIR)BishopRange.class: $(ENGINE_RANGES_DIR)BishopRange.java $(BIN_DIR)Bish
 							 $(BIN_DIR)BishopMovementStates.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)BishopRange.java
 
+$(BIN_DIR)KingRange.class: $(ENGINE_RANGES_DIR)KingRange.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
+						   $(BIN_DIR)BoardModel.class $(BIN_DIR)Cell.class $(BIN_DIR)Piece.class \
+						   $(BIN_DIR)King.class $(BIN_DIR)Player.class $(BIN_DIR)PlayerType.class \
+						   $(BIN_DIR)Engine.class $(BIN_DIR)PieceCollision.class $(BIN_DIR)FilterPiece.class
+	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)KingRange.java
+	
+
 $(BIN_DIR)Ranges.class: $(ENGINE_RANGES_DIR)Ranges.java $(BIN_DIR)Piece.class $(BIN_DIR)Bishop.class \
 	   					$(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Queen.class \
 						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class \
 						$(BIN_DIR)BishopRange.class $(BIN_DIR)BishopMovementStates.class $(BIN_DIR)RookMovementStates.class \
-						$(BIN_DIR)RookRange.class
+						$(BIN_DIR)RookRange.class $(BIN_DIR)KingRange.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)Ranges.java
 
 $(BIN_DIR)RookRange.class: $(ENGINE_RANGES_DIR)RookRange.java $(BIN_DIR)Rook.class $(BIN_DIR)Cell.class \
@@ -186,6 +195,18 @@ $(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java
 
 $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 	$(JC) $(FLAGS) $(HELPER_CONSTANTS_DIR)PieceConstants.java
+
+#helper.collide
+$(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)Piece.class $(BIN_DIR)BoardModel.class \
+								$(BIN_DIR)Engine.class $(BIN_DIR)Cell.class $(BIN_DIR)Position.class \
+								$(BIN_DIR)King.class
+	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
+
+#helper.filters
+$(BIN_DIR)FilterPiece.class: $(HELPER_FILTERS_DIR)FilterPiece.java $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class \
+							 $(BIN_DIR)Position.class $(BIN_DIR)Piece.class $(BIN_DIR)Engine.class \
+							 $(BIN_DIR)King.class
+	$(JC) $(FLAGS) $(HELPER_FILTERS_DIR)FilterPiece.java
 
 #models
 

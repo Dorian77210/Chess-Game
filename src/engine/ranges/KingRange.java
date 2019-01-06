@@ -3,14 +3,20 @@ package engine.ranges;
 import helper.Position;
 import helper.Assert;
 
+import helper.collide.PieceCollision;
+
+import helper.filters.FilterPiece;
+
 import models.views.BoardModel;
+
+import models.game.players.Player;
+import enums.PlayerType;
 
 import models.game.pieces.Piece;
 import models.game.pieces.King;
 
 import ui.board.Cell;
 
-import engine.ranges.states.KingMovementStates;
 import engine.Engine;
 
 import java.util.ArrayList;
@@ -22,41 +28,76 @@ import java.util.ArrayList;
 
 public class KingRange {
 
-    public static final KingMovementStates getkingMovementStates(BoardModel model, ArrayList<Cell> range, King king) {
-        KingMovementStates states = new KingMovementStates();
+    public static final ArrayList<Cell> getKingRange(BoardModel model, King king) {
+        Position position = king.getPosition();
 
+        ArrayList<Cell> range = new ArrayList<Cell>();
 
-        return states;
+        //add the cells
+
+        //top cell
+        Cell cell = model.getTopCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+        
+        cell = model.getTopLeftCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getLeftCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getBottomLeftCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getBottomCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getBottomRightCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getRightCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        } 
+
+        cell = model.getTopRightCell(position);
+        if(Assert.isSet(cell) && (cell.isEmpty() || (Assert.isSet(cell.getPiece()) && !cell.getPiece().isSameTeamAs(king)))) {
+            range.add(cell);
+        }  
+
+        removeOpponentPieces(range, model, king);
+
+        return range;
     }
 
     /**
-      * Add a top cell for the range
-      * @param model The model for the board
-      * @param king The concerned king
-      * @param states The king's movement states
-      * @param range The current range
-      * @param position The current position 
+      * Remove the cells who put the king in check
+      * @param range The current range being in process
+      * @param model The model of the board 
+      * @param king The current king
     **/
-    public static void checkTopCells(BoardModel model, KingMovementStates states, ArrayList<Cell> range, King king, Position position) {
-        Position kingPosition = king.getPosition();
-        Cell cell = model.getTopCell(position);
-        Piece piece;
+    private static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
+        Player opponent = (king.isBlackPiece()) ? Engine.instance().getPlayer(PlayerType.WHITE_PLAYER) : Engine.instance().getPlayer(PlayerType.BLACK_PLAYER);
 
-        if(Assert.isSet(cell) && !states.isTopBlocked) {
-            if(position.y == (kingPosition.y + 1)) {
-                piece = model.getCell(position).getPiece();
-                if((Assert.isSet(piece) && !piece.isSameTeamAs(king)) || cell.isEmpty()) {
-                    range.add(cell);
-                }
-            } else {
-                piece = model.getCell(position).getPiece();
-                if(Assert.isSet(piece)) {
-                    ArrayList<Cell> pieceRange = Engine.ranges.getAvailableRangeFor(model, piece);
-                    if(pieceRange.contains(model.getCell(position))) {
-                        states.isTopBlocked = true;
-                    }
-                }
-            }
-        }
+        Cell kingCell = model.getCell(king.getPosition());
+
+        ArrayList<Cell> pieceRange = null;
+
+        ArrayList<Piece> collidePieces = PieceCollision.getPiecesCollideWith(range, king, opponent.getPieces(), model);
+        
+        //filter the cells
+        FilterPiece.filterRange(range, king, collidePieces, model);
+
     }
 }

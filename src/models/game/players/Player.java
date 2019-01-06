@@ -41,6 +41,14 @@ public class Player {
         return this.pieces;
     }
     
+    /**
+      * Get the black's state color
+      * @return The blacks state color 
+    **/
+    public boolean isBlackPlayer() {
+        return this.type.equals(PlayerType.BLACK_PLAYER);
+    }
+
     /***************************** 
     *********REMOVE METHOD******** 
     *****************************/

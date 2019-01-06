@@ -13,11 +13,27 @@ public class GameInformations {
     **/
     private boolean isEndOfGame;
 
+    /**
+      * The number of rounds 
+    **/
     private int rounds;
+
+    /**
+      * Boolean used to know if the white player is checked 
+    **/
+    private boolean isWhitePlayerChecked;
+
+    /**
+      * Boolean used to know if the black player is checked 
+    **/
+    private boolean isBlackPlayerChecked;
 
     public GameInformations() {
         //default values
         this.isEndOfGame = false;
+
+        this.isWhitePlayerChecked = false;
+        this.isBlackPlayerChecked = false;
 
         this.rounds = 1;
     }
@@ -42,6 +58,22 @@ public class GameInformations {
         return this.isEndOfGame;
     }
 
+    /**
+      * Get the state of checked for the white player
+      * @return The state of checked for the white player 
+    **/
+    public boolean isWhitePlayerChecked() {
+        return this.isWhitePlayerChecked;
+    }
+
+    /**
+      * Get the state of checked for the black player
+      * @return The state of checked for the black player
+    **/
+    public boolean isBlackPlayerChecked() {
+        return this.isBlackPlayerChecked();
+    }
+
 
     /**
       * Check if it is to the black player to play
@@ -57,6 +89,14 @@ public class GameInformations {
     **/
     public int getRounds() {
         return this.rounds;
+    }
+
+    /**
+      * Check if the current player is checked
+      * @return True if the current player is checked, else false 
+    **/
+    public boolean isCurrentPlayerChecked() {
+        return (this.isBlackPlayerPlaying()) ? this.isBlackPlayerChecked : this.isWhitePlayerChecked; 
     }
 
     /***************************** 
@@ -76,5 +116,19 @@ public class GameInformations {
     **/
     public void setIsEndOfGame(boolean isEndOfGame) {
         this.isEndOfGame = isEndOfGame;
+    }
+
+    /**
+      * Toggle the black checked state 
+    **/
+    public void toggleIsBlackPlayerChecked() {
+        this.isBlackPlayerChecked = !this.isBlackPlayerChecked;
+    }
+
+    /**
+      * Toggle the white checked state 
+    **/
+    public void toggleIsWhitePlayerChecked() {
+        this.isWhitePlayerChecked = !this.isWhitePlayerChecked;
     }
 }
