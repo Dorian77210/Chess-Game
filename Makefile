@@ -25,6 +25,7 @@ CONTROLLER_WINDOW_DIR := $(CONTROLLER_DIR)window/
 
 #######HELPER#######
 HELPER_DIR := $(SRC_DIR)helper/
+HELPER_CAST_DIR := $(HELPER_DIR)cast/
 HELPER_COLLIDE_DIR := $(HELPER_DIR)collide/
 HELPER_CONSTANTS_DIR := $(HELPER_DIR)constants/
 HELPER_FILTERS_DIR := $(HELPER_DIR)filters/
@@ -140,7 +141,7 @@ $(BIN_DIR)Ranges.class: $(ENGINE_RANGES_DIR)Ranges.java $(BIN_DIR)Piece.class $(
 	   					$(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Queen.class \
 						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class \
 						$(BIN_DIR)BishopRange.class $(BIN_DIR)BishopMovementStates.class $(BIN_DIR)RookMovementStates.class \
-						$(BIN_DIR)RookRange.class $(BIN_DIR)KingRange.class
+						$(BIN_DIR)RookRange.class $(BIN_DIR)KingRange.class $(BIN_DIR)ClassCast.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)Ranges.java
 
 $(BIN_DIR)RookRange.class: $(ENGINE_RANGES_DIR)RookRange.java $(BIN_DIR)Rook.class $(BIN_DIR)Cell.class \
@@ -188,6 +189,10 @@ $(BIN_DIR)Distance.class: $(HELPER_DIR)Distance.java $(BIN_DIR)Position.class
 
 $(BIN_DIR)Position.class: $(HELPER_DIR)Position.java
 	$(JC) $(FLAGS) $(HELPER_DIR)Position.java
+
+#helper.cast
+$(BIN_DIR)ClassCast.class: $(HELPER_CAST_DIR)ClassCast.java
+	$(JC) $(FLAGS) $(HELPER_CAST_DIR)ClassCast.java
 
 #helper.constants
 $(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java

@@ -118,7 +118,9 @@ public class Ranges {
     **/
     private ArrayList<Cell> getAvailableRangeFor(BoardModel model, King king) {
         this.range.clear();
-        this.range = KingRange.getKingRange(model, king);        
+        this.range = KingRange.getRawKingRange(model, king);
+        KingRange.removeOpponentPieces(this.range, model, king);
+        
         return this.range;
     }
 
@@ -207,7 +209,7 @@ public class Ranges {
         RookRange.addTopCell(model, rook, states, this.range, rook.getPosition());
         RookRange.addRightCell(model, rook, states, this.range, rook.getPosition());
         RookRange.addLeftCell(model, rook, states, this.range, rook.getPosition());
-
+        
         return this.range;
     }
 

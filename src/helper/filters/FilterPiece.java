@@ -36,29 +36,36 @@ public class FilterPiece {
         ArrayList<Cell> collideRange;
         Cell kingCell = model.getCell(king.getPosition());
         Cell cell;
-        int i;
-        ArrayList<Cell> toRemoveCells = new ArrayList<Cell>();
 
         for(Piece collidePiece : collidePieces) {
-            if(!(collidePiece instanceof King)) {
-                for(i = 0; i < range.size(); i++) {
+            for(int i = 0; i < range.size(); i++) {
+                if(!(collidePiece instanceof King)) {
                     cell = range.get(i);
+                    Piece temp = cell.getPiece();
                     cell.setPiece(king);
                     collideRange = Engine.ranges.getAvailableRangeFor(model, collidePiece);
                     if(collideRange.contains(cell)) {
                         range.remove(cell);
-                        i = 0;
                     }
 
-                    cell.deletePiece();
+                    cell.setPiece(temp);
                 }
-
             }
         }
 
-        //remove all cells to be removed
-        for(Cell toRemoveCell : toRemoveCells) {
-            range.remove(toRemoveCell);
+        kingCell.setPiece(king);
+    }
+    
+    public static final void filterRange(ArrayList<Cell> range, ArrayList<Piece> pieces, BoardModel model) {
+        ArrayList<Cell> collideRange;
+
+        for(Piece piece : pieces) {
+            for(Cell cell : range) {
+                collideRange = Engine.ranges.getAvailableRangeFor(model, piece);
+                if(!collideRange.contains(cell)) {
+                    range.remove(cell);
+                }
+            }
         }
-    }    
+    }
 }

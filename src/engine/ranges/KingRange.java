@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class KingRange {
 
-    public static final ArrayList<Cell> getKingRange(BoardModel model, King king) {
+    public static final ArrayList<Cell> getRawKingRange(BoardModel model, King king) {
         Position position = king.getPosition();
 
         ArrayList<Cell> range = new ArrayList<Cell>();
@@ -76,8 +76,6 @@ public class KingRange {
             range.add(cell);
         }  
 
-        removeOpponentPieces(range, model, king);
-
         return range;
     }
 
@@ -87,12 +85,8 @@ public class KingRange {
       * @param model The model of the board 
       * @param king The current king
     **/
-    private static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
+    public static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
         Player opponent = (king.isBlackPiece()) ? Engine.instance().getPlayer(PlayerType.WHITE_PLAYER) : Engine.instance().getPlayer(PlayerType.BLACK_PLAYER);
-
-        Cell kingCell = model.getCell(king.getPosition());
-
-        ArrayList<Cell> pieceRange = null;
 
         ArrayList<Piece> collidePieces = PieceCollision.getPiecesCollideWith(range, king, opponent.getPieces(), model);
         

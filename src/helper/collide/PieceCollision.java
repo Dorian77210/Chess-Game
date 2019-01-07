@@ -39,27 +39,57 @@ public class PieceCollision {
         Cell kingCell = model.getCell(king.getPosition());
         Cell cell;
 
+        if(pieces.size() > 0) {
+            if(king.isBlackPiece()) {
+                Engine.instance().informations.toggleIsBlackPlayerChecked();
+            } else {
+                Engine.instance().informations.toggleIsWhitePlayerChecked();
+            }
+        }
+
         for(Piece piece : pieces) {
-            if(!(piece instanceof King)) {
-                for(int i = 0; i < kingRange.size(); i++) {
+            for(int i = 0; i < kingRange.size(); i++) {
+                if(!(piece instanceof King)) {
                     cell = kingRange.get(i);
-                    Piece p = cell.getPiece();
+                    Piece temp = cell.getPiece();
                     cell.setPiece(king);
                     range = Engine.ranges.getAvailableRangeFor(model, piece);
                     if(range.contains(cell)) {
-                        System.out.println("ok");
-                        kingRange.remove(cell);
                         result.add(piece);
-                        i = 0;
                     }
 
-                    cell.setPiece(p);
+                    cell.setPiece(temp);
                 }
-
             }
         }
 
         kingCell.setPiece(king);
+        return result;
+    }
+
+    /**
+      * Get the pieces with collide direct with the king
+      * @param kingRange The range of the king
+      * @param king The concerned king
+      * @param The others pieces
+      * @param model The model of the board
+      * @return The pieces which collide with king 
+    **/
+    public static final ArrayList<Piece> getPiecesDirectCollideWith(ArrayList<Cell> kingRange, King king, ArrayList<Piece> pieces, BoardModel model) {
+        ArrayList<Piece> result = new ArrayList<Piece>();
+        ArrayList<Cell> range;
+
+        for(Piece piece : pieces) {
+            for(Cell cell : kingRange) {
+                if(!(piece instanceof King)) {
+                    range = Engine.ranges.getAvailableRangeFor(model, piece);
+                    if(range.contains(cell)) {
+                        result.add(piece);
+                    }
+                }
+            }
+        }
+
         return result;
     }
 }
