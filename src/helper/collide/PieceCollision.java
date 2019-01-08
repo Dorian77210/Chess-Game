@@ -33,19 +33,11 @@ public class PieceCollision {
       * @param model The model of the game
       * @return All pieces which collide with the piece
     **/
-    public static final ArrayList<Piece> getPiecesCollideWith(ArrayList<Cell> kingRange, King king, ArrayList<Piece> pieces, BoardModel model) {
+    /*public static final ArrayList<Piece> getPiecesCollideWith(ArrayList<Cell> kingRange, King king, ArrayList<Piece> pieces, BoardModel model) {
         ArrayList<Piece> result = new ArrayList<Piece>();
         ArrayList<Cell> range;
         Cell kingCell = model.getCell(king.getPosition());
         Cell cell;
-
-        if(pieces.size() > 0) {
-            if(king.isBlackPiece()) {
-                Engine.instance().informations.toggleIsBlackPlayerChecked();
-            } else {
-                Engine.instance().informations.toggleIsWhitePlayerChecked();
-            }
-        }
 
         for(Piece piece : pieces) {
             for(int i = 0; i < kingRange.size(); i++) {
@@ -53,7 +45,7 @@ public class PieceCollision {
                     cell = kingRange.get(i);
                     Piece temp = cell.getPiece();
                     cell.setPiece(king);
-                    range = Engine.ranges.getAvailableRangeFor(model, piece);
+                  //  range = Engine.ranges.getAvailableRangeFor(model, piece);
                     if(range.contains(cell)) {
                         result.add(piece);
                     }
@@ -75,14 +67,14 @@ public class PieceCollision {
       * @param model The model of the board
       * @return The pieces which collide with king 
     **/
-    public static final ArrayList<Piece> getPiecesDirectCollideWith(ArrayList<Cell> kingRange, King king, ArrayList<Piece> pieces, BoardModel model) {
+   /* public static final ArrayList<Piece> getPiecesDirectCollideWith(ArrayList<Cell> kingRange, King king, ArrayList<Piece> pieces, BoardModel model) {
         ArrayList<Piece> result = new ArrayList<Piece>();
         ArrayList<Cell> range;
 
         for(Piece piece : pieces) {
             for(Cell cell : kingRange) {
                 if(!(piece instanceof King)) {
-                    range = Engine.ranges.getAvailableRangeFor(model, piece);
+                  //  range = Engine.ranges.getAvailableRangeFor(model, piece);
                     if(range.contains(cell)) {
                         result.add(piece);
                     }
@@ -91,5 +83,5 @@ public class PieceCollision {
         }
 
         return result;
-    }
+    }*/
 }

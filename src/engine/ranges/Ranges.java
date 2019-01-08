@@ -36,49 +36,53 @@ public class Ranges {
     **/
     private ArrayList<Cell> range;
 
-    public Ranges() {
+    /**
+      * The model of the board 
+    **/
+    private BoardModel boardModel;
+
+    public Ranges(BoardModel boardModel) {
         this.range = new ArrayList<Cell>();
+        this.boardModel = boardModel;
     }
 
     /**
       * Get the available range for a piece
       * @param piece The concerned piece
-      * @param model The model of the board
       * @return The available range for the piece 
     **/
-    public ArrayList<Cell> getAvailableRangeFor(BoardModel model, Piece piece) {
+    public ArrayList<Cell> getAvailableRangeFor(Piece piece) {
         if(piece instanceof Bishop) {
-            return getAvailableRangeFor(model, (Bishop)piece);
+            return getAvailableRangeFor((Bishop)piece);
         } else if(piece instanceof Knight) {
-            return getAvailableRangeFor(model, (Knight)piece);
+            return getAvailableRangeFor((Knight)piece);
         } else if(piece instanceof King) {
-            return getAvailableRangeFor(model, (King)piece);
+            return getAvailableRangeFor((King)piece);
         } else if(piece instanceof Queen) {
-            return getAvailableRangeFor(model, (Queen)piece);
+            return getAvailableRangeFor((Queen)piece);
         } else if(piece instanceof Pawn) {
-            return getAvailableRangeFor(model, (Pawn)piece);
+            return getAvailableRangeFor((Pawn)piece);
         } else {
-            return getAvailableRangeFor(model, (Rook)piece);
+            return getAvailableRangeFor((Rook)piece);
         }
     }
 
     /**
       * Get the available range for a bishop
       * @param bishop The concerned piece
-      * @param model The model of the board
       * @return The available range for the bishop 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Bishop bishop) {
+    private ArrayList<Cell> getAvailableRangeFor(Bishop bishop) {
         this.range.clear();
 
         Position position = bishop.getPosition();
 
         BishopMovementStates states = new BishopMovementStates();
 
-        BishopRange.addTopLeftCell(model, bishop, states, this.range, bishop.getPosition());
-        BishopRange.addTopRightCell(model, bishop, states, this.range, bishop.getPosition());
-        BishopRange.addBottomRightCell(model, bishop, states, this.range, bishop.getPosition());
-        BishopRange.addBottomLeftCell(model, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addTopLeftCell(this.boardModel, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addTopRightCell(this.boardModel, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addBottomRightCell(this.boardModel, bishop, states, this.range, bishop.getPosition());
+        BishopRange.addBottomLeftCell(this.boardModel, bishop, states, this.range, bishop.getPosition());
 
         return this.range;
     }
@@ -86,10 +90,9 @@ public class Ranges {
     /**
       * Get the available range for a bishop
       * @param knight The concerned piece
-      * @param model The model of the board
       * @return The available range for the kngith 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Knight knight) {
+    private ArrayList<Cell> getAvailableRangeFor(Knight knight) {
         Position position = knight.getPosition();
         Position currentPosition = null;
         this.range.clear();
@@ -99,9 +102,9 @@ public class Ranges {
             for(int x = 0; x < BoardView.WIDTH; x++) {
                 currentPosition = new Position(x, y);
                 if(Distance.getDistance(position, currentPosition) == Knight.KNIGHT_MOVEMENT_DISTANCE) {
-                    cell = model.getCell(currentPosition);
+                    cell = this.boardModel.getCell(currentPosition);
                     if(cell.isEmpty() || (!cell.isEmpty() && (!cell.getPiece().isSameTeamAs(knight)))) { 
-                        this.range.add(model.getCell(currentPosition));
+                        this.range.add(this.boardModel.getCell(currentPosition));
                     }
                 }
             }
@@ -113,13 +116,12 @@ public class Ranges {
     /**
       * Get the available range for a bishop
       * @param king The concerned piece
-      * @param model The model of the board
       * @return The available range for the king 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, King king) {
+    private ArrayList<Cell> getAvailableRangeFor(King king) {
         this.range.clear();
-        this.range = KingRange.getRawKingRange(model, king);
-        KingRange.removeOpponentPieces(this.range, model, king);
+        this.range = KingRange.getRawKingRange(this.boardModel, king);
+        //KingRange.removeOpponentPieces(this.range, model, king);
         
         return this.range;
     }
@@ -127,23 +129,22 @@ public class Ranges {
     /**
       * Get the available range for a bishop
       * @param queen The concerned piece
-      * @param model The model of the board
       * @return The available range for the queen 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Queen queen) {
+    private ArrayList<Cell> getAvailableRangeFor(Queen queen) {
         this.range.clear();
 
         QueenMovementStates states = new QueenMovementStates();
 
-        QueenRange.addBottomLeftCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addTopLeftCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addTopRightCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addBottomRightCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addBottomLeftCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopLeftCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopRightCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addBottomRightCell(this.boardModel, queen, states, this.range, queen.getPosition());
         
-        QueenRange.addLeftCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addTopCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addBottomCell(model, queen, states, this.range, queen.getPosition());
-        QueenRange.addRightCell(model, queen, states, this.range, queen.getPosition());
+        QueenRange.addLeftCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addTopCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addBottomCell(this.boardModel, queen, states, this.range, queen.getPosition());
+        QueenRange.addRightCell(this.boardModel, queen, states, this.range, queen.getPosition());
         
         return this.range;
     }
@@ -151,10 +152,9 @@ public class Ranges {
     /**
       * Get the available range for a bishop
       * @param pawn The concerned piece
-      * @param model The model of the board
       * @return The available range for the pawn 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Pawn pawn) {
+    private ArrayList<Cell> getAvailableRangeFor(Pawn pawn) {
         this.range.clear();
         Position position = pawn.getPosition();
         Cell currentCell = null;
@@ -164,7 +164,7 @@ public class Ranges {
         //add the cells
 
         //cell in front of the pawn
-        currentCell = model.getCell(new Position(position.x, position.y + direction));
+        currentCell = this.boardModel.getCell(new Position(position.x, position.y + direction));
         if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
             this.range.add(currentCell);
         }  else  {
@@ -173,18 +173,18 @@ public class Ranges {
 
         //cellin front of the pawn + 1
         if(pawn.isFirstTimeMoving() && !isBlocked) {
-            currentCell = model.getCell(new Position(position.x, position.y + (2 * direction)));
+            currentCell = this.boardModel.getCell(new Position(position.x, position.y + (2 * direction)));
             if(Assert.isSet(currentCell) && currentCell.isEmpty()) {
                 this.range.add(currentCell);
             }
         }
 
-        currentCell = model.getCell(new Position(position.x - 1, position.y + direction));
+        currentCell = this.boardModel.getCell(new Position(position.x - 1, position.y + direction));
         if(Assert.isSet(currentCell) && !currentCell.isEmpty() && !currentCell.getPiece().isSameTeamAs(pawn)) {
             this.range.add(currentCell);
         }
 
-        currentCell = model.getCell(new Position(position.x + 1, position.y + direction));
+        currentCell = this.boardModel.getCell(new Position(position.x + 1, position.y + direction));
         if(Assert.isSet(currentCell) && !currentCell.isEmpty() && !currentCell.getPiece().isSameTeamAs(pawn)) {
             this.range.add(currentCell);
         }
@@ -195,20 +195,19 @@ public class Ranges {
     /**
       * Get the available range for a rook
       * @param bishop The concerned piece
-      * @param model The model of the board
       * @return The available range for the rook 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(BoardModel model, Rook rook) {
+    private ArrayList<Cell> getAvailableRangeFor(Rook rook) {
         this.range.clear();
 
         Position position = rook.getPosition();
 
         RookMovementStates states = new RookMovementStates();
 
-        RookRange.addBottomCell(model, rook, states, this.range, rook.getPosition());
-        RookRange.addTopCell(model, rook, states, this.range, rook.getPosition());
-        RookRange.addRightCell(model, rook, states, this.range, rook.getPosition());
-        RookRange.addLeftCell(model, rook, states, this.range, rook.getPosition());
+        RookRange.addBottomCell(this.boardModel, rook, states, this.range, rook.getPosition());
+        RookRange.addTopCell(this.boardModel, rook, states, this.range, rook.getPosition());
+        RookRange.addRightCell(this.boardModel, rook, states, this.range, rook.getPosition());
+        RookRange.addLeftCell(this.boardModel, rook, states, this.range, rook.getPosition());
         
         return this.range;
     }

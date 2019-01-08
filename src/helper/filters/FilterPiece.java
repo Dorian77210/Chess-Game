@@ -32,7 +32,7 @@ public class FilterPiece {
       * @param king The current king
       * @param model The model of the board
     **/
-    public static final void filterRange(ArrayList<Cell> range, King king, ArrayList<Piece> collidePieces, BoardModel model) {
+  /*  public static final void filterRange(ArrayList<Cell> range, King king, ArrayList<Piece> collidePieces, BoardModel model) {
         ArrayList<Cell> collideRange;
         Cell kingCell = model.getCell(king.getPosition());
         Cell cell;
@@ -43,7 +43,7 @@ public class FilterPiece {
                     cell = range.get(i);
                     Piece temp = cell.getPiece();
                     cell.setPiece(king);
-                    collideRange = Engine.ranges.getAvailableRangeFor(model, collidePiece);
+                  //  collideRange = Engine.ranges.getAvailableRangeFor(model, collidePiece);
                     if(collideRange.contains(cell)) {
                         range.remove(cell);
                     }
@@ -61,11 +61,11 @@ public class FilterPiece {
 
         for(Piece piece : pieces) {
             for(Cell cell : range) {
-                collideRange = Engine.ranges.getAvailableRangeFor(model, piece);
+              // collideRange = Engine.ranges.getAvailableRangeFor(model, piece);
                 if(!collideRange.contains(cell)) {
                     range.remove(cell);
                 }
             }
         }
-    }
+    }*/  
 }

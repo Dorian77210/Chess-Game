@@ -51,7 +51,7 @@ public class Engine {
 	private static final BoardInitializer boardInitializer = new BoardInitializer();
 
 
-    public static final Ranges ranges = new Ranges();
+    public Ranges ranges;
 
     /**
       * The differents actions for the game 
@@ -99,6 +99,8 @@ public class Engine {
         this.boardModel = boardModel;
 
         this.informations = new GameInformations();
+
+        this.ranges = new Ranges(this.boardModel);
     }
 
     /***************************** 

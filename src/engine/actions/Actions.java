@@ -35,7 +35,7 @@ public class Actions {
       * @param model The model of the board 
     **/
     public void move(Piece piece, Cell target, BoardModel model) {
-        ArrayList<Cell> range = Engine.ranges.getAvailableRangeFor(model, piece);
+        ArrayList<Cell> range = Engine.instance().ranges.getAvailableRangeFor(piece);
         Player targetPlayer = (piece.isBlackPiece()) ? Engine.instance().getPlayer(PlayerType.WHITE_PLAYER) : Engine.instance().getPlayer(PlayerType.BLACK_PLAYER);
 
         if(range.contains(target)) {

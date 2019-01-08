@@ -51,7 +51,7 @@ public class BoardController implements ActionListener {
 
         Piece piece = cell.getPiece();
         if(Assert.isSet(piece) && (piece.canMove())) {
-            this.boardView.showMovementRange(Engine.ranges.getAvailableRangeFor(this.boardModel, piece));
+            this.boardView.showMovementRange(Engine.instance().ranges.getAvailableRangeFor(piece));
         }
 
         this.boardModel.setSelectedCell(cell);
