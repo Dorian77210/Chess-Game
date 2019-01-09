@@ -131,4 +131,20 @@ public class GameInformations {
     public void toggleIsWhitePlayerChecked() {
         this.isWhitePlayerChecked = !this.isWhitePlayerChecked;
     }
+
+    /**
+      * Set the white checked state
+      * @param isWhitePlayerChecked The new state 
+    **/
+    public void setIsWhitePlayerChecked(boolean isWhitePlayerChecked) {
+        this.isWhitePlayerChecked = isWhitePlayerChecked;
+    }
+
+    /**
+      * Set the black checked state
+      * @param isBlackPlayerChecked The new state
+    **/
+    public void setIsBlackPlayerChecked(boolean isBlackPlayerChecked) {
+        this.isBlackPlayerChecked = isBlackPlayerChecked;
+    } 
 }

@@ -21,6 +21,14 @@ import engine.ranges.QueenRange;
 
 import engine.ranges.KingRange;
 
+import models.game.players.Player;
+import enums.PlayerType;
+
+import engine.Engine;
+
+import helper.collide.PieceCollision;
+import helper.filters.FilterPiece;
+
 import java.util.ArrayList;
 
 /**
@@ -110,6 +118,18 @@ public class Ranges {
             }
         }
 
+        if((knight.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
+           (!knight.isBlackPiece() && Engine.instance().informations.isWhitePlayerChecked())
+        ) {
+            Player opponent = (Engine.instance().informations.isBlackPlayerPlaying())
+                            ? Engine.instance().getPlayer(PlayerType.BLACK_PLAYER)
+                            : Engine.instance().getPlayer(PlayerType.WHITE_PLAYER);
+
+            ArrayList<Piece> opponentPieces = opponent.getPieces();
+            ArrayList<Piece> collidePieces = PieceCollision.getPiecesDirectCollideWith(opponent.getKing(), opponentPieces, this.boardModel);
+
+        }
+
         return this.range;
     }
 
@@ -120,10 +140,11 @@ public class Ranges {
     **/
     private ArrayList<Cell> getAvailableRangeFor(King king) {
         this.range.clear();
-        this.range = KingRange.getRawKingRange(this.boardModel, king);
-        //KingRange.removeOpponentPieces(this.range, model, king);
+        ArrayList<Cell> kingRange = KingRange.getRawKingRange(this.boardModel, king);
+
+        KingRange.removeOpponentPieces(kingRange, this.boardModel, king);
         
-        return this.range;
+        return kingRange;
     }
 
     /**

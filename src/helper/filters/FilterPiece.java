@@ -9,7 +9,11 @@ import models.views.BoardModel;
 import models.game.pieces.Piece;
 import models.game.pieces.King;
 
+import engine.ranges.KingRange;
+
 import engine.Engine;
+
+import helper.Console;
 
 import java.util.ArrayList;
 
@@ -32,40 +36,47 @@ public class FilterPiece {
       * @param king The current king
       * @param model The model of the board
     **/
-  /*  public static final void filterRange(ArrayList<Cell> range, King king, ArrayList<Piece> collidePieces, BoardModel model) {
+    public static final void filterKingRange(ArrayList<Cell> kingRange, King king, ArrayList<Piece> collidePieces, BoardModel model) {
         ArrayList<Cell> collideRange;
         Cell kingCell = model.getCell(king.getPosition());
         Cell cell;
+        Piece piece;
+
 
         for(Piece collidePiece : collidePieces) {
-            for(int i = 0; i < range.size(); i++) {
-                if(!(collidePiece instanceof King)) {
-                    cell = range.get(i);
-                    Piece temp = cell.getPiece();
-                    cell.setPiece(king);
-                  //  collideRange = Engine.ranges.getAvailableRangeFor(model, collidePiece);
-                    if(collideRange.contains(cell)) {
-                        range.remove(cell);
-                    }
+            for(int i = 0; i < kingRange.size(); i++) {
+                cell = kingRange.get(i);
+                piece = cell.getPiece();
+                cell.setPiece(king);
 
-                    cell.setPiece(temp);
+                collideRange = (collidePiece instanceof King)
+                             ? KingRange.getRawKingRange(model, (King)collidePiece)
+                             : Engine.instance().ranges.getAvailableRangeFor(collidePiece);
+
+                if(collideRange.contains(cell)) {
+                    kingRange.remove(cell);
                 }
+
+                cell.setPiece(piece);
             }
         }
 
         kingCell.setPiece(king);
     }
+
     
-    public static final void filterRange(ArrayList<Cell> range, ArrayList<Piece> pieces, BoardModel model) {
+    public static final void filterOtherRange(ArrayList<Cell> range, ArrayList<Piece> collidePieces, BoardModel model) {
         ArrayList<Cell> collideRange;
 
-        for(Piece piece : pieces) {
+        for(Piece collidePiece : collidePieces) {
             for(Cell cell : range) {
-              // collideRange = Engine.ranges.getAvailableRangeFor(model, piece);
+                collideRange = (collidePiece instanceof King)
+                             ? KingRange.getRawKingRange(model, (King)collidePiece)
+                             : Engine.instance().ranges.getAvailableRangeFor(collidePiece);
                 if(!collideRange.contains(cell)) {
                     range.remove(cell);
                 }
             }
         }
-    }*/  
+    }  
 }

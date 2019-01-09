@@ -204,13 +204,13 @@ $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 #helper.collide
 $(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)Piece.class $(BIN_DIR)BoardModel.class \
 								$(BIN_DIR)Engine.class $(BIN_DIR)Cell.class $(BIN_DIR)Position.class \
-								$(BIN_DIR)King.class
+								$(BIN_DIR)King.class $(BIN_DIR)KingRange.class
 	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
 
 #helper.filters
 $(BIN_DIR)FilterPiece.class: $(HELPER_FILTERS_DIR)FilterPiece.java $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class \
 							 $(BIN_DIR)Position.class $(BIN_DIR)Piece.class $(BIN_DIR)Engine.class \
-							 $(BIN_DIR)King.class
+							 $(BIN_DIR)King.class $(BIN_DIR)KingRange.class
 	$(JC) $(FLAGS) $(HELPER_FILTERS_DIR)FilterPiece.java
 
 #models

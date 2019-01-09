@@ -85,13 +85,12 @@ public class KingRange {
       * @param model The model of the board 
       * @param king The current king
     **/
-   /* public static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
+    public static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
         Player opponent = (king.isBlackPiece()) ? Engine.instance().getPlayer(PlayerType.WHITE_PLAYER) : Engine.instance().getPlayer(PlayerType.BLACK_PLAYER);
 
-        ArrayList<Piece> collidePieces = PieceCollision.getPiecesCollideWith(range, king, opponent.getPieces(), model);
+        ArrayList<Piece> collidePieces = PieceCollision.getPiecesCollideWithKing(range, king, opponent.getPieces(), model);
         
         //filter the cells
-        FilterPiece.filterRange(range, king, collidePieces, model);
-
-    }*/
+        FilterPiece.filterKingRange(range, king, collidePieces, model);
+    }
 }
