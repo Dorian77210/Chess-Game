@@ -67,14 +67,20 @@ public class FilterPiece {
     
     public static final void filterOtherRange(ArrayList<Cell> range, ArrayList<Piece> collidePieces, BoardModel model) {
         ArrayList<Cell> collideRange;
+        Cell cell;
+        int i;
 
+        System.out.println(collidePieces.size());
         for(Piece collidePiece : collidePieces) {
-            for(Cell cell : range) {
-                collideRange = (collidePiece instanceof King)
+
+            collideRange = (collidePiece instanceof King)
                              ? KingRange.getRawKingRange(model, (King)collidePiece)
                              : Engine.instance().ranges.getAvailableRangeFor(collidePiece);
+            for(i = 0; i < range.size(); i++) {
+                cell = range.get(i);
                 if(!collideRange.contains(cell)) {
                     range.remove(cell);
+                    i = 0;
                 }
             }
         }

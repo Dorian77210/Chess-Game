@@ -104,6 +104,8 @@ public class Ranges {
         Position position = knight.getPosition();
         Position currentPosition = null;
         this.range.clear();
+
+        ArrayList<Cell> knightRange = new ArrayList<Cell>();
         Cell cell;
 
         for(int y = 0; y < BoardView.HEIGHT; y++) {
@@ -112,25 +114,30 @@ public class Ranges {
                 if(Distance.getDistance(position, currentPosition) == Knight.KNIGHT_MOVEMENT_DISTANCE) {
                     cell = this.boardModel.getCell(currentPosition);
                     if(cell.isEmpty() || (!cell.isEmpty() && (!cell.getPiece().isSameTeamAs(knight)))) { 
-                        this.range.add(this.boardModel.getCell(currentPosition));
+                        knightRange.add(this.boardModel.getCell(currentPosition));
                     }
                 }
             }
         }
-
+        
         if((knight.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (!knight.isBlackPiece() && Engine.instance().informations.isWhitePlayerChecked())
+           (knight.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
         ) {
             Player opponent = (Engine.instance().informations.isBlackPlayerPlaying())
-                            ? Engine.instance().getPlayer(PlayerType.BLACK_PLAYER)
-                            : Engine.instance().getPlayer(PlayerType.WHITE_PLAYER);
+                            ? Engine.instance().getPlayer(PlayerType.WHITE_PLAYER)
+                            : Engine.instance().getPlayer(PlayerType.BLACK_PLAYER);
+
+            Player current = (Engine.instance().informations.isBlackPlayerPlaying())
+                           ? Engine.instance().getPlayer(PlayerType.BLACK_PLAYER)
+                           : Engine.instance().getPlayer(PlayerType.WHITE_PLAYER);
 
             ArrayList<Piece> opponentPieces = opponent.getPieces();
-            ArrayList<Piece> collidePieces = PieceCollision.getPiecesDirectCollideWith(opponent.getKing(), opponentPieces, this.boardModel);
-
+            ArrayList<Piece> collidePieces = PieceCollision.getPiecesDirectCollideWith(current.getKing(), opponentPieces, this.boardModel);
+            //problem with board model
+            FilterPiece.filterOtherRange(knightRange, collidePieces, this.boardModel);
         }
 
-        return this.range;
+        return knightRange;
     }
 
     /**

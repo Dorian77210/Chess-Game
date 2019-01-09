@@ -244,8 +244,9 @@ $(BIN_DIR)Rook.class: $(MODEL_GAME_PIECES_DIR)Rook.java $(BIN_DIR)Piece.class $(
 						$(BIN_DIR)PieceType.class $(BIN_DIR)Cell.class
 	$(JC) $(FLAGS) $(MODEL_GAME_PIECES_DIR)Rook.java
 
-#model.piece
-$(BIN_DIR)Player.class: $(MODEL_PLAYERS_DIR)Player.java $(BIN_DIR)Piece.class $(BIN_DIR)PlayerType.class
+#model.players
+$(BIN_DIR)Player.class: $(MODEL_PLAYERS_DIR)Player.java $(BIN_DIR)Piece.class $(BIN_DIR)PlayerType.class \
+						$(BIN_DIR)King.class
 	$(JC) $(FLAGS) $(MODEL_PLAYERS_DIR)Player.java
 
 #model.views

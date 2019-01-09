@@ -1,6 +1,7 @@
 package models.game.players;
 
 import models.game.pieces.Piece;
+import models.game.pieces.King;
 
 import enums.PlayerType;
 
@@ -39,6 +40,20 @@ public class Player {
     **/
     public ArrayList<Piece> getPieces() {
         return this.pieces;
+    }
+
+    /**
+      * Get the king of this player
+      * @return The king of the player 
+    **/
+    public King getKing() {
+        for(Piece piece : this.pieces) {
+            if(piece instanceof King) {
+                return (King)piece;
+            }
+        }
+
+        return null;
     }
     
     /**

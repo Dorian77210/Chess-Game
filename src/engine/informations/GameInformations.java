@@ -71,7 +71,7 @@ public class GameInformations {
       * @return The state of checked for the black player
     **/
     public boolean isBlackPlayerChecked() {
-        return this.isBlackPlayerChecked();
+        return this.isBlackPlayerChecked;
     }
 
 

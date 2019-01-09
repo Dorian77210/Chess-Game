@@ -61,7 +61,6 @@ public class PieceCollision {
             }
         }
 
-        System.out.println(result.size());
         // set the king model to his initial position
         kingCell.setPiece(king);
         return result;
@@ -89,6 +88,7 @@ public class PieceCollision {
                 result.add(opponentPiece);
             }
         }
+
 
         if((result.size() > 0) && Engine.instance().informations.isBlackPlayerPlaying() && !Engine.instance().informations.isBlackPlayerChecked()) {
             Engine.instance().informations.setIsBlackPlayerChecked(true);
