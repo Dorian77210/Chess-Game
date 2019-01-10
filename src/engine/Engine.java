@@ -25,6 +25,8 @@ import models.views.BoardModel;
 
 import ui.board.Cell;
 
+import helper.collide.PieceCollision;
+
 import java.util.ArrayList;
 
 /**
@@ -153,5 +155,41 @@ public class Engine {
         return (type.equals(PlayerType.BLACK_PLAYER)) ? this.blackPlayer : this.whitePlayer;
     }
 
+    /**
+      * Get the current player
+      * @return The current player 
+    **/
+    public Player getCurrentPlayer() {
+        return (this.informations.isBlackPlayerPlaying()) ? this.blackPlayer : this.whitePlayer;
+    }
+
+    /**
+      * Get the not other player
+      * @return The not current player 
+    **/
+    public Player getNotCurrentPlayer() {
+        return (this.informations.isBlackPlayerPlaying()) ? this.whitePlayer : this.blackPlayer;
+    }
+
+    /***************************** 
+    ***********UPDATE************* 
+    ******************************/
     
+    /**
+      * Update the checked states 
+    **/
+    public void updateCheckedStates() {
+        Player currentPlayer = this.getCurrentPlayer();
+        ArrayList<Cell> kingRange = this.ranges.getAvailableRangeFor(currentPlayer.getKing());
+        System.out.println("ok");
+        if(!PieceCollision.getPiecesCollideWithKing(kingRange, currentPlayer.getKing(), this.boardModel).isEmpty()) {
+            if(currentPlayer.isBlackPlayer()) {
+                this.informations.setIsBlackPlayerChecked(true);
+                this.informations.setIsWhitePlayerChecked(false);
+            } else {
+                this.informations.setIsWhitePlayerChecked(true);
+                this.informations.setIsBlackPlayerChecked(false);
+            }
+        }
+    }
 }

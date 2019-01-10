@@ -90,7 +90,7 @@ $(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DI
 						$(BIN_DIR)GameMode.class $(BIN_DIR)PlayerType.class $(BIN_DIR)PieceType.class \
 						$(BIN_DIR)GamePieces.class $(BIN_DIR)Piece.class $(BIN_DIR)BoardView.class \
 						$(BIN_DIR)GameInformations.class $(BIN_DIR)Ranges.class $(BIN_DIR)BishopRange.class \
-						$(BIN_DIR)BishopMovementStates.class
+						$(BIN_DIR)BishopMovementStates.class $(BIN_DIR)FilterPiece.class
 	$(JC) $(FLAGS) $(ENGINE_DIR)Engine.java
 
 #engine.actions
@@ -202,15 +202,16 @@ $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 	$(JC) $(FLAGS) $(HELPER_CONSTANTS_DIR)PieceConstants.java
 
 #helper.collide
-$(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)Piece.class $(BIN_DIR)BoardModel.class \
+$(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)King.class $(BIN_DIR)Piece.class \
+								$(BIN_DIR)BoardModel.class $(BIN_DIR)Player.class $(BIN_DIR)PlayerType.class \
 								$(BIN_DIR)Engine.class $(BIN_DIR)Cell.class $(BIN_DIR)Position.class \
-								$(BIN_DIR)King.class $(BIN_DIR)KingRange.class
+								$(BIN_DIR)KingRange.class 
 	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
 
 #helper.filters
 $(BIN_DIR)FilterPiece.class: $(HELPER_FILTERS_DIR)FilterPiece.java $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class \
 							 $(BIN_DIR)Position.class $(BIN_DIR)Piece.class $(BIN_DIR)Engine.class \
-							 $(BIN_DIR)King.class $(BIN_DIR)KingRange.class
+							 $(BIN_DIR)King.class $(BIN_DIR)KingRange.class $(BIN_DIR)PieceCollision.class
 	$(JC) $(FLAGS) $(HELPER_FILTERS_DIR)FilterPiece.java
 
 #models

@@ -8,12 +8,13 @@ import models.views.BoardModel;
 
 import models.game.pieces.Piece;
 import models.game.pieces.King;
-
 import engine.ranges.KingRange;
 
 import engine.Engine;
 
 import helper.Console;
+
+import helper.collide.PieceCollision;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,7 @@ public class FilterPiece {
 
                 if(collideRange.contains(cell)) {
                     kingRange.remove(cell);
+                    i = 0;
                 }
 
                 cell.setPiece(piece);
@@ -65,24 +67,43 @@ public class FilterPiece {
     }
 
     
-    public static final void filterOtherRange(ArrayList<Cell> range, ArrayList<Piece> collidePieces, BoardModel model) {
-        ArrayList<Cell> collideRange;
-        Cell cell;
+    public static final void filterOtherRange(Piece source, ArrayList<Cell> range, King king, BoardModel model) {
+        ArrayList<Piece> collidePieces;
+        ArrayList<Cell> kingRange;
         int i;
 
-        System.out.println(collidePieces.size());
-        for(Piece collidePiece : collidePieces) {
+        Cell sourceCell = model.getCell(source.getPosition());
 
-            collideRange = (collidePiece instanceof King)
-                             ? KingRange.getRawKingRange(model, (King)collidePiece)
-                             : Engine.instance().ranges.getAvailableRangeFor(collidePiece);
-            for(i = 0; i < range.size(); i++) {
-                cell = range.get(i);
-                if(!collideRange.contains(cell)) {
-                    range.remove(cell);
-                    i = 0;
+        Cell cell;  
+        Piece piece;
+
+        for(i = 0; i < range.size();) {
+            cell = range.get(i);    
+            piece = cell.getPiece();
+            cell.setPiece(source);
+
+            kingRange = Engine.instance().ranges.getAvailableRangeFor(king);
+
+            collidePieces = PieceCollision.getPiecesCollideWithKing(kingRange, king, model);
+
+
+            if(!collidePieces.isEmpty()) {
+                for(Piece p : collidePieces) {
+                    if(!range.contains(model.getCell(p.getPosition()))) {
+                        range.remove(cell);
+                        //simulate a cost
+                    } else {
+                        i++;
+                    }
                 }
+            } else {
+                i++;
             }
+
+            
+            cell.setPiece(piece);
         }
+
+        sourceCell.setPiece(source);
     }  
 }

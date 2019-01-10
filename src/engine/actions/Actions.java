@@ -51,6 +51,8 @@ public class Actions {
 
             target.setPiece(piece);
 
+            //Engine.instance().updateCheckedStates();
+            
             Engine.instance().informations.incrementRounds();
 
             if(piece.isFirstTimeMoving()) {
