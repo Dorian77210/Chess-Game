@@ -10,6 +10,8 @@ import enums.KindOfPiece;
 
 import enums.PlayerType;
 
+import helper.collections.PieceCollection;
+
 import java.util.ArrayList;
 
 /**
@@ -31,7 +33,7 @@ public class PieceCounter {
     **/
     public final int getCountOf(KindOfPiece kind, PlayerType type) {
         Player player = Engine.instance().getPlayer(type);
-        ArrayList<Piece> pieces = player.getPieces();
+        PieceCollection pieces = player.getPieces();
 
         int count = 0;
         for(Piece piece : pieces) {

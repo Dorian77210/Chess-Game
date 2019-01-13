@@ -6,6 +6,7 @@ import ui.board.BoardView;
 
 import helper.constants.Palette;
 import helper.Position;
+import helper.collections.PieceCollection;
 
 import ui.board.Cell;
 
@@ -25,7 +26,7 @@ public class BoardInitializer {
       * @param cells The cells to initialize 
       * @param pieces All piece of the game
     **/
-    public static final void initializeCells(Cell[][] cells, ArrayList<Piece> pieces) {
+    public static final void initializeCells(Cell[][] cells, PieceCollection pieces) {
         Position position;
         Piece piece;
         Color color;
@@ -47,7 +48,7 @@ public class BoardInitializer {
       * @position The current position
       * @return The piece asociated to the position
     **/
-    private static final Piece getPiece(ArrayList<Piece> pieces, Position position) {
+    private static final Piece getPiece(PieceCollection pieces, Position position) {
         for(Piece piece : pieces) {
             if(piece.getPosition().equals(position)) {
                 return piece;

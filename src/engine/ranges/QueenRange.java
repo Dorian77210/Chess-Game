@@ -8,10 +8,9 @@ import ui.board.Cell;
 
 import helper.Position;
 import helper.Assert;
+import helper.collections.CellCollection;
 
 import engine.ranges.states.QueenMovementStates;
-
-import java.util.ArrayList;
 
 /**
   * The class <code>QueenRange</code> gives the range for the queen 
@@ -29,7 +28,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addTopCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addTopCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getTopCell(position);
         if(!states.isTopBlocked) {
             if(Assert.isSet(cell)) {
@@ -57,7 +56,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addRightCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addRightCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getRightCell(position);
         if(!states.isRightBlocked) {
             if(Assert.isSet(cell)) {
@@ -85,7 +84,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addBottomCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addBottomCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getBottomCell(position);
         if(!states.isBottomBlocked) {
             if(Assert.isSet(cell)) {
@@ -113,7 +112,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addLeftCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addLeftCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getLeftCell(position);
         if(!states.isLeftBlocked) {
             if(Assert.isSet(cell)) {
@@ -141,7 +140,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addTopLeftCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addTopLeftCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getTopLeftCell(position);
         if(!states.isLeftTopBlocked) {
             if(Assert.isSet(cell)) {
@@ -169,7 +168,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addTopRightCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addTopRightCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getTopRightCell(position);
         if(!states.isRightTopBlocked) {
             if(Assert.isSet(cell)) {
@@ -197,7 +196,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addBottomLeftCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addBottomLeftCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getBottomLeftCell(position);
         if(!states.isLeftBottomBlocked) {
             if(Assert.isSet(cell)) {
@@ -225,7 +224,7 @@ public class QueenRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addBottomRightCell(BoardModel model, Queen queen, QueenMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addBottomRightCell(BoardModel model, Queen queen, QueenMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getBottomRightCell(position);
         if(!states.isRightBottomBlocked) {
             if(Assert.isSet(cell)) {

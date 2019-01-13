@@ -2,10 +2,7 @@ package engine.ranges;
 
 import helper.Position;
 import helper.Assert;
-
-import helper.collide.PieceCollision;
-
-import helper.filters.FilterPiece;
+import helper.collections.CellCollection;
 
 import models.views.BoardModel;
 
@@ -19,7 +16,6 @@ import ui.board.Cell;
 
 import engine.Engine;
 
-import java.util.ArrayList;
 /**
   * The class <code>KingRange</code> represents the range for the king
   * @version 1.0
@@ -28,10 +24,10 @@ import java.util.ArrayList;
 
 public class KingRange {
 
-    public static final ArrayList<Cell> getRawKingRange(BoardModel model, King king) {
+    public static final CellCollection getRawKingRange(BoardModel model, King king) {
         Position position = king.getPosition();
 
-        ArrayList<Cell> range = new ArrayList<Cell>();
+        CellCollection range = new CellCollection();
 
         //add the cells
 
@@ -79,16 +75,4 @@ public class KingRange {
         return range;
     }
 
-    /**
-      * Remove the cells who put the king in check
-      * @param range The current range being in process
-      * @param model The model of the board 
-      * @param king The current king
-    **/
-    public static final void removeOpponentPieces(ArrayList<Cell> range, BoardModel model, King king) {
-        ArrayList<Piece> collidePieces = PieceCollision.getPiecesCollideWithKing(range, king, model);
-        
-        //filter the cells
-        FilterPiece.filterKingRange(range, king, collidePieces, model);
-    }
 }

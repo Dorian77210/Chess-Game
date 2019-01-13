@@ -4,6 +4,8 @@ import models.game.pieces.Piece;
 
 import enums.PieceType;
 
+import helper.collections.PieceCollection;
+
 import java.util.ArrayList;
 /**
   * The class <code>GamePieces</code> represents all of the piece of the game
@@ -16,14 +18,14 @@ public class GamePieces {
     /**
       * The white pieces 
     **/
-    private ArrayList<Piece> whitePieces;
+    private PieceCollection whitePieces;
 
     /**
       * The black pieces 
     **/
-    private ArrayList<Piece> blackPieces;
+    private PieceCollection blackPieces;
 
-    public GamePieces(ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces) {
+    public GamePieces(PieceCollection whitePieces, PieceCollection blackPieces) {
         this.whitePieces = whitePieces;
         this.blackPieces = blackPieces;
     }
@@ -37,7 +39,7 @@ public class GamePieces {
       * @param pieceType The type of pieces wanted
       * @return Pieces associated to the type 
     **/
-    public ArrayList<Piece> getPieces(PieceType pieceType) {
+    public PieceCollection getPieces(PieceType pieceType) {
         return (pieceType.equals(PieceType.BLACK_PIECE)) ? this.blackPieces : this.whitePieces;
     }
 }

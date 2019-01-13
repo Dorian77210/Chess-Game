@@ -98,6 +98,14 @@ public class Piece {
     }
 
     /**
+      * Get the color of the piece
+      * @return The color of the piece 
+    **/
+    public PieceType getPieceType() {
+        return this.type;
+    }
+
+    /**
       * Check if this piece can move
       * @return True this piece can move, else false
     **/

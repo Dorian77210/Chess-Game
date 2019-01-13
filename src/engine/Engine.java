@@ -16,16 +16,20 @@ import engine.actions.Actions;
 import engine.informations.GameInformations;
 
 import engine.ranges.Ranges;
+import engine.ranges.KingRange;
 
 import models.game.players.Player;
 
 import models.game.pieces.Piece;
+import models.game.pieces.King;
 
 import models.views.BoardModel;
 
-import ui.board.Cell;
-
+import helper.collections.PieceCollection;
+import helper.collections.CellCollection;
 import helper.collide.PieceCollision;
+
+import ui.board.Cell;
 
 import java.util.ArrayList;
 
@@ -90,7 +94,7 @@ public class Engine {
     **/
     public GameInformations informations;
 
-    private Engine(GameMode mode, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces,
+    private Engine(GameMode mode, PieceCollection whitePieces, PieceCollection blackPieces,
                    BoardModel boardModel
     ) {
         this.mode = mode;
@@ -129,7 +133,7 @@ public class Engine {
     public static final void initialize(GameMode mode, BoardModel boardModel) {
         GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
 
-        Engine.engine = new engine.Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
+        Engine.engine = new Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
 	}
 	
 	/**
@@ -137,7 +141,7 @@ public class Engine {
 	  * @param cells The cells of the board
 	**/
 	public void initializeBoard(Cell[][] cells) {
-		ArrayList<Piece> pieces = new ArrayList<Piece>(this.blackPlayer.getPieces());
+		PieceCollection pieces = new PieceCollection(this.blackPlayer.getPieces());
 		pieces.addAll(this.whitePlayer.getPieces());
 
 		Engine.boardInitializer.initializeCells(cells, pieces);
@@ -171,6 +175,18 @@ public class Engine {
         return (this.informations.isBlackPlayerPlaying()) ? this.whitePlayer : this.blackPlayer;
     }
 
+    /**
+      * Get all of the pieces
+      * @return all of the pieces 
+    **/
+    public PieceCollection getAllPieces() {
+        PieceCollection collection = this.whitePlayer.getPieces();
+        collection.addAll(this.blackPlayer.getPieces());
+
+        return collection;
+
+    }
+
     /***************************** 
     ***********UPDATE************* 
     ******************************/
@@ -180,15 +196,15 @@ public class Engine {
     **/
     public void updateCheckedStates() {
         Player currentPlayer = this.getCurrentPlayer();
-        ArrayList<Cell> kingRange = this.ranges.getAvailableRangeFor(currentPlayer.getKing());
-        System.out.println("ok");
-        if(!PieceCollision.getPiecesCollideWithKing(kingRange, currentPlayer.getKing(), this.boardModel).isEmpty()) {
+        King currentKing = currentPlayer.getKing();
+        CellCollection kingRawRange = KingRange.getRawKingRange(this.boardModel, currentKing); 
+        PieceCollection collidePieces = PieceCollision.getPiecesCollideWithKing(currentKing, kingRawRange, this.boardModel);
+
+        if(!collidePieces.isEmpty()) {
             if(currentPlayer.isBlackPlayer()) {
                 this.informations.setIsBlackPlayerChecked(true);
-                this.informations.setIsWhitePlayerChecked(false);
             } else {
                 this.informations.setIsWhitePlayerChecked(true);
-                this.informations.setIsBlackPlayerChecked(false);
             }
         }
     }

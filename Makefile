@@ -26,6 +26,7 @@ CONTROLLER_WINDOW_DIR := $(CONTROLLER_DIR)window/
 #######HELPER#######
 HELPER_DIR := $(SRC_DIR)helper/
 HELPER_CAST_DIR := $(HELPER_DIR)cast/
+HELPER_COLLECTIONS_DIR := $(HELPER_DIR)collections/
 HELPER_COLLIDE_DIR := $(HELPER_DIR)collide/
 HELPER_CONSTANTS_DIR := $(HELPER_DIR)constants/
 HELPER_FILTERS_DIR := $(HELPER_DIR)filters/
@@ -90,23 +91,27 @@ $(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DI
 						$(BIN_DIR)GameMode.class $(BIN_DIR)PlayerType.class $(BIN_DIR)PieceType.class \
 						$(BIN_DIR)GamePieces.class $(BIN_DIR)Piece.class $(BIN_DIR)BoardView.class \
 						$(BIN_DIR)GameInformations.class $(BIN_DIR)Ranges.class $(BIN_DIR)BishopRange.class \
-						$(BIN_DIR)BishopMovementStates.class $(BIN_DIR)FilterPiece.class
+						$(BIN_DIR)BishopMovementStates.class  $(BIN_DIR)King.class $(BIN_DIR)PieceCollection.class \
+						$(BIN_DIR)CellCollection.class $(BIN_DIR)PieceCollision.class
 	$(JC) $(FLAGS) $(ENGINE_DIR)Engine.java
 
 #engine.actions
 $(BIN_DIR)Actions.class: $(ENGINE_ACTIONS_DIR)Actions.java $(BIN_DIR)Position.class $(BIN_DIR)Cell.class \
 						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class \
-						 $(BIN_DIR)PlayerType.class $(BIN_DIR)Player.class $(BIN_DIR)Assert.class
+						 $(BIN_DIR)PlayerType.class $(BIN_DIR)Player.class $(BIN_DIR)Assert.class \
+						 $(BIN_DIR)CellCollection.class $(BIN_DIR)Pawn.class $(BIN_DIR)Queen.class
 	$(JC) $(FLAGS) $(ENGINE_ACTIONS_DIR)Actions.java
 
 #engine.counter
 $(BIN_DIR)PieceCounter.class: $(ENGINE_COUNTER_DIR)PieceCounter.java $(BIN_DIR)Engine.class $(BIN_DIR)Player.class \
 							  $(BIN_DIR)Piece.class $(BIN_DIR)Bishop.class $(BIN_DIR)Knight.class \
 							  $(BIN_DIR)King.class $(BIN_DIR)Queen.class $(BIN_DIR)Pawn.class \
-							  $(BIN_DIR)Rook.class $(BIN_DIR)KindOfPiece.class $(BIN_DIR)PlayerType.class
+							  $(BIN_DIR)Rook.class $(BIN_DIR)KindOfPiece.class $(BIN_DIR)PlayerType.class \
+							  $(BIN_DIR)PieceCollection.class
 	$(JC) $(FLAGS) $(ENGINE_COUNTER_DIR)PieceCounter.java
 #engine.game
-$(BIN_DIR)GamePieces.class: $(ENGINE_GAME_DIR)GamePieces.java $(BIN_DIR)Piece.class $(BIN_DIR)PieceType.class 
+$(BIN_DIR)GamePieces.class: $(ENGINE_GAME_DIR)GamePieces.java $(BIN_DIR)Piece.class $(BIN_DIR)PieceType.class \
+						    $(BIN_DIR)PieceCollection.class
 	$(JC) $(FLAGS) $(ENGINE_GAME_DIR)GamePieces.java
 
 #engine.informations
@@ -115,7 +120,8 @@ $(BIN_DIR)GameInformations.class: $(ENGINE_INFORMATIONS_DIR)GameInformations.jav
 
 #engine.initializer
 $(BIN_DIR)BoardInitializer.class: $(ENGINE_INITIALIZER_DIR)BoardInitializer.java $(BIN_DIR)Piece.class $(BIN_DIR)Palette.class \
-								  $(BIN_DIR)Cell.class $(BIN_DIR)Position.class
+								  $(BIN_DIR)Cell.class $(BIN_DIR)Position.class $(BIN_DIR)PieceCollection.class \
+								  $(BIN_DIR)PieceCollection.class
 	$(JC) $(FLAGS) $(ENGINE_INITIALIZER_DIR)BoardInitializer.java
 
 $(BIN_DIR)PieceInitializer.class: $(ENGINE_INITIALIZER_DIR)PieceInitializer.java $(BIN_DIR)PieceType.class $(BIN_DIR)Piece.class \
@@ -133,7 +139,7 @@ $(BIN_DIR)BishopRange.class: $(ENGINE_RANGES_DIR)BishopRange.java $(BIN_DIR)Bish
 $(BIN_DIR)KingRange.class: $(ENGINE_RANGES_DIR)KingRange.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
 						   $(BIN_DIR)BoardModel.class $(BIN_DIR)Cell.class $(BIN_DIR)Piece.class \
 						   $(BIN_DIR)King.class $(BIN_DIR)Player.class $(BIN_DIR)PlayerType.class \
-						   $(BIN_DIR)Engine.class $(BIN_DIR)PieceCollision.class $(BIN_DIR)FilterPiece.class
+						   $(BIN_DIR)Engine.class  
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)KingRange.java
 	
 
@@ -141,7 +147,8 @@ $(BIN_DIR)Ranges.class: $(ENGINE_RANGES_DIR)Ranges.java $(BIN_DIR)Piece.class $(
 	   					$(BIN_DIR)Knight.class $(BIN_DIR)King.class $(BIN_DIR)Queen.class \
 						$(BIN_DIR)Rook.class $(BIN_DIR)Pawn.class $(BIN_DIR)BoardView.class \
 						$(BIN_DIR)BishopRange.class $(BIN_DIR)BishopMovementStates.class $(BIN_DIR)RookMovementStates.class \
-						$(BIN_DIR)RookRange.class $(BIN_DIR)KingRange.class $(BIN_DIR)ClassCast.class
+						$(BIN_DIR)RookRange.class $(BIN_DIR)KingRange.class $(BIN_DIR)PieceCollection.class \
+						$(BIN_DIR)CellCollection.class $(BIN_DIR)FilterPieces.class $(BIN_DIR)PieceCollision.class
 	$(JC) $(FLAGS) $(ENGINE_RANGES_DIR)Ranges.java
 
 $(BIN_DIR)RookRange.class: $(ENGINE_RANGES_DIR)RookRange.java $(BIN_DIR)Rook.class $(BIN_DIR)Cell.class \
@@ -190,9 +197,24 @@ $(BIN_DIR)Distance.class: $(HELPER_DIR)Distance.java $(BIN_DIR)Position.class
 $(BIN_DIR)Position.class: $(HELPER_DIR)Position.java
 	$(JC) $(FLAGS) $(HELPER_DIR)Position.java
 
-#helper.cast
-$(BIN_DIR)ClassCast.class: $(HELPER_CAST_DIR)ClassCast.java
-	$(JC) $(FLAGS) $(HELPER_CAST_DIR)ClassCast.java
+#helper.collections
+$(BIN_DIR)CellCollection.class: $(HELPER_COLLECTIONS_DIR)CellCollection.java $(BIN_DIR)Cell.class
+	$(JC) $(FLAGS) $(HELPER_COLLECTIONS_DIR)CellCollection.java
+
+#helper.collide
+$(BIN_DIR)FilterPieces.class: $(HELPER_COLLIDE_DIR)FilterPieces.java $(BIN_DIR)Piece.class $(BIN_DIR)CellCollection.class \
+							  $(BIN_DIR)PieceCollection.class $(BIN_DIR)King.class $(BIN_DIR)BoardModel.class \
+							  $(BIN_DIR)Cell.class $(BIN_DIR)KingRange.class $(BIN_DIR)Engine.class \
+							  $(BIN_DIR)PieceCollision.class
+	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)FilterPieces.java
+
+$(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)King.class $(BIN_DIR)Piece.class \
+								$(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class $(BIN_DIR)Cell.class \
+								$(BIN_DIR)KingRange.class $(BIN_DIR)Player.class $(BIN_DIR)Position.class
+	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
+
+$(BIN_DIR)PieceCollection.class: $(HELPER_COLLECTIONS_DIR)PieceCollection.java $(BIN_DIR)Piece.class
+	$(JC) $(FLAGS) $(HELPER_COLLECTIONS_DIR)PieceCollection.java
 
 #helper.constants
 $(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java
@@ -200,19 +222,6 @@ $(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java
 
 $(BIN_DIR)PieceConstants.class: $(HELPER_CONSTANTS_DIR)PieceConstants.java
 	$(JC) $(FLAGS) $(HELPER_CONSTANTS_DIR)PieceConstants.java
-
-#helper.collide
-$(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_DIR)King.class $(BIN_DIR)Piece.class \
-								$(BIN_DIR)BoardModel.class $(BIN_DIR)Player.class $(BIN_DIR)PlayerType.class \
-								$(BIN_DIR)Engine.class $(BIN_DIR)Cell.class $(BIN_DIR)Position.class \
-								$(BIN_DIR)KingRange.class 
-	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
-
-#helper.filters
-$(BIN_DIR)FilterPiece.class: $(HELPER_FILTERS_DIR)FilterPiece.java $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class \
-							 $(BIN_DIR)Position.class $(BIN_DIR)Piece.class $(BIN_DIR)Engine.class \
-							 $(BIN_DIR)King.class $(BIN_DIR)KingRange.class $(BIN_DIR)PieceCollision.class
-	$(JC) $(FLAGS) $(HELPER_FILTERS_DIR)FilterPiece.java
 
 #models
 
@@ -247,7 +256,8 @@ $(BIN_DIR)Rook.class: $(MODEL_GAME_PIECES_DIR)Rook.java $(BIN_DIR)Piece.class $(
 
 #model.players
 $(BIN_DIR)Player.class: $(MODEL_PLAYERS_DIR)Player.java $(BIN_DIR)Piece.class $(BIN_DIR)PlayerType.class \
-						$(BIN_DIR)King.class
+						$(BIN_DIR)King.class $(BIN_DIR)PieceCollection.class $(BIN_DIR)Pawn.class \
+						$(BIN_DIR)Queen.class
 	$(JC) $(FLAGS) $(MODEL_PLAYERS_DIR)Player.java
 
 #model.views

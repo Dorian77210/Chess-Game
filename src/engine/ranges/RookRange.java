@@ -8,10 +8,9 @@ import ui.board.Cell;
 
 import helper.Position;
 import helper.Assert;
+import helper.collections.CellCollection;
 
 import engine.ranges.states.RookMovementStates;
-
-import java.util.ArrayList;
 
 /**
   * The class <code>BishopRange</code> gives the range for the bishôp 
@@ -29,7 +28,7 @@ public class RookRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addTopCell(BoardModel model, Rook rook, RookMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addTopCell(BoardModel model, Rook rook, RookMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getTopCell(position);
         if(!states.isTopBlocked) {
             if(Assert.isSet(cell)) {
@@ -57,7 +56,7 @@ public class RookRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addRightCell(BoardModel model, Rook rook, RookMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addRightCell(BoardModel model, Rook rook, RookMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getRightCell(position);
         if(!states.isRightBlocked) {
             if(Assert.isSet(cell)) {
@@ -85,7 +84,7 @@ public class RookRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addBottomCell(BoardModel model, Rook rook, RookMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addBottomCell(BoardModel model, Rook rook, RookMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getBottomCell(position);
         if(!states.isBottomBlocked) {
             if(Assert.isSet(cell)) {
@@ -113,7 +112,7 @@ public class RookRange {
       * @param range The current range
       * @param position The current position 
     **/
-    public static void addLeftCell(BoardModel model, Rook rook, RookMovementStates states, ArrayList<Cell> range, Position position) {
+    public static void addLeftCell(BoardModel model, Rook rook, RookMovementStates states, CellCollection range, Position position) {
         Cell cell = model.getLeftCell(position);
         if(!states.isLeftBlocked) {
             if(Assert.isSet(cell)) {

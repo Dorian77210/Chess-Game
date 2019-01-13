@@ -9,6 +9,10 @@ import ui.board.*;
 import helper.Assert;
 import helper.Distance;
 import helper.Position;
+import helper.collections.CellCollection;
+import helper.collections.PieceCollection;
+import helper.collide.PieceCollision;
+import helper.collide.FilterPieces;
 
 import engine.ranges.states.BishopMovementStates;
 import engine.ranges.BishopRange;
@@ -25,12 +29,6 @@ import models.game.players.Player;
 import enums.PlayerType;
 
 import engine.Engine;
-
-import helper.collide.PieceCollision;
-import helper.filters.FilterPiece;
-
-import java.util.ArrayList;
-
 /**
   * The class <code>Ranges</code> fives the movements range for all pieces
   * @version 1.0
@@ -54,7 +52,7 @@ public class Ranges {
       * @param piece The concerned piece
       * @return The available range for the piece 
     **/
-    public ArrayList<Cell> getAvailableRangeFor(Piece piece) {
+    public CellCollection getAvailableRangeFor(Piece piece) {
         if(piece instanceof Bishop) {
             return getAvailableRangeFor((Bishop)piece);
         } else if(piece instanceof Knight) {
@@ -75,8 +73,8 @@ public class Ranges {
       * @param bishop The concerned piece
       * @return The available range for the bishop 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(Bishop bishop) {
-        ArrayList<Cell> range = new ArrayList<Cell>();
+    private CellCollection getAvailableRangeFor(Bishop bishop) {
+        CellCollection range = new CellCollection();
 
         Position position = bishop.getPosition();
 
@@ -87,6 +85,12 @@ public class Ranges {
         BishopRange.addBottomRightCell(this.boardModel, bishop, states, range, bishop.getPosition());
         BishopRange.addBottomLeftCell(this.boardModel, bishop, states, range, bishop.getPosition());
 
+        if((bishop.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
+           (bishop.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        ) {
+            FilterPieces.filterRange(bishop, range, this.boardModel);
+        }
+
         return range;
     }
 
@@ -95,11 +99,11 @@ public class Ranges {
       * @param knight The concerned piece
       * @return The available range for the kngith 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(Knight knight) {
+    private CellCollection getAvailableRangeFor(Knight knight) {
         Position position = knight.getPosition();
         Position currentPosition = null;
 
-        ArrayList<Cell> knightRange = new ArrayList<Cell>();
+        CellCollection knightRange = new CellCollection();
 
         Cell cell;
 
@@ -114,18 +118,12 @@ public class Ranges {
                 }
             }
         }
-        
+
+        //filter the range if his king is checked
         if((knight.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
            (knight.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
         ) {
-            System.out.println(knight.isBlackPiece());
-            Player current = (Engine.instance().informations.isBlackPlayerPlaying())
-                           ? Engine.instance().getPlayer(PlayerType.BLACK_PLAYER)
-                           : Engine.instance().getPlayer(PlayerType.WHITE_PLAYER);
-
-
-            //problem with board model
-            FilterPiece.filterOtherRange(knight, knightRange, current.getKing(), this.boardModel);
+            FilterPieces.filterRange(knight, knightRange, this.boardModel);
         }
 
         return knightRange;
@@ -136,12 +134,12 @@ public class Ranges {
       * @param king The concerned piece
       * @return The available range for the king 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(King king) {
+    private CellCollection getAvailableRangeFor(King king) {
 
-        ArrayList<Cell> kingRange = KingRange.getRawKingRange(this.boardModel, king);
+        CellCollection kingRange = KingRange.getRawKingRange(this.boardModel, king);
+        PieceCollection collidePieces = PieceCollision.getPiecesCollideWithKing(king, kingRange, this.boardModel);
+        FilterPieces.filterKingRange(kingRange, collidePieces, this.boardModel);
 
-        KingRange.removeOpponentPieces(kingRange, this.boardModel, king);
-        
         return kingRange;
     }
 
@@ -150,8 +148,8 @@ public class Ranges {
       * @param queen The concerned piece
       * @return The available range for the queen 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(Queen queen) {
-        ArrayList<Cell> range = new ArrayList<Cell>();
+    private CellCollection getAvailableRangeFor(Queen queen) {
+        CellCollection range = new CellCollection();
 
         QueenMovementStates states = new QueenMovementStates();
 
@@ -165,6 +163,12 @@ public class Ranges {
         QueenRange.addBottomCell(this.boardModel, queen, states, range, queen.getPosition());
         QueenRange.addRightCell(this.boardModel, queen, states, range, queen.getPosition());
         
+        if((queen.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
+           (queen.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        ) {
+            FilterPieces.filterRange(queen, range, this.boardModel);
+        }
+
         return range;
     }
 
@@ -173,8 +177,8 @@ public class Ranges {
       * @param pawn The concerned piece
       * @return The available range for the pawn 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(Pawn pawn) {
-        ArrayList<Cell> range = new ArrayList<Cell>();
+    private CellCollection getAvailableRangeFor(Pawn pawn) {
+        CellCollection range = new CellCollection();
 
         Position position = pawn.getPosition();
         Cell currentCell = null;
@@ -209,6 +213,11 @@ public class Ranges {
             range.add(currentCell);
         }
 
+        if((pawn.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
+           (pawn.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        ) {
+            FilterPieces.filterRange(pawn, range, this.boardModel);
+        }
         return range;
     }
 
@@ -217,8 +226,8 @@ public class Ranges {
       * @param bishop The concerned piece
       * @return The available range for the rook 
     **/
-    private ArrayList<Cell> getAvailableRangeFor(Rook rook) {
-        ArrayList<Cell> range = new ArrayList<Cell>();
+    private CellCollection getAvailableRangeFor(Rook rook) {
+        CellCollection range = new CellCollection();
 
         Position position = rook.getPosition();
 
@@ -229,6 +238,12 @@ public class Ranges {
         RookRange.addRightCell(this.boardModel, rook, states, range, rook.getPosition());
         RookRange.addLeftCell(this.boardModel, rook, states, range, rook.getPosition());
         
+        if((rook.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
+           (rook.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        ) {
+            FilterPieces.filterRange(rook, range, this.boardModel);
+        }
+
         return range;
     }
 

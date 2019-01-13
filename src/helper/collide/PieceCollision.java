@@ -1,110 +1,112 @@
 package helper.collide;
 
-import models.game.pieces.Piece;
-import models.game.pieces.King;
-
-import models.views.BoardModel;
-
-import engine.Engine;
+import helper.collections.CellCollection;
+import helper.collections.PieceCollection;
+import helper.Position;
 
 import ui.board.Cell;
 
-import helper.Position;
+import models.game.pieces.King;
+import models.game.pieces.Piece;
+
+import models.views.BoardModel;
+import models.game.players.Player;
 
 import engine.ranges.KingRange;
 
-import models.game.players.Player;
-import enums.PlayerType;
-
-import java.util.ArrayList;
+import engine.Engine;
 
 /**
-  * The class <code>PieceCollision</code> checks the collisions between pieces
+  * The class <code>PieceCollision</code> give the collide pieces 
   * @version 1.0
   * @author Dorian Terbah 
 **/
 
 public class PieceCollision {
-    
-    public PieceCollision() {
-
-    }
 
     /**
-      * Get the pieces which collide with a piece
-      * @param kingRange The currentking range
-      * @param king The current king
-      * @param model The model of the game
-      * @return All pieces which collide with the piece
+      * Get the pieces which put directly the king in check
+      * @param king The concerned king
+      * @param rawRange The raw range of the king
+      * @param model The model of the board 
     **/
-    public static final ArrayList<Piece> getPiecesCollideWithKing(ArrayList<Cell> kingRange, King king, BoardModel model) {
-        ArrayList<Piece> opponentPieces = Engine.instance().getNotCurrentPlayer().getPieces();
+    public static final PieceCollection getDirectPiecesCollideWithKing(King king, CellCollection rawRange, BoardModel model) {
+        //retrieve the opponents pieces
+        Player opponentPlayer = Engine.instance().getNotCurrentPlayer();
+        PieceCollection opponentPieces = opponentPlayer.getPieces();
+        PieceCollection directPieces = new PieceCollection();
 
-        ArrayList<Piece> result = getPiecesDirectCollideWith(king, opponentPieces, model);
-        ArrayList<Cell> range;
         Cell kingCell = model.getCell(king.getPosition());
-        Cell cell;
+        CellCollection range;
 
+        for(Piece opponentPiece : opponentPieces) {
+            // retrieve the range of the current opponent piece
+            range = (opponentPiece instanceof King)
+                    ? KingRange.getRawKingRange(model, (King)opponentPiece)
+                    : Engine.instance().ranges.getAvailableRangeFor(opponentPiece);
+
+            if(range.contains(kingCell)) {
+                directPieces.add(opponentPiece);
+            }
+        }
+
+        return directPieces;
+    }
+
+    /** 
+      * Get the peices which could put the king in the next round
+      * @param king The concerned king 
+      * @param rawRange The raw range of the king
+      * @param model The model of the board 
+    **/
+    public static final PieceCollection getIndirectPiecesCollideWithKing(King king, CellCollection rawRange, BoardModel model) {
+        //retrieve the opponents pieces
+        Player opponentPlayer = Engine.instance().getNotCurrentPlayer();
+        PieceCollection opponentPieces = opponentPlayer.getPieces();
+        PieceCollection indirectPieces = new PieceCollection();
+
+        CellCollection range;
+        Cell cell;
+        Cell kingCell = model.getCell(king.getPosition());
+
+        int i;
         Piece piece;
 
         for(Piece opponentPiece : opponentPieces) {
-            for(int i = 0; i < kingRange.size(); i++) {
-                cell = kingRange.get(i);
+            for(i= 0; i < rawRange.size();) {
+                cell = rawRange.get(i);
                 piece = cell.getPiece();
                 cell.setPiece(king);
+                range = (opponentPiece instanceof King)
+                        ? KingRange.getRawKingRange(model, (King)opponentPiece)
+                        : Engine.instance().ranges.getAvailableRangeFor(opponentPiece);
 
-                range = (opponentPiece instanceof King) 
-                      ? KingRange.getRawKingRange(model, (King)opponentPiece)
-                      : Engine.instance().ranges.getAvailableRangeFor(opponentPiece);
-                
                 if(range.contains(cell)) {
-                    result.add(opponentPiece);
+                    rawRange.remove(cell);
+                } else {
+                    i++;
                 }
 
+                //retrieve the normal state for the cell
                 cell.setPiece(piece);
             }
         }
 
-        // set the king model to his initial position
         kingCell.setPiece(king);
-        return result;
+
+        return indirectPieces;
     }
 
     /**
-      * Get the pieces with collide direct with the king
-      * @param kingRange The range of the king
+      * Get the indirect and direct pieces which collide with the king
       * @param king The concerned king
+      * @param rawRange The raw range of the king
       * @param model The model of the board
-      * @return The pieces which collide with king 
     **/
-    public static final ArrayList<Piece> getPiecesDirectCollideWith(King king, ArrayList<Piece> opponentPieces, BoardModel model) {
-        ArrayList<Piece> result = new ArrayList<Piece>();
-        ArrayList<Cell> range;
-        Cell kingCell = model.getCell(king.getPosition());
+    public static final PieceCollection getPiecesCollideWithKing(King king, CellCollection rawRange, BoardModel model) {
+        PieceCollection collection = getIndirectPiecesCollideWithKing(king, rawRange, model);
+        collection.addAll(getDirectPiecesCollideWithKing(king, rawRange, model));
 
-        for(Piece opponentPiece : opponentPieces) {
-            range = (opponentPiece instanceof King) 
-                  ? KingRange.getRawKingRange(model, (King)opponentPiece)
-                  : Engine.instance().ranges.getAvailableRangeFor(opponentPiece);
-
-            if(range.contains(kingCell)) {
-                result.add(opponentPiece);
-            }
-        }
-
-
-        if((result.size() > 0) && Engine.instance().informations.isBlackPlayerPlaying() && !Engine.instance().informations.isBlackPlayerChecked()) {
-            Engine.instance().informations.setIsBlackPlayerChecked(true);
-            System.out.println("ppp");
-        } else if((result.size() > 0) && !Engine.instance().informations.isBlackPlayerPlaying() && !Engine.instance().informations.isWhitePlayerChecked()) {
-            Engine.instance().informations.setIsWhitePlayerChecked(true);
-            Engine.instance().informations.setIsBlackPlayerChecked(false);
-            System.out.println("lll");
-        } else if(result.size() == 0) {
-            Engine.instance().informations.setIsBlackPlayerChecked(false);            
-            Engine.instance().informations.setIsWhitePlayerChecked(false);
-        }
-
-        return result;
+        return collection;
     }
 }

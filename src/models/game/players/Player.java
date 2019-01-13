@@ -1,9 +1,14 @@
 package models.game.players;
 
+import models.game.pieces.Pawn;
 import models.game.pieces.Piece;
+import models.game.pieces.Queen;
 import models.game.pieces.King;
 
 import enums.PlayerType;
+
+import helper.collections.PieceCollection;
+import helper.Position;
 
 import java.util.ArrayList;
 
@@ -18,14 +23,14 @@ public class Player {
     /**
       * The pieces of the player 
     **/
-    private ArrayList<Piece> pieces;
+    private PieceCollection pieces;
 
     /**
       * The type of the player 
     **/
     private PlayerType type;
 
-    public Player(PlayerType type, ArrayList<Piece> pieces) {
+    public Player(PlayerType type, PieceCollection pieces) {
         this.type = type;
         this.pieces = pieces;
     }
@@ -38,7 +43,7 @@ public class Player {
       * Get all pieces of the player
       * @return The pieces of the player  
     **/
-    public ArrayList<Piece> getPieces() {
+    public PieceCollection getPieces() {
         return this.pieces;
     }
 
@@ -74,5 +79,21 @@ public class Player {
     **/
     public void removePiece(Piece piece) {
         this.pieces.remove(piece);
+    }
+
+    /***************************** 
+    *********PAWN TO QUEEN******** 
+    *****************************/
+    
+    /**
+      * Transform a pawn to a queen
+      * @param pawn The concerned pawn 
+    **/
+    public Queen pawnToQueen(Pawn pawn) {
+        Queen queen = new Queen(pawn.getPosition(), pawn.getPieceType());
+        this.pieces.remove(pawn);
+        this.pieces.add(queen);
+
+        return queen;
     }
 }

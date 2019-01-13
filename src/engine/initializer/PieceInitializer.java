@@ -10,6 +10,7 @@ import engine.game.GamePieces;
 
 import ui.board.BoardView;
 
+import helper.collections.PieceCollection;
 import helper.constants.PieceConstants;
 import helper.Console;
 import helper.Position;
@@ -33,8 +34,8 @@ public class PieceInitializer {
     public static final GamePieces recoverPieces() {
         GamePieces gamePieces = null;
 
-        ArrayList<Piece> whitePieces = new ArrayList<Piece>();
-        ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+        PieceCollection whitePieces = new PieceCollection();
+        PieceCollection blackPieces = new PieceCollection();
 
         byte mask = 0;
 

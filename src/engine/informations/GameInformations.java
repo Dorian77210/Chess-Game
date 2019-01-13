@@ -38,6 +38,13 @@ public class GameInformations {
         this.rounds = 1;
     }
 
+    public GameInformations(GameInformations informations) {
+        this.isEndOfGame = informations.isEndOfGame;
+        this.rounds = informations.rounds;
+        this.isWhitePlayerChecked = informations.isWhitePlayerChecked;
+        this.isBlackPlayerChecked = informations.isBlackPlayerChecked;
+    }
+
     /***************************** 
     *************GETTER*********** 
     

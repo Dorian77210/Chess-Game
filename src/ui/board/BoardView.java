@@ -17,13 +17,13 @@ import ui.views.View;
 import enums.GameMode;
 
 import helper.constants.Palette;
+import helper.collections.CellCollection;
 
 import javax.swing.JPanel;
 
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 
-import java.util.ArrayList;
 
 /**
   * The class <code>BoardView</code> represents the game
@@ -121,7 +121,7 @@ public class BoardView extends View {
       * Show the movement area of a piece
       * @param range The movement range
     **/
-    public void showMovementRange(ArrayList<Cell> range) {
+    public void showMovementRange(CellCollection range) {
         for(Cell cell : range) {
             cell.setBackground(Palette.RANGE_CELL_COLOR);
         }
