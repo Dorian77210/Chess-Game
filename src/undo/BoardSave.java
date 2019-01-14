@@ -45,6 +45,14 @@ public class BoardSave {
     }
 
     /**
+      * Get all of the pieces
+      * @return All of the pieces 
+    **/
+    public PieceCollection getAllPieces() {
+        return this.allPieces;
+    }
+
+    /**
       * Get the informations of the game
       * @return The informations of the game
     **/

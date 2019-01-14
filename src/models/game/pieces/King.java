@@ -21,9 +21,42 @@ public class King extends Piece {
 	**/
 	private static final String KING_REPRESENTATION = "king.png";
 
+    /**
+      * Boolean to verify if the king was already in checked 
+    **/
+    private boolean wasAlreadyChecked;
+
 	public King(Position position, PieceType type) {
 		super(position, type);
 		this.representation = Piece.BASE_PATH;
-		this.representation += (this.isBlackPiece) ? "black-side/" + KING_REPRESENTATION : "white-side/" + KING_REPRESENTATION; 
-	}
+        this.representation += (this.isBlackPiece) ? "black-side/" + KING_REPRESENTATION : "white-side/" + KING_REPRESENTATION; 
+        
+        //defautl value
+        this.wasAlreadyChecked = false;
+    }
+
+    public King(King king) {
+        super(king);
+    }
+    
+    /*****************************
+    *************GETTER***********
+    *****************************/
+    /**
+      * Get if the king was already in checked
+      * @param True if the king was already checked, else false 
+    **/
+    public boolean wasAlreadyChecked() {
+        return this.wasAlreadyChecked;
+    }
+
+    /***************************** 
+    *************SETTER*********** 
+    *****************************/
+    /**
+      * Toggle the wasAlreadyChecked state
+    **/
+    public void toggleWasAlreadyChecked() {
+        this.wasAlreadyChecked = !this.wasAlreadyChecked;
+    }
 }

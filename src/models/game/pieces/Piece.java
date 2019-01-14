@@ -53,6 +53,17 @@ public class Piece {
         this.isFirstTimeMoving = true;
     }
 
+    public Piece(Piece piece) {
+        this.position = new Position(piece.position.x, piece.position.y);
+        this.type = piece.type;
+
+        this.isBlackPiece = piece.isBlackPiece;
+
+        this.isFirstTimeMoving = piece.isFirstTimeMoving;
+
+        this.representation = piece.representation;
+    }
+
     /***************************** 
     *************GETTER*********** 
     *****************************/

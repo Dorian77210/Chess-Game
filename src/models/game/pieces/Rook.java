@@ -26,4 +26,8 @@ public class Rook extends Piece {
         this.representation = Piece.BASE_PATH;
         this.representation += (this.isBlackPiece) ? "black-side/" + ROOK_REPRESENTATION : "white-side/" + ROOK_REPRESENTATION;
     }
+
+    public Rook(Rook rook) {
+        super(rook);
+    }
 }

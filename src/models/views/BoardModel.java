@@ -10,6 +10,8 @@ import helper.Position;
 import enums.GameMode;
 
 import models.game.pieces.Piece;
+import models.game.pieces.King;
+import models.game.pieces.Rook;
 
 import ui.board.BoardView;
 
@@ -139,10 +141,11 @@ public class BoardModel {
             this.selectedCell = targetCell;
         }   
 
+        Piece targetPiece = targetCell.getPiece();
         Piece piece = this.selectedCell.getPiece();
         if(Assert.isSet(piece) && piece.canMove()) {
             Engine.actions.move(piece, targetCell, this);
-        }
+        } 
 
         this.selectedCell = targetCell;
     }

@@ -12,12 +12,16 @@ import models.game.pieces.*;
 
 import models.views.BoardModel;
 
+import helper.Position;
+
 import ui.views.View;
+import ui.side.UndoRedoView;
 
 import enums.GameMode;
 
 import helper.constants.Palette;
 import helper.collections.CellCollection;
+import helper.collections.PieceCollection;
 
 import javax.swing.JPanel;
 
@@ -59,6 +63,11 @@ public class BoardView extends View {
     private PieceCountView pieceCountView;
 
     /**
+      * The undo/redo view 
+    **/
+    private UndoRedoView undoRedoView;
+
+    /**
       * The controller of the board 
     **/
     private BoardController controller;
@@ -81,9 +90,10 @@ public class BoardView extends View {
         this.addActionListenerToCells();
 
         this.pieceCountView = new PieceCountView();
-
         this.add(this.pieceCountView, BorderLayout.WEST);
 
+        this.undoRedoView = new UndoRedoView(this);
+        this.add(this.undoRedoView, BorderLayout.SOUTH);
     }
 
     /***************************** 
@@ -149,6 +159,35 @@ public class BoardView extends View {
                 cell = this.cells[y][x];
                 this.controller.addActionListenerTo(cell);
             }
+        }
+    }
+
+    /***************************** 
+    ************VERSION*********** 
+    *****************************/
+    /**
+      * Change the version of the version
+      * @param allPieces All of the pieces 
+    **/
+    public void changeVersion(PieceCollection allPieces) {
+        this.refreshBoard();
+
+        Cell cell;
+        Position position;
+        //delete all of the pieces
+        for(int y = 0; y < HEIGHT; y++) {
+            for(int x = 0; x < WIDTH; x++) {
+                cell = this.cells[y][x];
+                cell.deletePiece();
+            }
+        }
+
+        //set the new models
+        for(Piece piece : allPieces) {
+            position = piece.getPosition();
+            cell = this.cells[position.y][position.x];
+            cell.setPiece(piece);
+            cell.refreshAppearance();
         }
     }
 }

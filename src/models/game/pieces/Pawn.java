@@ -27,4 +27,7 @@ public class Pawn extends Piece {
         this.representation += (this.isBlackPiece) ? "black-side/" + PAWN_REPRESENTATION : "white-side/" + PAWN_REPRESENTATION;
     }
 
+    public Pawn(Pawn pawn) {
+        super(pawn);
+    }
 }

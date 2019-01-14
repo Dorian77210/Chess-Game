@@ -70,6 +70,17 @@ public class Player {
     }
 
     /***************************** 
+    *************SETTER*********** 
+    *****************************/
+    /**
+      * Set the pieces for the player
+      * @param pieces The new pieces 
+    **/
+    public void setPieces(PieceCollection pieces) {
+        this.pieces = pieces;
+    }
+
+    /***************************** 
     *********REMOVE METHOD******** 
     *****************************/
 

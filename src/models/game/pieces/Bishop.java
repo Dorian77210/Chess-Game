@@ -26,4 +26,8 @@ public class Bishop extends Piece {
         this.representation = Piece.BASE_PATH;
         this.representation += (this.isBlackPiece) ? "black-side/" + BISHOP_REPRESENTATION : "white-side/" + BISHOP_REPRESENTATION;
     }
+
+    public Bishop(Bishop bishop) {
+        super(bishop);
+    }
 }

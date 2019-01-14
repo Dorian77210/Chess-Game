@@ -180,7 +180,8 @@ public class Engine {
       * @return all of the pieces 
     **/
     public PieceCollection getAllPieces() {
-        PieceCollection collection = this.whitePlayer.getPieces();
+        PieceCollection collection = new PieceCollection();
+        collection.addAll(this.whitePlayer.getPieces());
         collection.addAll(this.blackPlayer.getPieces());
 
         return collection;
@@ -203,8 +204,14 @@ public class Engine {
         if(!collidePieces.isEmpty()) {
             if(currentPlayer.isBlackPlayer()) {
                 this.informations.setIsBlackPlayerChecked(true);
+                if(!currentKing.wasAlreadyChecked()) {
+                    currentKing.toggleWasAlreadyChecked();
+                }
             } else {
                 this.informations.setIsWhitePlayerChecked(true);
+                if(!currentKing.wasAlreadyChecked()) {
+                    currentKing.toggleWasAlreadyChecked();
+                }
             }
         }
     }

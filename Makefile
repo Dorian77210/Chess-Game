@@ -20,6 +20,7 @@ ENUMS_DIR := $(SRC_DIR)enums/
 ######CONTROLLER########
 CONTROLLER_DIR := $(SRC_DIR)controller/
 CONTROLLER_BOARD_DIR = $(CONTROLLER_DIR)board/
+CONTROLLER_SIDE_DIR := $(CONTROLLER_DIR)side/
 CONTROLLER_VIEWS_DIR := $(CONTROLLER_DIR)views/
 CONTROLLER_WINDOW_DIR := $(CONTROLLER_DIR)window/
 
@@ -45,6 +46,8 @@ UI_BOARD_DIR := $(UI_DIR)board/
 UI_SIDE_DIR := $(UI_DIR)side/
 UI_VIEWS_DIR := $(UI_DIR)views/
 
+######UNDO PART####
+UNDO_DIR := $(SRC_DIR)undo/
 
 FLAGS := -d $(BIN_DIR) -sourcepath $(SRC_DIR) -classpath $(BIN_DIR)
 JC := javac
@@ -81,6 +84,11 @@ $(BIN_DIR)HomeController: $(CONTROLLER_VIEWS_DIR)HomeController.java $(BIN_DIR)W
 						  $(BIN_DIR)WindowState.class
 	$(JC) $(FLAGS) $(CONTROLLER_VIEWS_DIR)HomeController.java
 
+#controller.side
+$(BIN_DIR)UndoRedoController.class: $(CONTROLLER_SIDE_DIR)UndoRedoController.java $(BIN_DIR)BoardSave.class $(BIN_DIR)UndoRedo.class \
+								    $(BIN_DIR)BoardView.class $(BIN_DIR)Engine.class $(BIN_DIR)Assert.class
+	$(JC) $(FLAGS) $(CONTROLLER_SIDE_DIR)UndoRedoController.java
+
 #controller.window
 $(BIN_DIR)WindowSizeController.class: $(CONTROLLER_WINDOW_DIR)WindowSizeController.java $(BIN_DIR)Window.class
 	$(JC) $(FLAGS) $(CONTROLLER_WINDOW_DIR)WindowSizeController.java
@@ -99,7 +107,8 @@ $(BIN_DIR)Engine.class: $(ENGINE_DIR)Engine.java $(BIN_DIR)Player.class $(BIN_DI
 $(BIN_DIR)Actions.class: $(ENGINE_ACTIONS_DIR)Actions.java $(BIN_DIR)Position.class $(BIN_DIR)Cell.class \
 						 $(BIN_DIR)Cell.class $(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class \
 						 $(BIN_DIR)PlayerType.class $(BIN_DIR)Player.class $(BIN_DIR)Assert.class \
-						 $(BIN_DIR)CellCollection.class $(BIN_DIR)Pawn.class $(BIN_DIR)Queen.class
+						 $(BIN_DIR)CellCollection.class $(BIN_DIR)Pawn.class $(BIN_DIR)Queen.class \
+						 $(BIN_DIR)Rook.class $(BIN_DIR)King.class $(BIN_DIR)UndoRedo.class
 	$(JC) $(FLAGS) $(ENGINE_ACTIONS_DIR)Actions.java
 
 #engine.counter
@@ -201,6 +210,11 @@ $(BIN_DIR)Position.class: $(HELPER_DIR)Position.java
 $(BIN_DIR)CellCollection.class: $(HELPER_COLLECTIONS_DIR)CellCollection.java $(BIN_DIR)Cell.class
 	$(JC) $(FLAGS) $(HELPER_COLLECTIONS_DIR)CellCollection.java
 
+$(BIN_DIR)PieceCollection.class: $(HELPER_COLLECTIONS_DIR)PieceCollection.java $(BIN_DIR)Bishop.class $(BIN_DIR)Knight.class \
+								 $(BIN_DIR)King.class $(BIN_DIR)Pawn.class $(BIN_DIR)Queen.class \
+								 $(BIN_DIR)Rook.class
+	$(JC) $(FLAGS) $(HELPER_COLLECTIONS_DIR)PieceCollection.java
+
 #helper.collide
 $(BIN_DIR)FilterPieces.class: $(HELPER_COLLIDE_DIR)FilterPieces.java $(BIN_DIR)Piece.class $(BIN_DIR)CellCollection.class \
 							  $(BIN_DIR)PieceCollection.class $(BIN_DIR)King.class $(BIN_DIR)BoardModel.class \
@@ -212,9 +226,6 @@ $(BIN_DIR)PieceCollision.class: $(HELPER_COLLIDE_DIR)PieceCollision.java $(BIN_D
 								$(BIN_DIR)BoardModel.class $(BIN_DIR)Engine.class $(BIN_DIR)Cell.class \
 								$(BIN_DIR)KingRange.class $(BIN_DIR)Player.class $(BIN_DIR)Position.class
 	$(JC) $(FLAGS) $(HELPER_COLLIDE_DIR)PieceCollision.java
-
-$(BIN_DIR)PieceCollection.class: $(HELPER_COLLECTIONS_DIR)PieceCollection.java $(BIN_DIR)Piece.class
-	$(JC) $(FLAGS) $(HELPER_COLLECTIONS_DIR)PieceCollection.java
 
 #helper.constants
 $(BIN_DIR)Palette.class: $(HELPER_CONSTANTS_DIR)Palette.java
@@ -270,11 +281,21 @@ $(BIN_DIR)BoardModel.class: $(MODEL_VIEWS_DIR)BoardModel.java $(BIN_DIR)Cell.cla
 $(BIN_DIR)PieceRepresentation.class: $(MODEL_VIEWS_SIDE_DIR)PieceRepresentation.java $(BIN_DIR)PlayerType.class $(BIN_DIR)KindOfPiece.class
 	$(JC) $(FLAGS) $(MODEL_VIEWS_SIDE_DIR)PieceRepresentation.java
 
+#undo
+$(BIN_DIR)BoardSave.class: $(UNDO_DIR)BoardSave.java $(BIN_DIR)PieceCollection.class $(BIN_DIR)PieceType.class \
+						   $(BIN_DIR)GameInformations.class
+	$(JC) $(FLAGS) $(UNDO_DIR)BoardSave.java
+
+$(BIN_DIR)UndoRedo.class: $(UNDO_DIR)UndoRedo.java $(BIN_DIR)Assert.class $(BIN_DIR)BoardSave.class \
+						  $(BIN_DIR)PieceCollection.class $(BIN_DIR)Engine.class $(BIN_DIR)GameInformations.class 
+	$(JC) $(FLAGS) $(UNDO_DIR)UndoRedo.java
+
 #ui 
 
 #ui.board
 $(BIN_DIR)BoardView.class: $(UI_BOARD_DIR)BoardView.java $(BIN_DIR)Cell.class $(BIN_DIR)Engine.class \
-						$(BIN_DIR)View.class $(BIN_DIR)BoardController.class $(BIN_DIR)Palette.class
+						   $(BIN_DIR)View.class $(BIN_DIR)BoardController.class $(BIN_DIR)Palette.class \
+						   $(BIN_DIR)UndoRedoView.class $(BIN_DIR)PieceCollection.class $(BIN_DIR)Position.class
 	$(JC) $(FLAGS) $(UI_BOARD_DIR)BoardView.java
 
 $(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \
@@ -283,12 +304,15 @@ $(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.java $(BIN_DIR)Position.class $(BIN_DI
 
 #ui.side
 $(BIN_DIR)ItemView.class: $(UI_SIDE_DIR)ItemView.java $(BIN_DIR)PlayerType.class $(BIN_DIR)KindOfPiece.class \
-						  $(BIN_DIR)PieceRepresentation.class $(BIN_DIR)Engine.class*
+						  $(BIN_DIR)PieceRepresentation.class $(BIN_DIR)Engine.class
 	$(JC) $(FLAGS) $(UI_SIDE_DIR)ItemView.java
 
 $(BIN_DIR)PieceCountView.class: $(UI_SIDE_DIR)PieceCountView.java $(BIN_DIR)ItemView.class $(BIN_DIR)Engine.class \
 								$(BIN_DIR)KindOfPiece.class $(BIN_DIR)PlayerType.class $(BIN_DIR)Piece.class 
 	$(JC) $(FLAGS) $(UI_SIDE_DIR)PieceCountView.java
+
+$(BIN_DIR)UndoRedoView.class: $(UI_SIDE_DIR)UndoRedoView.java $(BIN_DIR)UndoRedoController.class $(BIN_DIR)BoardView.class
+	$(JC) $(FLAGS) $(UI_SIDE_DIR)UndoRedoView.java
 
 #ui.views
 $(BIN_DIR)CreditView.class: $(UI_VIEWS_DIR)CreditView.java $(BIN_DIR)View.class $(BIN_DIR)Window.class \

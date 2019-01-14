@@ -1,6 +1,6 @@
 package helper.collections;
 
-import models.game.pieces.Piece;
+import models.game.pieces.*;
 
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -102,6 +102,35 @@ public class PieceCollection extends ArrayList<Piece> {
         }
 
         return collection;
+    }
 
+    /***************************** 
+    ************CLONE************* 
+    ******************************/
+
+    @Override 
+    /**
+      * Return a cloned instance of this
+      * @return A new cloned instance of this
+    **/
+    public PieceCollection clone() {
+        PieceCollection collection = new PieceCollection();
+        for(Piece piece : this) {
+            if(piece instanceof Bishop) {
+                collection.add(new Bishop((Bishop)piece));
+            } else if(piece instanceof Pawn) {
+                collection.add(new Pawn((Pawn)piece));
+            } else if(piece instanceof Knight) {
+                collection.add(new Knight((Knight)piece));
+            } else if(piece instanceof King) {
+                collection.add(new King((King)piece));
+            } else if(piece instanceof Queen) {
+                collection.add(new Queen((Queen)piece));
+            } else if(piece instanceof Rook) {
+                collection.add(new Rook((Rook)piece));
+            }
+        }
+
+        return collection;
     }
 }
