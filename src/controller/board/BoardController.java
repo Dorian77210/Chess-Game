@@ -57,6 +57,8 @@ public class BoardController implements ActionListener {
         this.boardModel.setSelectedCell(cell);
 
         this.boardView.refreshCounts();
+
+        //this.boardView.refreshLog()
     }   
 
     /**

@@ -13,7 +13,7 @@ import java.util.LinkedList;
 /**
   * The class <code>UndoRedo</code> controls the undo and the redo
   * @version 1.0
-  * @author Dorian Terbah, Pierre Castro, Titouann Wattelet, Rémi Gaudru, Valentin Froidefond, Lucas Augusto 
+  * @author Dorian Terbah
 **/
 
 public class UndoRedo {

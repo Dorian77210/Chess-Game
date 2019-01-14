@@ -23,6 +23,9 @@ import helper.constants.Palette;
 import helper.collections.CellCollection;
 import helper.collections.PieceCollection;
 
+import undo.UndoRedo;
+import log.Log;
+
 import javax.swing.JPanel;
 
 import java.awt.GridLayout;
@@ -94,6 +97,10 @@ public class BoardView extends View {
 
         this.undoRedoView = new UndoRedoView(this);
         this.add(this.undoRedoView, BorderLayout.SOUTH);
+
+        //refresh stacks
+        Log.instance().refreshStacks();
+        UndoRedo.instance().refreshStacks();
     }
 
     /***************************** 
