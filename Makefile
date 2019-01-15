@@ -296,7 +296,7 @@ $(BIN_DIR)UndoRedo.class: $(UNDO_DIR)UndoRedo.java $(BIN_DIR)Assert.class $(BIN_
 $(BIN_DIR)BoardView.class: $(UI_BOARD_DIR)BoardView.java $(BIN_DIR)Cell.class $(BIN_DIR)Engine.class \
 						   $(BIN_DIR)View.class $(BIN_DIR)BoardController.class $(BIN_DIR)Palette.class \
 						   $(BIN_DIR)UndoRedoView.class $(BIN_DIR)PieceCollection.class $(BIN_DIR)Position.class \
-						   $(BIN_DIR)UndoRedo.class $(BIN_DIR)Log.class
+						   $(BIN_DIR)UndoRedo.class 
 	$(JC) $(FLAGS) $(UI_BOARD_DIR)BoardView.java
 
 $(BIN_DIR)Cell.class: $(UI_BOARD_DIR)Cell.java $(BIN_DIR)Position.class $(BIN_DIR)Assert.class \

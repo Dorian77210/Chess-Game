@@ -196,5 +196,7 @@ public class BoardView extends View {
             cell.setPiece(piece);
             cell.refreshAppearance();
         }
+
+        this.refreshCounts();
     }
 }

@@ -45,6 +45,8 @@ public class Actions {
         Player targetPlayer = Engine.instance().getNotCurrentPlayer();
         
         if(canMakeCastling(piece, target.getPiece(), model)) {
+            //save the image of the game
+            UndoRedo.instance().push(Engine.instance().getAllPieces().clone());
             castling((King)piece, (Rook)target.getPiece(), model);
             return;
         }
