@@ -103,6 +103,12 @@ public class Actions {
 
             Engine.instance().updateCheckedStates();
 
+            if(Engine.instance().informations.isBlackPlayerChecked()) {
+                Log.instance().push(new LogItem(true));
+            } else if(Engine.instance().informations.isWhitePlayerChecked()) {
+                Log.instance().push(new LogItem(false));
+            }
+
             
         }
     }

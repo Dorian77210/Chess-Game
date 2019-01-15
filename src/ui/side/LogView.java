@@ -46,8 +46,7 @@ public class LogView extends JPanel {
         pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         //display log
-        this.setPreferredSize(new Dimension(220, Window.HEIGHT));
-        this.log.setSize(220, Window.HEIGHT);
+        this.setPreferredSize(new Dimension(200, Window.HEIGHT));
         this.log.setLineWrap(true);
         this.log.setEditable(false);
 

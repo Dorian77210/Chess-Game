@@ -35,13 +35,21 @@ public class LogItem {
         this.message = "";
         if(type.equals(ActionType.CASTLING_ACTION)) {
             this.createCastlingMessage(source, target);
-        } else {
+        } else if(type.equals(ActionType.EATEN_ACTION)) {
             this.createEatenMessage(source, target);
-        }
+        } 
+    }
+
+    /**
+      * Constructor for the checked message 
+    **/
+    public LogItem(boolean isBlackChecked) {
+        this.message = "";
+        this.createCheckedMessage(isBlackChecked);
     }
 
     /***************************** 
-    ***********MESSGAES*********** 
+    ***********MESSAGES*********** 
     *****************************/
 
     /**
@@ -52,6 +60,15 @@ public class LogItem {
     private void createCastlingMessage(Piece source, Piece target) {
         String team = source.isBlackPiece() ? " black side" : "white side";
         this.message = "Castling for the " + team;
+    }
+
+    /**
+      * Create a message for the checked 
+      * @param isBlackChecked The state of checked black 
+    **/
+    private void createCheckedMessage(boolean isBlackChecked) {
+        String team = isBlackChecked ? "Black King" : "White King";
+        this.message = "The " + team + " is checked !";
     }
 
     /**

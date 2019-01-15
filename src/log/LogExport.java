@@ -32,7 +32,7 @@ public class LogExport {
                             .append("####################################################\n")
                             .append(dateFormat.format(date) + "\n")
                             .toString();
-
+    
         String footer = new StringBuilder()
                             .append("####################################################\n")
                             .append("##################### END LOG ######################\n")
