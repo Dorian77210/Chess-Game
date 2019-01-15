@@ -2,7 +2,6 @@ package log;
 
 import helper.Assert;
 import helper.collections.LogCollection;
-
 import log.LogItem;
 
 
@@ -24,16 +23,16 @@ public class Log {
     /**
       * Stack used for the undo 
     **/
-    private LinkedList<LogCollection> undoStack;
+    private LinkedList<LogItem> undoStack;
 
     /**
       * Stack used for the redo 
     **/
-    private LinkedList<LogCollection> redoStack;
+    private LinkedList<LogItem> redoStack;
 
     private Log() {
-        this.undoStack = new LinkedList<LogCollection>();
-        this.redoStack = new LinkedList<LogCollection>();
+        this.undoStack = new LinkedList<LogItem>();
+        this.redoStack = new LinkedList<LogItem>();
     }
 
     /**
@@ -52,10 +51,11 @@ public class Log {
       * Give a previous log of the game 
       * @return The previous log of the game
     **/
-    public LogCollection undo(LogCollection logCollection) {
+    public LogItem undo() {
         if(!this.undoStack.isEmpty()) {
-            this.redoStack.add(logCollection);
-            return this.undoStack.removeLast();
+            LogItem item = this.undoStack.removeLast();
+            this.redoStack.add(item);            
+            return item;
         }
 
         return null;
@@ -65,10 +65,11 @@ public class Log {
       * Give a next log of the game
       * @return The next version of the game
     **/
-    public LogCollection redo(LogCollection logCollection) {
+    public LogItem redo() {
         if(!this.redoStack.isEmpty()) {
-            this.undoStack.add(logCollection);
-            return this.redoStack.removeLast();
+            LogItem item = this.redoStack.removeLast();
+            this.undoStack.add(item);
+            return item;
         }
 
         return null;
@@ -76,10 +77,10 @@ public class Log {
 
     /**
       * Push a new log of the game
-      * @param logCollection The new log
+      * @param item The new item
     **/
-    public void push(LogCollection logCollection) {
-        this.undoStack.add(logCollection);
+    public void push(LogItem item) {
+        this.undoStack.add(item);
         this.clearRedoStack();
     }
 
@@ -99,5 +100,19 @@ public class Log {
     public void refreshStacks() {
         this.redoStack.clear();
         this.undoStack.clear();
+    }
+
+    /**
+      * Get the log 
+      * @return The log 
+    **/
+    public LogCollection getLog() {
+        LogCollection collection = new LogCollection();
+
+        for(LogItem item : this.undoStack) {
+            collection.add(item);
+        }
+
+        return collection; 
     }
 }

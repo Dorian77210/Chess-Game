@@ -58,7 +58,7 @@ public class BoardController implements ActionListener {
 
         this.boardView.refreshCounts();
 
-        //this.boardView.refreshLog()
+        this.boardView.refreshDisplayLog();
     }   
 
     /**

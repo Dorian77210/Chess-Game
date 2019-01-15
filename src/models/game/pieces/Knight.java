@@ -30,6 +30,8 @@ public class Knight extends Piece {
         super(position, type);
         this.representation = Piece.BASE_PATH;
         this.representation += (this.isBlackPiece) ? "black-side/" + KNIGHT_REPRESENTATION : "white-side/" + KNIGHT_REPRESENTATION;
+
+        this.classInfo = "Knight";
     }
 
     public Knight(Knight knight) {

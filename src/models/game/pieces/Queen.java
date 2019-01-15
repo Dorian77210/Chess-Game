@@ -25,6 +25,8 @@ public class Queen extends Piece {
         super(position, type);
         this.representation = Piece.BASE_PATH;
         this.representation += (this.isBlackPiece) ? "black-side/" + QUEEN_REPRESENTATION : "white-side/" + QUEEN_REPRESENTATION;
+
+        this.classInfo = "Queen";
     }
 
     public Queen(Queen queen) {

@@ -14,6 +14,8 @@ import helper.Assert;
 
 import ui.board.BoardView;
 
+import log.Log;
+
 import undo.UndoRedo;
 import undo.BoardSave;
 
@@ -73,7 +75,19 @@ public class UndoRedoController implements ActionListener {
             Engine.instance().getPlayer(PlayerType.BLACK_PLAYER).setPieces(result.getPiecesAccordingToColor(false));
             Engine.instance().getPlayer(PlayerType.WHITE_PLAYER).setPieces(result.getPiecesAccordingToColor(true));
             Engine.instance().informations = result.getGameInformations();
+            
+            //update log
+            if(actionCommand.equals(UNDO_ACTION_COMMAND)) {
+                Log.instance().undo();
+            } else {
+                Log.instance().redo();
+            }
+
+            //refresh the board
             this.boardView.changeVersion(result.getAllPieces());
+            this.boardView.refreshBoard();
+            this.boardView.refreshDisplayLog();
+            this.boardView.refreshCounts();
         }
     }
 }

@@ -43,6 +43,11 @@ public class Piece {
     **/
     protected String representation;
 
+    /**
+      * Describe the class 
+    **/
+    protected String classInfo;
+
     public Piece(Position position, PieceType type) {
         this.position = position;
         this.type = type;
@@ -62,6 +67,8 @@ public class Piece {
         this.isFirstTimeMoving = piece.isFirstTimeMoving;
 
         this.representation = piece.representation;
+
+        this.classInfo = "";
     }
 
     /***************************** 
@@ -130,6 +137,14 @@ public class Piece {
     **/
     public boolean isSameTeamAs(Piece piece) {
         return (this.type.equals(piece.type));
+    }
+
+    /**
+      * Get the class info
+      * @return The class info 
+    **/
+    public String getClassInfo() {
+        return this.classInfo;
     }
 
     /***************************** 

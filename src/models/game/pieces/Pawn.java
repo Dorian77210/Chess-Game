@@ -25,6 +25,8 @@ public class Pawn extends Piece {
         super(position, type);
         this.representation = Piece.BASE_PATH;
         this.representation += (this.isBlackPiece) ? "black-side/" + PAWN_REPRESENTATION : "white-side/" + PAWN_REPRESENTATION;
+
+        this.classInfo = "Pawn";
     }
 
     public Pawn(Pawn pawn) {

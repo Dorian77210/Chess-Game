@@ -17,6 +17,10 @@ import models.views.BoardModel;
 import models.game.players.Player;
 
 import enums.PlayerType;
+import enums.ActionType;
+
+import log.Log;
+import log.LogItem;
 
 import engine.Engine;
 
@@ -48,6 +52,7 @@ public class Actions {
             //save the image of the game
             UndoRedo.instance().push(Engine.instance().getAllPieces().clone());
             castling((King)piece, (Rook)target.getPiece(), model);
+            Log.instance().push(new LogItem(piece, target.getPiece(), ActionType.CASTLING_ACTION));
             return;
         }
 
@@ -64,6 +69,9 @@ public class Actions {
             Piece targetPiece = target.getPiece();
             if(Assert.isSet(targetPiece)) {
                 targetPlayer.removePiece(targetPiece);
+                Log.instance().push(new LogItem(piece, targetPiece, ActionType.EATEN_ACTION));
+            } else {
+                Log.instance().push(new LogItem(piece, target.getPosition()));
             }
             
             //update the checked state for the current player

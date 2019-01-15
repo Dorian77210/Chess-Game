@@ -33,6 +33,8 @@ public class King extends Piece {
         
         //defautl value
         this.wasAlreadyChecked = false;
+
+        this.classInfo = "King";
     }
 
     public King(King king) {

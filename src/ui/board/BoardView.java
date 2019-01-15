@@ -16,6 +16,7 @@ import helper.Position;
 
 import ui.views.View;
 import ui.side.UndoRedoView;
+import ui.side.LogView;
 
 import enums.GameMode;
 
@@ -71,6 +72,11 @@ public class BoardView extends View {
     private UndoRedoView undoRedoView;
 
     /**
+      * The log view 
+    **/
+    private LogView logView;
+
+    /**
       * The controller of the board 
     **/
     private BoardController controller;
@@ -98,6 +104,8 @@ public class BoardView extends View {
         this.undoRedoView = new UndoRedoView(this);
         this.add(this.undoRedoView, BorderLayout.SOUTH);
 
+        this.logView = new LogView();
+        this.add(this.logView, BorderLayout.EAST);
         //refresh stacks
         Log.instance().refreshStacks();
         UndoRedo.instance().refreshStacks();
@@ -198,5 +206,9 @@ public class BoardView extends View {
         }
 
         this.refreshCounts();
+    }
+
+    public void refreshDisplayLog() {
+        this.logView.refreshDisplayLog();
     }
 }
