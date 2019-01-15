@@ -1,3 +1,5 @@
 bin/*
 javadoc/*
 .vscode
+export/
+exe/
