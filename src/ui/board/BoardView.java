@@ -149,6 +149,7 @@ public class BoardView extends View {
     public void showMovementRange(CellCollection range) {
         for(Cell cell : range) {
             cell.setBackground(Palette.RANGE_CELL_COLOR);
+            cell.repaint();
         }
     }
 

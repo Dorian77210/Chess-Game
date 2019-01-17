@@ -30,6 +30,7 @@ public class BoardInitializer {
         Position position;
         Piece piece;
         Color color;
+        Cell cell;
 
         for(int y = 0; y < BoardView.HEIGHT; y++) {
             for(int x = 0; x < BoardView.WIDTH; x++) {
@@ -38,6 +39,7 @@ public class BoardInitializer {
                 cells[y][x] = new Cell(color, position);
                 piece = getPiece(pieces, position);
                 cells[y][x].setPiece(piece);
+                cells[y][x].refreshAppearance();
             }
         }
     }

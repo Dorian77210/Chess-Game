@@ -73,7 +73,7 @@ public class PieceCollision {
         Piece piece;
 
         for(Piece opponentPiece : opponentPieces) {
-            for(i= 0; i < rawRange.size();) {
+            for(i= 0; i < rawRange.size(); i++) {
                 cell = rawRange.get(i);
                 piece = cell.getPiece();
                 cell.setPiece(king);
@@ -82,11 +82,9 @@ public class PieceCollision {
                         : Engine.instance().ranges.getAvailableRangeFor(opponentPiece);
 
                 if(range.contains(cell)) {
-                    rawRange.remove(cell);
-                } else {
-                    i++;
+                    indirectPieces.add(opponentPiece);
                 }
-
+                
                 //retrieve the normal state for the cell
                 cell.setPiece(piece);
             }

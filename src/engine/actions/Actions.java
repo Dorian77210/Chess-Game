@@ -109,7 +109,9 @@ public class Actions {
                 Log.instance().push(new LogItem(false));
             }
 
-            
+            source.refreshAppearance();
+            target.refreshAppearance();
+
         }
     }
 

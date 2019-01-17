@@ -71,8 +71,6 @@ public class Cell extends JButton {
         if(Assert.isSet(this.piece)) { 
             this.piece.move(this.position);
         }
-
-        this.refreshAppearance();
     }
 
     /**

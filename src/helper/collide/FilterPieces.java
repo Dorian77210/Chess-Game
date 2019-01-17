@@ -30,13 +30,19 @@ public class FilterPieces {
         King currentKing = Engine.instance().getCurrentPlayer().getKing();
 
         Cell kingCell = model.getCell(currentKing.getPosition());
+        
+        kingCell.deletePiece();
+
         CellCollection collideRange;
+        CellCollection toRemove = new CellCollection();
         Cell cell;
         int i;
 
         Piece piece;
+
         for(Piece collidePiece : collidePieces) {
-            for(i = 0; i < kingRawRange.size();) {
+            for(i = 0; i < kingRawRange.size(); i++) {
+                kingCell.deletePiece();
                 cell = kingRawRange.get(i);
                 piece = cell.getPiece();
                 cell.setPiece(currentKing);
@@ -46,16 +52,19 @@ public class FilterPieces {
                              : Engine.instance().ranges.getAvailableRangeFor(collidePiece);
 
                 if(collideRange.contains(cell)) {
-                    kingRawRange.remove(cell);
-                } else {
-                    i++;
-                }
+                    if(!toRemove.contains(cell)) toRemove.add(cell);
+                } 
 
                 cell.setPiece(piece);
             }
         }
 
         kingCell.setPiece(currentKing);
+        kingCell.refreshAppearance();
+
+        for(Cell c : toRemove) {
+            kingRawRange.remove(c);
+        }
     }
 
     /**

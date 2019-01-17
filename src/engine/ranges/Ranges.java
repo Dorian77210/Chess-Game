@@ -85,8 +85,8 @@ public class Ranges {
         BishopRange.addBottomRightCell(this.boardModel, bishop, states, range, bishop.getPosition());
         BishopRange.addBottomLeftCell(this.boardModel, bishop, states, range, bishop.getPosition());
 
-        if((bishop.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (bishop.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        if((bishop.isBlackPiece() && Engine.instance().informations.isBlackPlayerPlaying()) ||
+           (bishop.isWhitePiece() && !Engine.instance().informations.isBlackPlayerPlaying())
         ) {
             FilterPieces.filterRange(bishop, range, this.boardModel);
         }
@@ -120,8 +120,8 @@ public class Ranges {
         }
 
         //filter the range if his king is checked
-        if((knight.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (knight.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        if((knight.isBlackPiece() && Engine.instance().informations.isBlackPlayerPlaying()) ||
+           (knight.isWhitePiece() && !Engine.instance().informations.isBlackPlayerPlaying())
         ) {
             FilterPieces.filterRange(knight, knightRange, this.boardModel);
         }
@@ -163,8 +163,8 @@ public class Ranges {
         QueenRange.addBottomCell(this.boardModel, queen, states, range, queen.getPosition());
         QueenRange.addRightCell(this.boardModel, queen, states, range, queen.getPosition());
         
-        if((queen.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (queen.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        if((queen.isBlackPiece() && Engine.instance().informations.isBlackPlayerPlaying()) ||
+           (queen.isWhitePiece() && !Engine.instance().informations.isBlackPlayerPlaying())
         ) {
             FilterPieces.filterRange(queen, range, this.boardModel);
         }
@@ -213,11 +213,12 @@ public class Ranges {
             range.add(currentCell);
         }
 
-        if((pawn.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (pawn.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        if((pawn.isBlackPiece() && Engine.instance().informations.isBlackPlayerPlaying()) ||
+           (pawn.isWhitePiece() && !Engine.instance().informations.isBlackPlayerPlaying())
         ) {
             FilterPieces.filterRange(pawn, range, this.boardModel);
         }
+
         return range;
     }
 
@@ -238,8 +239,8 @@ public class Ranges {
         RookRange.addRightCell(this.boardModel, rook, states, range, rook.getPosition());
         RookRange.addLeftCell(this.boardModel, rook, states, range, rook.getPosition());
         
-        if((rook.isBlackPiece() && Engine.instance().informations.isBlackPlayerChecked()) ||
-           (rook.isWhitePiece() && Engine.instance().informations.isWhitePlayerChecked())
+        if((rook.isBlackPiece() && Engine.instance().informations.isBlackPlayerPlaying()) ||
+           (rook.isWhitePiece() && !Engine.instance().informations.isBlackPlayerPlaying())
         ) {
             FilterPieces.filterRange(rook, range, this.boardModel);
         }

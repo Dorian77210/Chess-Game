@@ -48,7 +48,7 @@ public class BoardController implements ActionListener {
         this.boardView.refreshBoard();
         Cell cell = (Cell)event.getSource();
         cell.setBackground(Palette.SELECTED_CELL_COLOR);
-
+        
         Piece piece = cell.getPiece();
         if(Assert.isSet(piece) && (piece.canMove())) {
             this.boardView.showMovementRange(Engine.instance().ranges.getAvailableRangeFor(piece));
