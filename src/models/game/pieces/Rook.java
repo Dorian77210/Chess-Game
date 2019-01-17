@@ -32,4 +32,16 @@ public class Rook extends Piece {
     public Rook(Rook rook) {
         super(rook);
     }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    public Rook clone() {
+        return new Rook(this);
+    }
 }

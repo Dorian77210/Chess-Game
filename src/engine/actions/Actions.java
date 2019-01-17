@@ -193,6 +193,9 @@ public class Actions {
         model.getCell(source.getPosition()).setPiece(source);
         model.getCell(target.getPosition()).setPiece(target);
 
+        model.getCell(source.getPosition()).refreshAppearance();
+        model.getCell(target.getPosition()).refreshAppearance();
+
         //toggle the first time moving state
         source.toggleIsFirstTimeMoving();
         target.toggleIsFirstTimeMoving();

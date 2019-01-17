@@ -32,4 +32,16 @@ public class Pawn extends Piece {
     public Pawn(Pawn pawn) {
         super(pawn);
     }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    public Pawn clone() {
+        return new Pawn(this);
+    }
 }

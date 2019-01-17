@@ -32,4 +32,16 @@ public class Queen extends Piece {
     public Queen(Queen queen) {
         super(queen);
     }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    public Queen clone() {
+        return new Queen(this);
+    }
 }

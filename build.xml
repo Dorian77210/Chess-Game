@@ -16,31 +16,42 @@
 
     <property name="export" location="export"/>
 
+    <property name="libs" location="libs" />
+
     <target name="clean">
         <delete dir="bin" />
         <delete dir="javadoc" />
         <delete dir="exe" />
-        <delete dir="export"/>
     </target>
 
-    <target name="compile" depends="clean">
-        <mkdir dir="bin" />
-        <mkdir dir="export" />
-        <javac srcdir="${src}" destdir="${bin}" />
+    <target name="compile">
+        <mkdir dir="${bin}" />
+        <mkdir dir="${javadoc}" />
+        <mkdir dir="${exe}" />
+
+        <javac srcdir="${src}" destdir="${bin}">
+            <classpath>
+                <pathelement path="libs/json.jar" />
+                <pathelement path="libs/mariadb-java-client-2.3.0.jar" />
+            </classpath>
+        </javac>
+        <antcall target="jar" />
     </target>
 
-    <target name="jar" depends="compile">
-        <mkdir dir="exe" />
-        <jar destfile="exe/Application.jar" basedir="bin">
+    <target name="jar">
+        <jar destfile="${exe}/Application.jar" basedir="${bin}">
+            <zipgroupfileset dir="libs" includes="*.jar" excludes="" />
+
             <manifest>
-                <attribute name="Main-Class" value="Application" />
+                <attribute name="Main-Class" value="Application"/>
             </manifest>
-
         </jar>
     </target>
 
-    <target name="run" depends="jar">
-        <java jar="exe/Application.jar" fork="true" />
+    <target name="run" depends="compile">
+        <java jar="exe/Application.jar" fork="true">
+            <arg value="-cp json.jar"/>
+        </java>
     </target>
 
 </project>

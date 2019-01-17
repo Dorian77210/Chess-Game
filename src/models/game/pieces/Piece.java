@@ -56,6 +56,8 @@ public class Piece {
 
         //default value
         this.isFirstTimeMoving = true;
+
+        this.classInfo = "";
     }
 
     public Piece(Piece piece) {
@@ -168,5 +170,18 @@ public class Piece {
     **/
     public void toggleIsFirstTimeMoving() {
         this.isFirstTimeMoving = !this.isFirstTimeMoving;
+    }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    @Override
+    public Piece clone() {
+        return new Piece(this);
     }
 }

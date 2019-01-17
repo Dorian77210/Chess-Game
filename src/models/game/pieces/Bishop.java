@@ -32,4 +32,17 @@ public class Bishop extends Piece {
     public Bishop(Bishop bishop) {
         super(bishop);
     }
+
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    public Bishop clone() {
+        return new Bishop(this);
+    }
 }

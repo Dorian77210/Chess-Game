@@ -116,19 +116,7 @@ public class PieceCollection extends ArrayList<Piece> {
     public PieceCollection clone() {
         PieceCollection collection = new PieceCollection();
         for(Piece piece : this) {
-            if(piece instanceof Bishop) {
-                collection.add(new Bishop((Bishop)piece));
-            } else if(piece instanceof Pawn) {
-                collection.add(new Pawn((Pawn)piece));
-            } else if(piece instanceof Knight) {
-                collection.add(new Knight((Knight)piece));
-            } else if(piece instanceof King) {
-                collection.add(new King((King)piece));
-            } else if(piece instanceof Queen) {
-                collection.add(new Queen((Queen)piece));
-            } else if(piece instanceof Rook) {
-                collection.add(new Rook((Rook)piece));
-            }
+            collection.add(piece.clone());
         }
 
         return collection;

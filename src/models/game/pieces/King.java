@@ -61,4 +61,16 @@ public class King extends Piece {
     public void toggleWasAlreadyChecked() {
         this.wasAlreadyChecked = !this.wasAlreadyChecked;
     }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Get a clone object of the piece
+      * @return The clone of this object 
+    **/
+    public King clone() {
+        return new King(this);
+    }
 }
