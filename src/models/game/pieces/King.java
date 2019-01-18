@@ -62,6 +62,16 @@ public class King extends Piece {
         this.wasAlreadyChecked = !this.wasAlreadyChecked;
     }
 
+    //for the json
+    
+    /**
+      * Set the wasAlreadyChecked state
+      * @param wasAlreadyChecked The new state 
+    **/
+    public void setWasAlreadyChecked(boolean wasAlreadyChecked) {
+        this.wasAlreadyChecked = wasAlreadyChecked;
+    }
+
     /***************************** 
     ************CLONE************* 
     *****************************/

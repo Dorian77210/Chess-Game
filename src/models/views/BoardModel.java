@@ -15,6 +15,8 @@ import models.game.pieces.Rook;
 
 import ui.board.BoardView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -40,6 +42,8 @@ public class BoardModel {
         //default value
         this.selectedCell = null;
     }
+
+    
 
     /***************************** 
     *************GETTER*********** 

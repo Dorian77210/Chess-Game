@@ -29,10 +29,15 @@ import helper.collections.PieceCollection;
 import helper.collections.CellCollection;
 import helper.collide.PieceCollision;
 
+import json.JSONParser;
+
 import ui.board.Cell;
+import ui.board.BoardView;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
 
+
+import java.util.Iterator;
 /**
   * The class <code>Engine</code> represents the engine of the game
   * @version 1.0
@@ -214,5 +219,30 @@ public class Engine {
                 }
             }
         }
+    }
+
+    /***************************** 
+    ************CLONE************* 
+    *****************************/
+
+    /**
+      * Copy a copy of the current board model according to his json representation
+      * @return A string representation of the board
+    **/
+    public String copyOfBoard() {
+        JSONObject json = JSONParser.boardToJSON(this.boardModel);
+
+        return json.toString();
+    }
+
+    /**
+      * Restitute the board model
+      * @param collection The pieces 
+    **/
+    public void restitueBoard(PieceCollection collection) {
+        Cell[][] cells = new Cell[BoardView.HEIGHT][BoardView.WIDTH];
+        BoardInitializer.initializeCells(cells, collection);
+
+        this.boardModel = new BoardModel(cells);
     }
 }
