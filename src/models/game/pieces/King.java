@@ -8,6 +8,10 @@ import enums.PieceType;
 
 import models.game.pieces.Piece;
 
+import json.JSONParser;
+
+import org.json.JSONObject;
+
 /**
   * The class <code>King</code> represents the king in the pieces
   * @version 1.0
@@ -63,6 +67,16 @@ public class King extends Piece {
     }
 
     //for the json
+
+    /**
+      * Get a json representation of the piece
+      * @return The json representation of the piece 
+    **/
+    @Override 
+    public JSONObject toJSONFormat() {
+        return super.toJSONFormat()
+                    .put(JSONParser.JSON_WAS_ALREADY_CHECKED, this.wasAlreadyChecked());
+    }
     
     /**
       * Set the wasAlreadyChecked state

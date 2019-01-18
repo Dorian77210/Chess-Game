@@ -8,6 +8,10 @@ import engine.Engine;
 
 import enums.PieceType;
 
+import json.JSONParser;
+
+import org.json.JSONObject;
+
 /**
   * The class <code>Piece</code> represents the base of all of the pieces
   * @version 1.0
@@ -147,6 +151,17 @@ public class Piece {
     **/
     public String getClassInfo() {
         return this.classInfo;
+    }
+
+    /**
+      * Get a json representation of the piece
+      * @return The json representation of the piece 
+    **/
+    public JSONObject toJSONFormat() {  
+        return new JSONObject()
+                   .put(JSONParser.JSON_IS_BLACK_PIECE, this.isBlackPiece())
+                   .put(JSONParser.JSON_IS_FIRST_TIME_MOVING, this.isFirstTimeMoving())
+                   .put(JSONParser.JSON_CLASS, this.getClassInfo());
     }
 
     /***************************** 

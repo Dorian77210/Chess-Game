@@ -31,29 +31,29 @@ public class JSONParser {
     /**
       * Constant used to describe the separator for the key in json
     **/
-    private static final String JSON_POSITION_SPLITERATOR = "\\|";
+    public static final String JSON_POSITION_SPLITERATOR = "\\|";
 
     //constants for the attributes of the peices
 
     /**
       * Constant used to describe if a piece is a black piece for the json 
     **/
-    private static final String JSON_IS_BLACK_PIECE = "is-black-piece";
+    public static final String JSON_IS_BLACK_PIECE = "is-black-piece";
 
     /**
       * Constant used to describe if a king was already checked 
     **/
-    private static final String JSON_WAS_ALREADY_CHECKED = "was-already-checked";
+    public static final String JSON_WAS_ALREADY_CHECKED = "was-already-checked";
 
     /**
       * Constant used to describe if a piece has already moved for the json 
     **/
-    private static final String JSON_IS_FIRST_TIME_MOVING = "is-first-time-moving";
+    public static final String JSON_IS_FIRST_TIME_MOVING = "is-first-time-moving";
 
     /**
       * Constant used to describe the name of the class of a piece for the json 
     **/
-    private static final String JSON_CLASS = "class";
+    public static final String JSON_CLASS = "class";
 
     /**
       * Constant used as key for the game informations in json 
@@ -107,16 +107,9 @@ public class JSONParser {
 
                 if(Assert.isSet(piece)) {
                     //generate the json for the piece
-                    pieceInformations = new JSONObject()
-                                            .put(JSON_IS_BLACK_PIECE, piece.isBlackPiece())
-                                            .put(JSON_IS_FIRST_TIME_MOVING, piece.isFirstTimeMoving())
-                                            .put(JSON_CLASS, piece.getClassInfo());
+                    pieceInformations = piece.toJSONFormat();
 
-                    if(piece instanceof King) {
-                        pieceInformations = pieceInformations.put(JSON_WAS_ALREADY_CHECKED, ((King)piece).wasAlreadyChecked());
-                    }
-
-                    keyPosition = "" + position.x + "|" + position.y;
+                    keyPosition = position.toJSONFormat();
                     json.put(keyPosition, pieceInformations);
                 } 
             }

@@ -6,8 +6,6 @@ import enums.PieceType;
 
 import engine.informations.GameInformations;
 
-import java.util.stream.Collectors;
-
 /**
   * The class <code>BoardSave</code> saves the crucial informations of the board
   * @version 1.0

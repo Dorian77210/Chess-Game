@@ -56,7 +56,7 @@ public class HomeView extends View {
         File file = new File(new File("export"), "game.txt");
         if(file.exists()) {
             this.loadGameButton = new JButton("Load game");
-            this.add(this.loadGameButton);
+            this.add(this.loadGameButton);  
         } 
         
         this.controller = new HomeController(window, this.pvpButton, this.pveButton, this.creditButton, this.loadGameButton);
