@@ -17,6 +17,7 @@ import helper.Position;
 import ui.views.View;
 import ui.side.UndoRedoView;
 import ui.side.LogView;
+import ui.side.SaveGameView;
 
 import enums.GameMode;
 
@@ -28,6 +29,7 @@ import undo.UndoRedo;
 import log.Log;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
@@ -65,6 +67,11 @@ public class BoardView extends View {
       * The side where is displayed the count of pieces 
     **/
     private PieceCountView pieceCountView;
+
+    /**
+      * The save game view 
+    **/
+    private SaveGameView saveGameView;
 
     /**
       * The undo/redo view 
@@ -106,6 +113,10 @@ public class BoardView extends View {
 
         this.logView = new LogView();
         this.add(this.logView, BorderLayout.EAST);
+
+        this.saveGameView = new SaveGameView(this);
+        this.add(this.saveGameView, BorderLayout.NORTH);
+
         //refresh stacks
         Log.instance().refreshStacks();
         UndoRedo.instance().refreshStacks();
@@ -211,5 +222,18 @@ public class BoardView extends View {
 
     public void refreshDisplayLog() {
         this.logView.refreshDisplayLog();
+    }
+
+    /***************************** 
+    ************MESSAGE*********** 
+    *****************************/
+    /**
+      * Ask to the window to display a message
+      * @param message The message to display 
+    **/
+    public void displayMessage(String message) {   
+        ui.Window window = (ui.Window)SwingUtilities.windowForComponent(this);
+        window.displayMessage(message);
+        window.dispose();
     }
 }

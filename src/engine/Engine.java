@@ -29,6 +29,7 @@ import helper.collections.PieceCollection;
 import helper.collections.CellCollection;
 import helper.collide.PieceCollision;
 
+import json.ExportJSON;
 import json.JSONParser;
 
 import ui.board.Cell;
@@ -114,6 +115,7 @@ public class Engine {
         this.ranges = new Ranges(this.boardModel);
     }
 
+
     /***************************** 
     ***********INSTANCE*********** 
     *****************************
@@ -136,9 +138,20 @@ public class Engine {
       * @param boardModel The model of the board 
     **/
     public static final void initialize(GameMode mode, BoardModel boardModel) {
-        GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
+        if(mode.equals(GameMode.PVE_MODE) || mode.equals(GameMode.PVP_MODE)) {
+            GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
+            Engine.engine = new Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
+        } else if(mode.equals(GameMode.LOAD_GAME)) {
+            /*  
+            String json = JSONImport.load();
+            JSONObject jsonObject = new JSONObject(json);
+            PieceCollection collection = JSONParser.jsonToPlayers(jsonObject);
+            GameInformation gameInformations = JSONParser.jsonToInformations(jsonObject);
+            Engine.engine(collection, gameInformations, boardModel);
+            */
+        }
 
-        Engine.engine = new Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
+
 	}
 	
 	/**
@@ -239,10 +252,23 @@ public class Engine {
       * Restitute the board model
       * @param collection The pieces 
     **/
-    public void restitueBoard(PieceCollection collection) {
+    public void restituteBoard(PieceCollection collection) {
         Cell[][] cells = new Cell[BoardView.HEIGHT][BoardView.WIDTH];
         BoardInitializer.initializeCells(cells, collection);
 
         this.boardModel = new BoardModel(cells);
+    }
+
+    /***************************** 
+    ************SAVE************** 
+    *****************************/
+    /**
+      * Save the game 
+    **/
+    public void saveGame() {
+        //create a json object with the informations that concern the pieces and the game informations   
+        JSONObject json = JSONParser.boardToJSON(this.boardModel);
+        json.put("game-informations", JSONParser.informationsToJSON(this.informations));
+        ExportJSON.export(json);
     }
 }

@@ -7,5 +7,6 @@ package enums;
 **/
 public enum GameMode {
     PVP_MODE,
-    PVE_MODE
+    PVE_MODE,
+    LOAD_GAME
 }

@@ -13,6 +13,7 @@ import controller.window.WindowSizeController;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 
@@ -97,4 +98,12 @@ public class Window extends JFrame {
         this.add(this.currentView, BorderLayout.CENTER);
         this.revalidate();
     } 
+
+    /**
+      * Close the window with a popup with a message
+      * @param message The concerned message 
+    **/
+    public void displayMessage(String message) {
+        (new JOptionPane()).showMessageDialog(null, message, "Game saved", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

@@ -4,6 +4,11 @@ import models.views.BoardModel;
 import models.game.pieces.*;
 import enums.PieceType;
 
+import engine.informations.GameInformations;
+
+import ui.board.BoardView;
+import ui.board.Cell;
+
 import helper.Assert;
 import helper.Position;
 import helper.collections.PieceCollection;
@@ -26,7 +31,7 @@ public class JSONParser {
     /**
       * Constant used to describe the separator for the key in json
     **/
-    private static final String JSON_POSITION_SPLITERATOR = "|";
+    private static final String JSON_POSITION_SPLITERATOR = "\\|";
 
     //constants for the attributes of the peices
 
@@ -49,6 +54,26 @@ public class JSONParser {
       * Constant used to describe the name of the class of a piece for the json 
     **/
     private static final String JSON_CLASS = "class";
+
+    /**
+      * Constant used as key for the game informations in json 
+    **/
+    private static final String JSON_GAME_INFORMATIONS = "game-informations";
+
+    /**
+      * Constant used to describe the number of rounds of the game for the json 
+    **/
+    private static final String JSON_GAME_INFORMATIONS_ROUNDS = "game-informations-rounds";
+
+    /**
+      * Constant used to know if the white player is checked 
+    **/
+    private static final String JSON_IS_WHITE_PLAYER_CHECKED = "is-white-player-checked";
+
+    /**
+      * Constant used to know if the black player is checked 
+    **/
+    private static final String JSON_IS_BLACK_PLAYER_CHECKED = "is-black-player-checked";
 
     /**
       * Get a JSON representation of the board model 
@@ -91,6 +116,19 @@ public class JSONParser {
     }
 
     /**
+      * Save the informations of the game with a json format 
+      * @param informations The informations of the game
+    **/
+    public static final JSONObject informationsToJSON(GameInformations informations) {
+        JSONObject json = new JSONObject()
+                                      .put(JSON_GAME_INFORMATIONS_ROUNDS, informations.getRounds())
+                                      .put(JSON_IS_BLACK_PLAYER_CHECKED, informations.isBlackPlayerChecked())
+                                      .put(JSON_IS_WHITE_PLAYER_CHECKED, informations.isWhitePlayerChecked());
+
+        return json;
+    }
+
+    /**
       * Parse a json to restitute all pieces
       * @param json The json
       * @return All of pieces
@@ -111,9 +149,8 @@ public class JSONParser {
 
         for(String key : JSONObject.getNames(json)) {
             //calculate the position
-            index = key.indexOf(JSON_POSITION_SPLITERATOR);
-            rawX = key.substring(0, index);
-            rawY = key.substring(index + 1	, key.length());
+            rawX = key.split(JSON_POSITION_SPLITERATOR)[0];
+            rawY = key.split(JSON_POSITION_SPLITERATOR)[1];
             position = new Position(Integer.parseInt(rawX), Integer.parseInt(rawY));
 
             //retrieve the jsonsObject associated to the position
@@ -128,7 +165,7 @@ public class JSONParser {
                 Object rawObject = constructor.newInstance(position, type);
                 piece = (Piece)rawObject;
                 if(piece instanceof King) {
-                    wasAlreadyChecked = pieceInformations.getString(JSON_WAS_ALREADY_CHECKED);
+                    wasAlreadyChecked = pieceInformations.getBoolean(JSON_WAS_ALREADY_CHECKED);
                     ((King)piece).setWasAlreadyChecked(wasAlreadyChecked);
                 }
 
