@@ -5,6 +5,8 @@ import controller.views.Controller;
 import enums.WindowState;
 import enums.GameMode;
 
+import helper.Assert;
+
 import ui.Window;
 
 import javax.swing.JButton;
@@ -33,7 +35,12 @@ public class HomeController extends Controller {
     **/
     private static final String CREDIT_ACTION_COMMAND = "CREDIT_ACTION_COMMAND";
 
-    public HomeController(Window window, JButton pvpButton, JButton pveButton, JButton creditButton) {
+    /**
+      *  Constant used to identify the load button
+    **/
+    private static final String LOAD_GAME_ACTION_COMMAND = "LOAD_GAME_ACTION_COMMAND";
+
+    public HomeController(Window window, JButton pvpButton, JButton pveButton, JButton creditButton, JButton loadGameButton) {
         super(window);
 
         //set the action command for all buttons
@@ -45,6 +52,12 @@ public class HomeController extends Controller {
         pvpButton.addActionListener(this);
         pveButton.addActionListener(this);
         creditButton.addActionListener(this);
+
+        //load button, exception because it can be null if it not exists save of the game
+        if(Assert.isSet(loadGameButton)) {
+            loadGameButton.setActionCommand(LOAD_GAME_ACTION_COMMAND);
+            loadGameButton.addActionListener(this);
+        }
     }
 
     /**
@@ -60,6 +73,8 @@ public class HomeController extends Controller {
             this.window.changeView(WindowState.IN_GAME_STATE, GameMode.PVP_MODE);
         } else if(actionCommand.equals(CREDIT_ACTION_COMMAND)) {
             this.window.changeView(WindowState.CREDIT_VIEW_STATE);
+        } else if(actionCommand.equals(LOAD_GAME_ACTION_COMMAND)) {
+            this.window.changeView(WindowState.IN_GAME_STATE, GameMode.LOAD_GAME);
         }
     }
 }

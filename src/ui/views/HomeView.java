@@ -6,6 +6,8 @@ import ui.views.View;
 
 import javax.swing.JButton;
 
+import java.io.File;
+
 import controller.views.HomeController;
 
 /**
@@ -31,6 +33,11 @@ public class HomeView extends View {
     **/
     private JButton creditButton;
 
+    /**
+      * Button to load game existing 
+    **/
+    private JButton loadGameButton;
+
     public HomeView(Window window) {
         super(window);
 
@@ -38,6 +45,7 @@ public class HomeView extends View {
         this.pvpButton = new JButton("PVP Mode");
         this.pveButton = new JButton("PVE Mode");
         this.creditButton = new JButton("Credit");
+        this.loadGameButton = null;
 
         //add the buttons to the current view
         this.add(this.pvpButton);
@@ -45,6 +53,12 @@ public class HomeView extends View {
         this.add(this.creditButton);
 
         //create the controller
-        this.controller = new HomeController(window, this.pvpButton, this.pveButton, this.creditButton); 
+        File file = new File(new File("export"), "game.txt");
+        if(file.exists()) {
+            this.loadGameButton = new JButton("Load game");
+            this.add(this.loadGameButton);
+        } 
+        
+        this.controller = new HomeController(window, this.pvpButton, this.pveButton, this.creditButton, this.loadGameButton);
     }
 }

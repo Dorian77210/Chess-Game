@@ -10,7 +10,7 @@ import org.json.JSONObject;
   * @author Dorian Terbah 
 **/
 
-public class ExportJSON {
+public class JSONExport {
 
     /**
       * Constant used to have the path of the game file 
@@ -18,11 +18,16 @@ public class ExportJSON {
     private static final String GAME_EXPORT_FILE = "game.txt";
 
     /**
+      * Constant used to have the directory of the file game 
+    **/
+    private static final String GAME_EXPORT_DIRECTORY = "export";
+
+    /**
       * Export the game in a file
       * @param json The game in json 
     **/
     public static final void export(String json) {
-        File file = new File(new File("export"), GAME_EXPORT_FILE);
+        File file = new File(new File(GAME_EXPORT_DIRECTORY), GAME_EXPORT_FILE);
         
         FileWriter writer;
 

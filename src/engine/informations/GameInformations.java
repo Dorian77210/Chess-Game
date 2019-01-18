@@ -118,6 +118,14 @@ public class GameInformations {
     }
 
     /**
+      * Set a new value for the rounds 
+      * @param rounds The new value
+    **/
+    public void setRounds(int rounds) {
+        this.rounds = rounds;
+    }
+
+    /**
       * Set a new state for the end of the game
       * @param isEndOfGame The new state 
     **/

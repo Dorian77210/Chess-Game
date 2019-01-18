@@ -173,6 +173,17 @@ public class Piece {
     }
 
     /***************************** 
+    *************SETTER*********** 
+    *****************************/
+    /**
+      * Set the isFirstTimeMoving state
+      * @param isFirstTimeMoving The state 
+    **/
+    public void setIsFirstTimeMoving(boolean isFirstTimeMoving) {
+        this.isFirstTimeMoving = isFirstTimeMoving;
+    }
+
+    /***************************** 
     ************CLONE************* 
     *****************************/
 

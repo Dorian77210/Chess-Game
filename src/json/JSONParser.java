@@ -144,11 +144,12 @@ public class JSONParser {
         PieceType type;
 
 
-        boolean isBlackPiece, wasAlreadyChecked;
+        boolean isBlackPiece, wasAlreadyChecked, isFirstTimeMoving;
         String classInfo;
 
         for(String key : JSONObject.getNames(json)) {
             //calculate the position
+            if(key.equals(JSON_GAME_INFORMATIONS)) continue; //avoid the game informations
             rawX = key.split(JSON_POSITION_SPLITERATOR)[0];
             rawY = key.split(JSON_POSITION_SPLITERATOR)[1];
             position = new Position(Integer.parseInt(rawX), Integer.parseInt(rawY));
@@ -156,7 +157,8 @@ public class JSONParser {
             //retrieve the jsonsObject associated to the position
             pieceInformations = json.getJSONObject(key);
             classInfo = pieceInformations.getString(JSON_CLASS);
-            isBlackPiece = pieceInformations.getBoolean(JSON_IS_BLACK_PIECE);
+            isBlackPiece = pieceInformations.getBoolean(JSON_IS_BLACK_PIECE);   
+            isFirstTimeMoving = pieceInformations.getBoolean(JSON_IS_FIRST_TIME_MOVING);
             type = isBlackPiece ? PieceType.BLACK_PIECE : PieceType.WHITE_PIECE;
 
             try {
@@ -167,7 +169,9 @@ public class JSONParser {
                 if(piece instanceof King) {
                     wasAlreadyChecked = pieceInformations.getBoolean(JSON_WAS_ALREADY_CHECKED);
                     ((King)piece).setWasAlreadyChecked(wasAlreadyChecked);
-                }
+                } 
+
+                piece.setIsFirstTimeMoving(isFirstTimeMoving);
 
                 collection.add(piece);
 
@@ -191,5 +195,20 @@ public class JSONParser {
         }
 
         return collection;
+    }
+
+    /**
+      * Get a GameInformations thanks to a json 
+      * @param json The json object
+      * @return The informations associated to the json
+    **/
+    public static final GameInformations jsonToInformations(JSONObject json) {
+        JSONObject informationsJSON = json.getJSONObject(JSON_GAME_INFORMATIONS);
+        GameInformations informations = new GameInformations();
+        informations.setRounds(informationsJSON.getInt(JSON_GAME_INFORMATIONS_ROUNDS));
+        informations.setIsBlackPlayerChecked(informationsJSON.getBoolean(JSON_IS_BLACK_PLAYER_CHECKED));
+        informations.setIsWhitePlayerChecked(informationsJSON.getBoolean(JSON_IS_WHITE_PLAYER_CHECKED));
+
+        return informations;
     }
 }

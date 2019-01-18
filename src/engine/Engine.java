@@ -29,7 +29,8 @@ import helper.collections.PieceCollection;
 import helper.collections.CellCollection;
 import helper.collide.PieceCollision;
 
-import json.ExportJSON;
+import json.JSONExport;
+import json.JSONImport;
 import json.JSONParser;
 
 import ui.board.Cell;
@@ -115,6 +116,18 @@ public class Engine {
         this.ranges = new Ranges(this.boardModel);
     }
 
+    //second constructor
+    private Engine(PieceCollection pieces, GameInformations gameInformations, BoardModel model) {
+        this.informations = gameInformations;
+        
+        this.whitePlayer = new Player(PlayerType.WHITE_PLAYER, pieces.getPiecesByColor(true));
+        this.blackPlayer = new Player(PlayerType.BLACK_PLAYER, pieces.getPiecesByColor(false));
+
+        this.boardModel = model;
+
+        this.ranges = new Ranges(this.boardModel);
+    }
+
 
     /***************************** 
     ***********INSTANCE*********** 
@@ -142,13 +155,11 @@ public class Engine {
             GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
             Engine.engine = new Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
         } else if(mode.equals(GameMode.LOAD_GAME)) {
-            /*  
             String json = JSONImport.load();
             JSONObject jsonObject = new JSONObject(json);
             PieceCollection collection = JSONParser.jsonToPlayers(jsonObject);
-            GameInformation gameInformations = JSONParser.jsonToInformations(jsonObject);
-            Engine.engine(collection, gameInformations, boardModel);
-            */
+            GameInformations gameInformations = JSONParser.jsonToInformations(jsonObject);
+            Engine.engine = new Engine(collection, gameInformations, boardModel);
         }
 
 
@@ -269,6 +280,6 @@ public class Engine {
         //create a json object with the informations that concern the pieces and the game informations   
         JSONObject json = JSONParser.boardToJSON(this.boardModel);
         json.put("game-informations", JSONParser.informationsToJSON(this.informations));
-        ExportJSON.export(json);
+        JSONExport.export(json);
     }
 }
