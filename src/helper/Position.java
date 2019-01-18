@@ -1,7 +1,5 @@
 package helper;
 
-import json.JSONParser;
-
 /**
   * The class <code>Position</code> represents the position of a cell or a piece
   * @version 1.0
@@ -41,6 +39,6 @@ public class Position {
       * @return The JSON representation 
     **/
     public String toJSONFormat() {
-        return "" + this.x + JSONParser.JSON_POSITION_SPLITERATOR + "" + this.y;
+        return "" + this.x + "|" + "" + this.y;
     }
 }

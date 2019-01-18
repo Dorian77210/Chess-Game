@@ -64,7 +64,7 @@ public class Engine {
 	private static final BoardInitializer boardInitializer = new BoardInitializer();
 
 
-    public Ranges ranges;
+    public final Ranges ranges;
 
     /**
       * The differents actions for the game 
@@ -131,7 +131,7 @@ public class Engine {
 
     /***************************** 
     ***********INSTANCE*********** 
-    *****************************
+    ******************************/
 
     /**
       * Get the unique instance of the Engine
