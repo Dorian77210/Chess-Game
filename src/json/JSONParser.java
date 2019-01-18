@@ -76,6 +76,16 @@ public class JSONParser {
     private static final String JSON_IS_BLACK_PLAYER_CHECKED = "is-black-player-checked";
 
     /**
+      * Constant used to set the index of x when spliting string position
+    **/
+    private static final byte X_RAW_COORDINATE_INDEX = 0x0;
+
+    /**
+      * Constant used to set the index of y when spliting string position 
+    **/
+    private static final byte Y_RAW_COORDINATE_INDEX = 0x1;
+
+    /**
       * Get a JSON representation of the board model 
       * @param model The model of the board
       * @return The JSON representation of the board model 
@@ -150,8 +160,8 @@ public class JSONParser {
         for(String key : JSONObject.getNames(json)) {
             //calculate the position
             if(key.equals(JSON_GAME_INFORMATIONS)) continue; //avoid the game informations
-            rawX = key.split(JSON_POSITION_SPLITERATOR)[0];
-            rawY = key.split(JSON_POSITION_SPLITERATOR)[1];
+            rawX = key.split(JSON_POSITION_SPLITERATOR)[X_RAW_COORDINATE_INDEX];
+            rawY = key.split(JSON_POSITION_SPLITERATOR)[Y_RAW_COORDINATE_INDEX];
             position = new Position(Integer.parseInt(rawX), Integer.parseInt(rawY));
 
             //retrieve the jsonsObject associated to the position
