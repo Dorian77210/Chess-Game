@@ -19,24 +19,19 @@ import org.json.JSONObject;
 public class BoardSave {
 
     /**
-      * All of the pieces of the two players in json format
+      * The representation of save of the game in JSON 
     **/
-    private JSONObject piecesJSON;
-
-    /**
-      * The informations of the game int json format
-    **/
-    private JSONObject informationsJSON;
+    private JSONObject json;
 
     public BoardSave(PieceCollection allPieces, GameInformations informations) {
-        this.piecesJSON = JSONParser.piecesToJSON(allPieces);
-        this.informationsJSON = JSONParser.informationsToJSON(informations);
+        this.json = new JSONObject()
+                        .put(JSONParser.JSON_BOARD_SAVE_PIECES, JSONParser.piecesToJSON(allPieces))
+                        .put(JSONParser.JSON_BOARD_SAVE_INFORMATIONS, JSONParser.informationsToJSON(informations));
     }
 
     //construct a board save with its json representation
     public BoardSave(JSONObject json) {
-        this.piecesJSON = json.getJSONObject(JSONParser.JSON_BOARD_SAVE_PIECES);
-        this.informationsJSON = json.getJSONObject(JSONParser.JSON_BOARD_SAVE_INFORMATIONS);
+        this.json = json;
     }
 
     /***************************** 
@@ -47,7 +42,7 @@ public class BoardSave {
       * @return All of the pieces 
     **/
     public PieceCollection getAllPieces() {
-        return JSONParser.jsonToPlayers(this.piecesJSON);
+        return JSONParser.jsonToPlayers(this.json.getJSONObject(JSONParser.JSON_BOARD_SAVE_PIECES));
     }
 
     /**
@@ -55,7 +50,7 @@ public class BoardSave {
       * @return The informations of the game
     **/
     public GameInformations getGameInformations() {
-        return JSONParser.jsonToInformations(this.informationsJSON);
+        return JSONParser.jsonToInformations(this.json.getJSONObject(JSONParser.JSON_BOARD_SAVE_INFORMATIONS));
     }
 
     /**
@@ -63,8 +58,6 @@ public class BoardSave {
       * @return The save in JSON format
     **/
     public JSONObject toJSONFormat() {
-        return new JSONObject()
-                  .put(JSONParser.JSON_BOARD_SAVE_INFORMATIONS, this.informationsJSON)
-                  .put(JSONParser.JSON_BOARD_SAVE_PIECES, this.piecesJSON);
+        return this.json;
     }
 }

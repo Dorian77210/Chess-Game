@@ -24,7 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.LinkedList;
 import java.util.HashMap;
-
+import java.util.Arrays;
 /**
   * The class <code>JSONParser</code> parses the board model to json  
   * @version 1.0
@@ -303,17 +303,20 @@ public class JSONParser {
 
         JSONObject saveJSON = null;
 
+        String[] names = JSONObject.getNames(undoJSON);
         //create the undo stack
-        if(Assert.isSet(JSONObject.getNames(undoJSON))) {
-            for(String key : JSONObject.getNames(undoJSON)) {
+        if(Assert.isSet(names)) {
+            Arrays.sort(names);
+            for(String key : names) {
                 saveJSON = undoJSON.getJSONObject(key);
                 undo.add(new BoardSave(saveJSON));
             }
         }
         
-
+        names = JSONObject.getNames(redoJSON);
         //create the redo stack
-        if(Assert.isSet(JSONObject.getNames(redoJSON))) {
+        if(Assert.isSet(names)) {
+            Arrays.sort(names);
             for(String key : JSONObject.getNames(redoJSON)) {
                 saveJSON = redoJSON.getJSONObject(key);
                 redo.add(new BoardSave(saveJSON));
