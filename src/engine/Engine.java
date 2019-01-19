@@ -33,13 +33,15 @@ import json.JSONExport;
 import json.JSONImport;
 import json.JSONParser;
 
+import undo.UndoRedo;
+
 import ui.board.Cell;
 import ui.board.BoardView;
 
+import java.io.File;
+
 import org.json.JSONObject;
 
-
-import java.util.Iterator;
 /**
   * The class <code>Engine</code> represents the engine of the game
   * @version 1.0
@@ -155,11 +157,15 @@ public class Engine {
             GamePieces gamePiece = Engine.pieceInitializer.recoverPieces(); //recover all of the pieces in the file
             Engine.engine = new Engine(mode, gamePiece.getPieces(PieceType.WHITE_PIECE), gamePiece.getPieces(PieceType.BLACK_PIECE), boardModel);
         } else if(mode.equals(GameMode.LOAD_GAME)) {
-            String json = JSONImport.load();
+            File file = new File(new File(JSONImport.EXPORT_DIRECTORY), JSONImport.GAME_EXPORT_FILE);
+            String json = JSONImport.load(file);
             JSONObject jsonObject = new JSONObject(json);
             PieceCollection collection = JSONParser.jsonToPlayers(jsonObject);
-            GameInformations gameInformations = JSONParser.jsonToInformations(jsonObject);
+            GameInformations gameInformations = JSONParser.jsonToInformations(jsonObject.getJSONObject(JSONParser.JSON_GAME_INFORMATIONS));
             Engine.engine = new Engine(collection, gameInformations, boardModel);
+
+            //load the undo/redo
+            UndoRedo.instance().load();
         }
 
 
@@ -254,9 +260,9 @@ public class Engine {
       * @return A string representation of the board
     **/
     public String copyOfBoard() {
-        JSONObject json = JSONParser.boardToJSON(this.boardModel);
-
-        return json.toString();
+        //JSONObject json = JSONParser.boardToJSON(this.boardModel);
+        return "";
+        //return json.toString();
     }
 
     /**
@@ -278,8 +284,12 @@ public class Engine {
     **/
     public void saveGame() {
         //create a json object with the informations that concern the pieces and the game informations   
-        JSONObject json = JSONParser.boardToJSON(this.boardModel);
+        JSONObject json = JSONParser.piecesToJSON(this.getAllPieces());
         json.put("game-informations", JSONParser.informationsToJSON(this.informations));
-        JSONExport.export(json);
+
+        File file = new File(new File(JSONExport.EXPORT_DIRECTORY), JSONExport.GAME_EXPORT_FILE);
+        JSONExport.export(json, file);
+
+        UndoRedo.instance().save();
     }
 }

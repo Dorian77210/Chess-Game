@@ -6,6 +6,10 @@ import enums.PieceType;
 
 import engine.informations.GameInformations;
 
+import json.JSONParser;
+
+import org.json.JSONObject;
+
 /**
   * The class <code>BoardSave</code> saves the crucial informations of the board
   * @version 1.0
@@ -15,39 +19,35 @@ import engine.informations.GameInformations;
 public class BoardSave {
 
     /**
-      * All of the pieces of the two players
+      * All of the pieces of the two players in json format
     **/
-    private PieceCollection allPieces;
+    private JSONObject piecesJSON;
 
     /**
-      * The informations of the game 
+      * The informations of the game int json format
     **/
-    private GameInformations informations;
+    private JSONObject informationsJSON;
 
     public BoardSave(PieceCollection allPieces, GameInformations informations) {
-        this.allPieces = allPieces;
-        this.informations = informations;
+        this.piecesJSON = JSONParser.piecesToJSON(allPieces);
+        this.informationsJSON = JSONParser.informationsToJSON(informations);
+    }
+
+    //construct a board save with its json representation
+    public BoardSave(JSONObject json) {
+        this.piecesJSON = json.getJSONObject(JSONParser.JSON_BOARD_SAVE_PIECES);
+        this.informationsJSON = json.getJSONObject(JSONParser.JSON_BOARD_SAVE_INFORMATIONS);
     }
 
     /***************************** 
     ***********GETTER************* 
     ******************************/
-    
-    /**
-      * Get the pieces according to their color
-      * @param isWhitePiece If the pieces arewhite
-      * @return The pieces according to the color
-    **/
-    public PieceCollection getPiecesAccordingToColor(boolean isWhitePiece) {                              
-        return this.allPieces.getPiecesByColor(isWhitePiece);
-    }
-
     /**
       * Get all of the pieces
       * @return All of the pieces 
     **/
     public PieceCollection getAllPieces() {
-        return this.allPieces;
+        return JSONParser.jsonToPlayers(this.piecesJSON);
     }
 
     /**
@@ -55,6 +55,16 @@ public class BoardSave {
       * @return The informations of the game
     **/
     public GameInformations getGameInformations() {
-        return this.informations;
+        return JSONParser.jsonToInformations(this.informationsJSON);
+    }
+
+    /**
+      * Get the json's representation of the save
+      * @return The save in JSON format
+    **/
+    public JSONObject toJSONFormat() {
+        return new JSONObject()
+                  .put(JSONParser.JSON_BOARD_SAVE_INFORMATIONS, this.informationsJSON)
+                  .put(JSONParser.JSON_BOARD_SAVE_PIECES, this.piecesJSON);
     }
 }

@@ -8,7 +8,16 @@ import engine.informations.GameInformations;
 
 import undo.BoardSave;
 
+import json.JSONExport;
+import json.JSONParser;
+import json.JSONImport;
+
+import java.io.File;
+
+import org.json.JSONObject;
+
 import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
   * The class <code>UndoRedo</code> controls the undo and the redo
@@ -81,7 +90,7 @@ public class UndoRedo {
       * @param allPieces All of the pieces of the two players
     **/
     public void push(PieceCollection allPieces) {
-        this.undoStack.add(new BoardSave(allPieces, new GameInformations(Engine.instance().informations)));
+        this.undoStack.add(new BoardSave(allPieces, Engine.instance().informations));
         this.clearRedoStack();
     }
 
@@ -101,5 +110,32 @@ public class UndoRedo {
     public void refreshStacks() {
         this.redoStack.clear();
         this.undoStack.clear();
+    }
+
+    /***************************** 
+    *************SAVE************* 
+    ******************************/
+    /**
+      * Save the undo/redo in a file 
+    **/
+    public void save() {
+        File file = new File(new File(JSONExport.EXPORT_DIRECTORY), JSONExport.UNDO_REDO_EXPORT_FILE);
+        JSONObject json = JSONParser.undoRedoToJSON(this.undoStack, this.redoStack);
+        JSONExport.export(json.toString(), file);
+    }
+
+    /**
+      * Load the undo/redo in a file 
+    **/
+    public void load() {    
+        File file = new File(new File(JSONImport.EXPORT_DIRECTORY), JSONImport.UNDO_REDO_EXPORT_FILE);
+        String json = JSONImport.load(file);
+        JSONObject jsonObject = new JSONObject(json);
+
+        HashMap<String, LinkedList<BoardSave>> hashMap = JSONParser.jsonToUndoRedo(jsonObject);
+
+        //refresh the stacks with the new values
+        this.undoStack = hashMap.get(JSONParser.JSON_UNDO_KEY);
+        this.redoStack = hashMap.get(JSONParser.JSON_REDO_KEY);
     }
 }

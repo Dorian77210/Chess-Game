@@ -92,6 +92,10 @@ public class BoardView extends View {
         super(new java.awt.BorderLayout());
         this.cells = new Cell[HEIGHT][WIDTH];
 
+        //refresh stacks
+        Log.instance().refreshStacks();
+        UndoRedo.instance().refreshStacks();
+
         this.model = new BoardModel(this.cells);
 
         this.controller = new BoardController(this, this.model);
@@ -117,9 +121,7 @@ public class BoardView extends View {
         this.saveGameView = new SaveGameView(this);
         this.add(this.saveGameView, BorderLayout.NORTH);
 
-        //refresh stacks
-        Log.instance().refreshStacks();
-        UndoRedo.instance().refreshStacks();
+
     }
 
     /***************************** 

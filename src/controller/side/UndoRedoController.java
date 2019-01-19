@@ -11,6 +11,7 @@ import engine.informations.GameInformations;
 import enums.PlayerType;
 
 import helper.Assert;
+import helper.collections.PieceCollection;
 
 import ui.board.BoardView;
 
@@ -60,7 +61,7 @@ public class UndoRedoController implements ActionListener {
     @Override 
     public void actionPerformed(ActionEvent event) {
         String actionCommand = event.getActionCommand();
-        BoardSave save = new BoardSave(Engine.instance().getAllPieces().clone(), new GameInformations(Engine.instance().informations));
+        BoardSave save = new BoardSave(Engine.instance().getAllPieces(), Engine.instance().informations);
  
         BoardSave result;
 
@@ -72,8 +73,9 @@ public class UndoRedoController implements ActionListener {
 
         //update pieces for the players
         if(Assert.isSet(result)) {
-            Engine.instance().getPlayer(PlayerType.BLACK_PLAYER).setPieces(result.getPiecesAccordingToColor(false));
-            Engine.instance().getPlayer(PlayerType.WHITE_PLAYER).setPieces(result.getPiecesAccordingToColor(true));
+            PieceCollection collection = result.getAllPieces();
+            Engine.instance().getPlayer(PlayerType.BLACK_PLAYER).setPieces(collection.getPiecesByColor(false));
+            Engine.instance().getPlayer(PlayerType.WHITE_PLAYER).setPieces(collection.getPiecesByColor(true));
             Engine.instance().informations = result.getGameInformations();
             
             //update log
@@ -84,7 +86,7 @@ public class UndoRedoController implements ActionListener {
             }
 
             //refresh the board
-            this.boardView.changeVersion(result.getAllPieces());
+            this.boardView.changeVersion(collection);
             this.boardView.refreshBoard();
             this.boardView.refreshDisplayLog();
             this.boardView.refreshCounts();

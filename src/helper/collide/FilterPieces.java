@@ -2,6 +2,7 @@ package helper.collide;
 
 import helper.collections.CellCollection;
 import helper.collections.PieceCollection;
+import helper.constants.Palette;
 
 import models.game.pieces.Piece;
 import models.game.pieces.King;
@@ -61,6 +62,7 @@ public class FilterPieces {
 
         kingCell.setPiece(currentKing);
         kingCell.refreshAppearance();
+        kingCell.setBackground(Palette.SELECTED_CELL_COLOR);
 
         for(Cell c : toRemove) {
             kingRawRange.remove(c);

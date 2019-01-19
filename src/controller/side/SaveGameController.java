@@ -43,7 +43,7 @@ public class SaveGameController implements ActionListener {
         String actionCommand = event.getActionCommand();
         if(actionCommand.equals(SAVE_BUTTON_ACTION_COMMAND)) {
             Engine.instance().saveGame();
-            this.boardView.displayMessage("The save has been saved, exit...");
+            this.boardView.displayMessage("The game has been saved, exit...");
         }
     }
 }

@@ -15,19 +15,22 @@ public class JSONImport {
     /**
       * Constant used to have the path of the game file 
     **/
-    private static final String GAME_EXPORT_FILE = "game.txt";
+    public static final String GAME_EXPORT_FILE = "game.txt";
+
+    /**
+      * Constant used to have the path of the undo/redo file 
+    **/
+    public static final String UNDO_REDO_EXPORT_FILE = "undo-redo.txt";
 
     /**
       * Constant used to have the directory of the file game 
     **/
-    private static final String GAME_EXPORT_DIRECTORY = "export";
+    public static final String EXPORT_DIRECTORY = "export";
 
     /**
       * Import the game from the file 
     **/
-    public static final String load() {
-        File file = new File(new File(GAME_EXPORT_DIRECTORY), GAME_EXPORT_FILE);
-
+    public static final String load(File file) {
         String json = "";
         BufferedReader reader;
         StringBuffer buffer = new StringBuffer();

@@ -15,20 +15,23 @@ public class JSONExport {
     /**
       * Constant used to have the path of the game file 
     **/
-    private static final String GAME_EXPORT_FILE = "game.txt";
+    public static final String GAME_EXPORT_FILE = "game.txt";
+
+    /**
+      * Constant used to have the path of the undo/redo file 
+    **/
+    public static final String UNDO_REDO_EXPORT_FILE = "undo-redo.txt";
 
     /**
       * Constant used to have the directory of the file game 
     **/
-    private static final String GAME_EXPORT_DIRECTORY = "export";
+    public static final String EXPORT_DIRECTORY = "export";
 
     /**
       * Export the game in a file
       * @param json The game in json 
     **/
-    public static final void export(String json) {
-        File file = new File(new File(GAME_EXPORT_DIRECTORY), GAME_EXPORT_FILE);
-        
+    public static final void export(String json, File file) {
         FileWriter writer;
 
         try {
@@ -58,7 +61,7 @@ public class JSONExport {
       * Export the game in a file
       * @param json The game in json 
     **/
-    public static final void export(JSONObject json) {
-        export(json.toString());
+    public static final void export(JSONObject json, File file) {
+        export(json.toString(), file);
     }
 }

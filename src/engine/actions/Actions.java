@@ -50,7 +50,7 @@ public class Actions {
         
         if(canMakeCastling(piece, target.getPiece(), model)) {
             //save the image of the game
-            UndoRedo.instance().push(Engine.instance().getAllPieces().clone());
+            UndoRedo.instance().push(Engine.instance().getAllPieces());
             castling((King)piece, (Rook)target.getPiece(), model);
             Log.instance().push(new LogItem(piece, target.getPiece(), ActionType.CASTLING_ACTION));
             return;
@@ -59,7 +59,7 @@ public class Actions {
         if(range.contains(target)) {
 
             //save the image of the game
-            UndoRedo.instance().push(Engine.instance().getAllPieces().clone());
+            UndoRedo.instance().push(Engine.instance().getAllPieces());
 
             Position position = piece.getPosition();
             Cell source = model.getCell(position);

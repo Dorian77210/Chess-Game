@@ -9,6 +9,8 @@ import engine.informations.GameInformations;
 import ui.board.BoardView;
 import ui.board.Cell;
 
+import undo.BoardSave;
+
 import helper.Assert;
 import helper.Position;
 import helper.collections.PieceCollection;
@@ -19,6 +21,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
   * The class <code>JSONParser</code> parses the board model to json  
@@ -58,7 +63,7 @@ public class JSONParser {
     /**
       * Constant used as key for the game informations in json 
     **/
-    private static final String JSON_GAME_INFORMATIONS = "game-informations";
+    public static final String JSON_GAME_INFORMATIONS = "game-informations";
 
     /**
       * Constant used to describe the number of rounds of the game for the json 
@@ -85,34 +90,59 @@ public class JSONParser {
     **/
     private static final byte Y_RAW_COORDINATE_INDEX = 0x1;
 
+    /***************************** 
+     ***********UNDO/REDO********* 
+     ******************************/
+
+    //BoardSave
     /**
-      * Get a JSON representation of the board model 
+      * Constant used to set the key of pieces for the board save in json format 
+    **/
+    public static final String JSON_BOARD_SAVE_PIECES = "board-save-pieces";    
+
+    /**
+      * Constant used to set the key of informations for the board in json format
+    **/
+    public static final String JSON_BOARD_SAVE_INFORMATIONS = "board-save-informations";
+
+    //Undo/redo
+    /**
+      * Constant used to describe the json's part of the undo
+    **/
+    public static final String JSON_UNDO_KEY = "undo";
+
+    /**
+      * Constant used to describe the json's part of the redo
+    **/
+    public static final String JSON_REDO_KEY = "redo";
+
+    /**
+      * Constant used to describe the key for the saves for the undo redo 
+    **/
+    public static final String JSON_UNDO_REDO_BOARD_SAVE_KEY = "board-save-";
+
+     /***************************** 
+     ************X to JSON********* 
+     ******************************/
+
+    /**
+      * Get a JSON representation of the pieces
       * @param model The model of the board
       * @return The JSON representation of the board model 
     **/
-    public static final JSONObject boardToJSON(BoardModel model) {
+    public static final JSONObject piecesToJSON(PieceCollection pieces) {
         JSONObject json = new JSONObject();
         JSONObject pieceInformations;
 
         Position position;
         String keyPosition = "";
         Cell cell;
-        Piece piece;
 
-        for(int y = 0; y < BoardView.HEIGHT; y++) {
-            for(int x = 0; x < BoardView.WIDTH; x++) {
-                position = new Position(x, y);
-                cell = model.getCell(position);
-                piece = cell.getPiece();
-
-                if(Assert.isSet(piece)) {
-                    //generate the json for the piece
-                    pieceInformations = piece.toJSONFormat();
-
-                    keyPosition = position.toJSONFormat();
-                    json.put(keyPosition, pieceInformations);
-                } 
-            }
+        for(Piece piece : pieces) {
+            position = piece.getPosition();
+            pieceInformations = piece.toJSONFormat();
+            keyPosition = position.toJSONFormat();
+            json.put(keyPosition, pieceInformations);
         }
 
         return json;
@@ -130,6 +160,46 @@ public class JSONParser {
 
         return json;
     }
+
+    /**
+      * Get the undo/redo representation in JSON format
+      * @param undo The stack of undo
+      * @param redo The stack of redo
+      * @return The JSON undo/redo's format  
+    **/
+    public static final JSONObject undoRedoToJSON(LinkedList<BoardSave> undo, LinkedList<BoardSave> redo) {
+        JSONObject json = new JSONObject();
+        JSONObject undoJSON = new JSONObject();
+        JSONObject redoJSON = new JSONObject();
+
+        JSONObject saveJSON = null;
+
+        int index = 0x0; //initial value
+        //undo 
+        for(BoardSave boardSave : undo) {
+            saveJSON = boardSave.toJSONFormat();
+            undoJSON.put(JSON_UNDO_REDO_BOARD_SAVE_KEY + index, saveJSON);
+            index++;
+        }   
+
+        //redo
+        index = 0x0;
+        for(BoardSave boardSave : redo) {
+            saveJSON = boardSave.toJSONFormat();
+            redoJSON.put(JSON_UNDO_REDO_BOARD_SAVE_KEY + index, saveJSON);
+            index++;
+        }
+
+        json.put(JSON_UNDO_KEY, undoJSON);
+        json.put(JSON_REDO_KEY, redoJSON);
+
+        return json;
+    }
+
+
+    /***************************** 
+     ************JSON to X********* 
+     ******************************/
 
     /**
       * Parse a json to restitute all pieces
@@ -164,6 +234,7 @@ public class JSONParser {
             isFirstTimeMoving = pieceInformations.getBoolean(JSON_IS_FIRST_TIME_MOVING);
             type = isBlackPiece ? PieceType.BLACK_PIECE : PieceType.WHITE_PIECE;
 
+            //generic creation of piece
             try {
                 Class<?> clazz = Class.forName("models.game.pieces." + classInfo);
                 Constructor<?> constructor = clazz.getConstructor(Position.class, PieceType.class);
@@ -179,6 +250,7 @@ public class JSONParser {
                 collection.add(piece);
 
             } catch(ClassNotFoundException classNotFoundException) {
+                System.out.println(classInfo);
                 System.err.println("Class not found");
                 System.exit(1);
             } catch(InstantiationException instanciationException) {
@@ -188,7 +260,7 @@ public class JSONParser {
                 System.err.println("Error for illegal");
                 System.exit(1);
             } catch(InvocationTargetException invocationTargetException) {
-                System.err.println("Error when incoking the constructor");
+                System.err.println("Error when invoking the constructor");
                 System.exit(1);
             } catch(NoSuchMethodException noSuchMethodException) {
                 System.err.println("Error for the method");
@@ -206,12 +278,52 @@ public class JSONParser {
       * @return The informations associated to the json
     **/
     public static final GameInformations jsonToInformations(JSONObject json) {
-        JSONObject informationsJSON = json.getJSONObject(JSON_GAME_INFORMATIONS);
         GameInformations informations = new GameInformations();
-        informations.setRounds(informationsJSON.getInt(JSON_GAME_INFORMATIONS_ROUNDS));
-        informations.setIsBlackPlayerChecked(informationsJSON.getBoolean(JSON_IS_BLACK_PLAYER_CHECKED));
-        informations.setIsWhitePlayerChecked(informationsJSON.getBoolean(JSON_IS_WHITE_PLAYER_CHECKED));
+        informations.setRounds(json.getInt(JSON_GAME_INFORMATIONS_ROUNDS));
+        informations.setIsBlackPlayerChecked(json.getBoolean(JSON_IS_BLACK_PLAYER_CHECKED));
+        informations.setIsWhitePlayerChecked(json.getBoolean(JSON_IS_WHITE_PLAYER_CHECKED));
 
         return informations;
+    }
+
+    /**
+      * Retrieve the undo redo thanks to the json
+      * @param json The json file
+      * @return An hashmap with the undo stack and the redo stack 
+    **/
+    public static final HashMap<String, LinkedList<BoardSave>> jsonToUndoRedo(JSONObject json) {
+        HashMap<String, LinkedList<BoardSave>> hashMap = new HashMap<String, LinkedList<BoardSave>>();
+        
+        LinkedList<BoardSave> undo = new LinkedList<BoardSave>();
+        LinkedList<BoardSave> redo = new LinkedList<BoardSave>();
+
+        //retrieve the json associated to the undo and redo
+        JSONObject undoJSON = json.getJSONObject(JSON_UNDO_KEY);
+        JSONObject redoJSON = json.getJSONObject(JSON_REDO_KEY);
+
+        JSONObject saveJSON = null;
+
+        //create the undo stack
+        if(Assert.isSet(JSONObject.getNames(undoJSON))) {
+            for(String key : JSONObject.getNames(undoJSON)) {
+                saveJSON = undoJSON.getJSONObject(key);
+                undo.add(new BoardSave(saveJSON));
+            }
+        }
+        
+
+        //create the redo stack
+        if(Assert.isSet(JSONObject.getNames(redoJSON))) {
+            for(String key : JSONObject.getNames(redoJSON)) {
+                saveJSON = redoJSON.getJSONObject(key);
+                redo.add(new BoardSave(saveJSON));
+            }
+        }
+
+        //create the hash map
+        hashMap.put(JSON_UNDO_KEY, undo);
+        hashMap.put(JSON_REDO_KEY, redo);
+
+        return hashMap;
     }
 }
