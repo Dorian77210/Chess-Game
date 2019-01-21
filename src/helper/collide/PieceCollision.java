@@ -83,6 +83,8 @@ public class PieceCollision {
 
                 if(range.contains(cell)) {
                     indirectPieces.add(opponentPiece);
+                } else if(range.contains(kingCell)) {
+                    indirectPieces.add(opponentPiece);
                 }
                 
                 //retrieve the normal state for the cell

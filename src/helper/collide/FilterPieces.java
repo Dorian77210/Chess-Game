@@ -85,6 +85,8 @@ public class FilterPieces {
         Cell cell;
         int i;
 
+        currentCell.setPiece(null);
+
         Piece piece;
         for(i = 0; i < range.size();) {
             cell = range.get(i);
@@ -94,6 +96,7 @@ public class FilterPieces {
             kingRange = KingRange.getRawKingRange(model, currentKing);
 
             directCollidePieces = PieceCollision.getDirectPiecesCollideWithKing(currentKing, kingRange, model);
+
             if(!directCollidePieces.isEmpty()) {
                 for(Piece directCollidePiece : directCollidePieces) {
                     if(directCollidePiece.getPosition().equals(source.getPosition())) {
