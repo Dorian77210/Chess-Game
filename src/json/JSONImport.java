@@ -54,4 +54,15 @@ public class JSONImport {
 
         return buffer.toString();
     }
+
+    /**
+      * Check if the engine can import data
+      * @return True if it can, else false 
+    **/
+    public static final boolean canImportData() {
+        File game = new File(new File(EXPORT_DIRECTORY), GAME_EXPORT_FILE);
+        File undoRedo = new File(new File(EXPORT_DIRECTORY), UNDO_REDO_EXPORT_FILE);
+
+        return (game.exists() && undoRedo.exists());
+    }
 }

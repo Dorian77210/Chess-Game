@@ -1,5 +1,8 @@
 package controller.side;
 
+import ui.board.BoardView;
+import ui.side.LogView;
+
 import log.LogExport;
 
 import javax.swing.JButton;
@@ -20,9 +23,16 @@ public class ExportLogController implements ActionListener {
     **/
     private static final String EXPORT_LOG_ACTION_COMMAND = "EXPORT_LOG_ACTION_COMMAND";
 
-    public ExportLogController(JButton exportLog) {
+    /**
+      * Representation of the log view 
+    **/
+    private LogView logView;
+
+    public ExportLogController(LogView logView, JButton exportLog) {
         exportLog.setActionCommand(EXPORT_LOG_ACTION_COMMAND);
         exportLog.addActionListener(this);
+
+        this.logView = logView;
     }
 
     /**
@@ -34,6 +44,8 @@ public class ExportLogController implements ActionListener {
         String actionCommand = event.getActionCommand();
         if(actionCommand.equals(EXPORT_LOG_ACTION_COMMAND)) {
             LogExport.exportLog();
+            BoardView board = (BoardView)this.logView.getParent();
+            board.displayMessage("Log exported !");
         }
     }
 }

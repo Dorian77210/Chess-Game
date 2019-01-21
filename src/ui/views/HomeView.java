@@ -10,6 +10,8 @@ import java.io.File;
 
 import controller.views.HomeController;
 
+import json.JSONImport;
+
 /**
   * The class <code>HomeView</code> represents the view for the home
   * @version 1.0
@@ -53,8 +55,7 @@ public class HomeView extends View {
         this.add(this.creditButton);
 
         //create the controller
-        File file = new File(new File("export"), "game.txt");
-        if(file.exists()) {
+        if(JSONImport.canImportData()) {
             this.loadGameButton = new JButton("Load game");
             this.add(this.loadGameButton);  
         } 

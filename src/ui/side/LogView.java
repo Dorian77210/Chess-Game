@@ -56,7 +56,7 @@ public class LogView extends JPanel {
         this.exportLog = new JButton("Export log");
         this.add(this.exportLog, BorderLayout.SOUTH);
 
-        this.controller = new ExportLogController(this.exportLog);
+        this.controller = new ExportLogController(this, this.exportLog);
     }
 
     /**

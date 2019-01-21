@@ -236,6 +236,6 @@ public class BoardView extends View {
     public void displayMessage(String message) {   
         ui.Window window = (ui.Window)SwingUtilities.windowForComponent(this);
         window.displayMessage(message);
-        window.dispose();
+        if(!message.equals("Log exported !")) window.dispose();
     }
 }
